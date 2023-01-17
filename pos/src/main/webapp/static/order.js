@@ -181,6 +181,14 @@ function resetCreateModal() {
 //
 //}
 
+function convertDate(datetime){  // converts date from UTC to IST
+    let dateUTC = new Date(datetime);
+    dateUTC = dateUTC.getTime()  // in milliseconds
+    let dateIST = new Date(dateUTC);
+    dateIST.setHours(dateIST.getHours() + 5);
+    dateIST.setMinutes(dateIST.getMinutes() + 30);
+    return dateIST
+}
 
 function displayOrderList(orders) {
   var $tbody = $('#order-table').find('tbody');
@@ -189,11 +197,14 @@ function displayOrderList(orders) {
   orders.forEach((order) => {
     //billAmount = getBillAmount(order.id)
 //    let invoicePath = order.invoicePath.toString().split('.')[0].split('/')[1]
+    let time = convertDate(order.datetime)
+
+
 
     var row = `
         <tr class="text-center">
             <td>${order.id}</td>
-            <td>${order.datetime}</td>
+            <td>${time}</td>
             <td>
                 <button type="button" class="btn btn-outline-secondary" onclick="fetchOrderDetails(${order.id},'add')">
                   Details
@@ -407,7 +418,7 @@ function displayUploadData() {
 }
 
 function displayOrderDetails(data) {
-  const datetime = data.datetime
+  const datetime = new Date(data.datetime)
   displayOrderDetailsModal();
   const $time = $('#date-time')
   $time.text("Order placed on: " + datetime)
