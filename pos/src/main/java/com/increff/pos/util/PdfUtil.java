@@ -9,6 +9,7 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 
 public class PdfUtil {
+    //decodes pdf and saves locally
     public static String generatePDF(OrderDetailsData orderDetailsData) throws IOException {
         String encodedPdf = getEncodedPdf(orderDetailsData);
         BASE64Decoder decoder = new BASE64Decoder();
