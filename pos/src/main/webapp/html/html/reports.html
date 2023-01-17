@@ -1,0 +1,63 @@
+<!doctype html>
+
+<html lang="en">
+
+<head th:replace="snippets.html :: name_head"></head>
+
+<body>
+
+<nav th:replace="snippets.html :: name_app_navbar"></nav>
+
+<div class="container mt-4">
+
+
+    <div class="row">
+        <h1 class="col my-auto" style="text-align:center;">Reports</h1>
+    </div>
+
+    <!-- Blank Row -->
+    <div class="row m-4">
+        &nbsp;
+    </div>
+    <div class="row m-auto justify-content-center">
+        <div class="col-3">
+            <a th:href="@{/ui/reports/brands}" class="">
+                <img title="Brand Category Report" style="width:10rem ;height:15rem ;padding-bottom:4rem;" th:src="@{/static/assets/brand_category_report_icon.png}"/>
+            </a>
+            <p>Brand-category report</p>
+            <!--      <label>Brand Category Report</label>-->
+        </div>
+        <div class="col-3">
+            <a th:href="@{/ui/reports/inventory}" class="">
+                <img title="Inventory Report" style="width:10rem ;height:15rem ;padding-bottom:4rem;" th:src="@{/static/assets/inventory_report_icon.png}"/>
+            </a>
+            <p>Inventory report</p>
+            <!--      <label>Inventory Report</label>-->
+        </div>
+
+        <div class="col-3">
+            <a th:href="@{/ui/reports/sales}" class="">
+                <img title="Sales Report" style="width:10rem ;height:15rem ;padding-bottom:4rem;" th:src="@{/static/assets/sales_report_icon.png}"/>
+            </a>
+            <p>Sales report</p>
+            <!--      <label>Sales Report</label>-->
+        </div>
+        <div class="col-3">
+            <a th:href="@{/ui/reports/day-sales}" class="">
+                <img title="Daily Sales Report" style="width:10rem ;height:15rem ;padding-bottom:4rem;" th:src="@{/static/assets/day_sales_report_icon.png}"/>
+            </a>
+            <p>Daily Sales report</p>
+            <!--      <label>Sales Report</label>-->
+        </div>
+    </div>
+
+
+</div> <!-- Container end-->
+
+<footer th:replace="snippets.html :: name_footer"></footer>
+
+<!--<script th:src="@{/static/reports.js}"/></script>-->
+
+</body>
+
+</html>

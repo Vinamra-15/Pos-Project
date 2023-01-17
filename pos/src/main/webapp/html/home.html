@@ -1,0 +1,43 @@
+<!doctype html>
+
+<html lang="en">
+
+<head th:replace="snippets.html :: name_head"></head>
+
+<body>
+
+<nav th:replace="snippets.html :: name_app_navbar"></nav>
+
+<div class="container">
+
+
+	 <!-- Top row with form-->
+	<div class="row m-3">
+		 <div class="col-4" style="text-align:center;">
+			<a th:href="@{/ui/brands}" title="Brands"> <img style="width:10rem ;height:15rem ;padding-bottom:4rem;" th:src="@{/static/assets/brands_icon.png}"/> </a>
+		 </div>
+		<div class="col-4" style="text-align:center;">
+			<a th:href="@{/ui/products}" title="Products"> <img style="width:10rem ;height:15rem ;padding-bottom:4rem;" th:src="@{/static/assets/products_icon.png}"/> </a>
+		</div>
+		<div class="col-4" style="text-align:center;">
+			<a th:href="@{/ui/products}" title="Orders"> <img style="width:10rem ;height:15rem ;padding-bottom:4rem;" th:src="@{/static/assets/orders_icon.jpg}"/> </a>
+		</div>
+		<div class="col-6" style="text-align:center;">
+			<a th:href="@{/ui/inventory}" title="Inventory"> <img style="width:10rem ;height:15rem ;padding-bottom:4rem;" th:src="@{/static/assets/inventory_icon.png}"/> </a>
+		</div>
+		<div class="col-6" style="text-align:center;">
+			<a th:href="@{/ui/inventory}" title="Reports"> <img style="width:10rem ;height:11rem ;padding-bottom:0rem;" th:src="@{/static/assets/report_icon.png}"/> </a>
+		</div>
+
+	</div>
+
+
+
+</div> <!-- Container end-->
+
+<footer th:replace="snippets.html :: name_footer"></footer>
+
+
+</body>	
+
+</html>
