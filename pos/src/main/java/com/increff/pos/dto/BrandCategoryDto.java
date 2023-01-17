@@ -20,11 +20,12 @@ public class BrandCategoryDto {
 
     @Autowired
     private BrandCategoryService brandCategoryService;
-    public void add(BrandCategoryForm brandCategoryForm) throws ApiException {
-        normalizeForm(brandCategoryForm);
+    public BrandCategoryData add(BrandCategoryForm brandCategoryForm) throws ApiException {
         validateForm(brandCategoryForm);
+        normalizeForm(brandCategoryForm);
         BrandCategoryPojo p = ConvertUtil.convert(brandCategoryForm);
 		brandCategoryService.add(p);
+        return convert(p);
     }
 
     public BrandCategoryData get(Integer id) throws ApiException {
@@ -43,11 +44,12 @@ public class BrandCategoryDto {
         return list2;
     }
 
-    public void update(Integer id, BrandCategoryForm form) throws ApiException {
-        normalizeForm(form);
+    public BrandCategoryData update(Integer id, BrandCategoryForm form) throws ApiException {
         validateForm(form);
+        normalizeForm(form);
         BrandCategoryPojo p = ConvertUtil.convert(form);
         brandCategoryService.update(id, p);
+        return convert(p);
     }
 
 }
