@@ -75,7 +75,4 @@ public class ProductDto {
         ProductPojo productPojo = ConvertUtil.convert(productForm, brandCategoryPojo);
         productService.update(id, productPojo);
     }
-
-
-
 }

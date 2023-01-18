@@ -1,9 +1,7 @@
 package com.increff.pos.dto;
 
-import com.google.protobuf.Api;
 import com.increff.pos.model.BrandCategoryData;
 import com.increff.pos.model.BrandCategoryForm;
-import com.increff.pos.pojo.BrandCategoryPojo;
 import com.increff.pos.service.ApiException;
 import com.increff.pos.spring.AbstractUnitTest;
 import com.increff.pos.util.TestUtils;
@@ -11,28 +9,27 @@ import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.ExpectedException;
 import org.springframework.beans.factory.annotation.Autowired;
-
+import org.springframework.beans.factory.annotation.Value;
 import java.util.List;
-
 import static org.junit.Assert.assertEquals;
 
 
 public class BrandCategoryDtoTest extends AbstractUnitTest {
     @Rule
     public ExpectedException exceptionRule = ExpectedException.none();
-
     @Autowired
     private BrandCategoryDto brandCategoryDto;
-
+//    @Value("${admin.email}")
+//    private String name;
     @Test
     public void addBrandCategoryTest() throws ApiException {
         BrandCategoryForm brandCategoryForm = TestUtils.getBrandCategoryForm("   tShiRt brnd  ","  tshirts  ");
         BrandCategoryData brandCategoryData = brandCategoryDto.add(brandCategoryForm);
         BrandCategoryData dataFromDB = brandCategoryDto.get(brandCategoryData.getId());
+//        System.out.println(name);
         assertEquals("tshirt brnd",dataFromDB.getBrand());
         assertEquals("tshirts",dataFromDB.getCategory());
     }
-
     @Test(expected = ApiException.class)
     public void addDuplicateBrandCategoryTest() throws ApiException {
         BrandCategoryForm brandCategoryForm = TestUtils.getBrandCategoryForm("   tShiRt brnd  "," tshirts ");
@@ -41,29 +38,24 @@ public class BrandCategoryDtoTest extends AbstractUnitTest {
         brandCategoryDto.add(duplicateBrandCategoryForm);
         exceptionRule.expect(ApiException.class);
     }
-
-
     @Test(expected = ApiException.class)
     public void addSpacesInBrandCategoryTest() throws ApiException {  // inputs blank spaces
         BrandCategoryForm brandCategoryForm = TestUtils.getBrandCategoryForm("     ","");
         BrandCategoryData brandCategoryData = brandCategoryDto.add(brandCategoryForm);
         exceptionRule.expect(ApiException.class);
     }
-
     @Test(expected = ApiException.class)
     public void addNullBrandTest() throws ApiException{
         BrandCategoryForm brandCategoryForm = TestUtils.getBrandCategoryForm(null,"  tshirts  ");
         BrandCategoryData brandCategoryData = brandCategoryDto.add(brandCategoryForm);
         exceptionRule.expect(ApiException.class);
     }
-
     @Test(expected = ApiException.class)
     public void addNullCategoryTest() throws ApiException{
         BrandCategoryForm brandCategoryForm = TestUtils.getBrandCategoryForm(" Brands  ",null);
         BrandCategoryData brandCategoryData = brandCategoryDto.add(brandCategoryForm);
         exceptionRule.expect(ApiException.class);
     }
-
     @Test
     public void getAllBrandCategoryTest() throws ApiException {
         BrandCategoryForm firstBrandCategoryForm = TestUtils.getBrandCategoryForm("   tshirt brnd  ","  tshirts  ");
@@ -71,15 +63,16 @@ public class BrandCategoryDtoTest extends AbstractUnitTest {
         BrandCategoryForm secondBrandCategoryForm = TestUtils.getBrandCategoryForm("jeans brnd  ","  jeans  ");
         brandCategoryDto.add(secondBrandCategoryForm);
         List<BrandCategoryData> data = brandCategoryDto.getAll();
+//        System.out.println(data);
         assertEquals(data.get(0).getBrand(),"tshirt brnd");
         assertEquals(data.get(1).getBrand(),"jeans brnd");
         assertEquals(data.get(0).getCategory(),"tshirts");
         assertEquals(data.get(1).getCategory(),"jeans");
     }
-
     @Test
     public void updateBrandCategoryTest() throws ApiException {
-        BrandCategoryForm brandCategoryForm = TestUtils.getBrandCategoryForm(" allen solly ","  tshirts  ");
+//        BrandCategoryData brandCategoryDataClone = brandCategoryDto.get(1);
+        BrandCategoryForm brandCategoryForm = TestUtils.getBrandCategoryForm(" tshirt brnd ","  tshirsfats  ");
         BrandCategoryData brandCategoryData = brandCategoryDto.add(brandCategoryForm);
         BrandCategoryForm updatedBrandCategoryForm = TestUtils.getBrandCategoryForm(" tshirt brand ","  tshirts ");
         brandCategoryDto.update(brandCategoryData.getId(), updatedBrandCategoryForm);
@@ -87,18 +80,11 @@ public class BrandCategoryDtoTest extends AbstractUnitTest {
         assertEquals("tshirt brand",data.getBrand());
         assertEquals("tshirts",data.getCategory());
     }
-
-//    @Test(expected = PersistenceException.class)
-//    public void searchInvalidIdTest() throws ApiException {
-//        BrandCategoryForm brandCategoryForm = TestUtils.getBrandCategoryForm("   Amul  ","  Dairy  ");
-//        BrandCategoryPojo pojo = brandCategoryDto.addBrand(brandCategoryForm);
-//        BrandCategoryData data = brandCategoryDto.getBrand(5);
-//        exceptionRule.expect(ApiException.class);
-//        exceptionRule.expectMessage("Brand with given id doesn't exist, id:5");
-//    }
-
-
-
-
-
+    @Test(expected = ApiException.class)
+    public void searchInvalidIdTestId() throws ApiException {
+        BrandCategoryForm brandCategoryForm = TestUtils.getBrandCategoryForm("  some name   ","  tshirts  ");
+        BrandCategoryData brandCategoryData = brandCategoryDto.add(brandCategoryForm);
+        BrandCategoryData data = brandCategoryDto.get(5);
+        exceptionRule.expect(ApiException.class);
+    }
 }
