@@ -2,6 +2,7 @@ package com.increff.pos.service;
 
 import com.increff.pos.dao.InventoryDao;
 import com.increff.pos.pojo.InventoryPojo;
+import com.increff.pos.pojo.ProductPojo;
 import io.swagger.models.auth.In;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -32,6 +33,8 @@ public class InventoryService {
 
         InventoryPojo ex = getCheck(productId);
         ex.setProductId(inventoryPojo.getProductId());
+        if(inventoryPojo.getQuantity()<0)
+            throw new ApiException("Quantity should be non negative number!");
         ex.setQuantity(inventoryPojo.getQuantity());
         dao.update(ex);
     }
@@ -42,5 +45,17 @@ public class InventoryService {
             throw new ApiException("Product with given barcode does not exist");
         }
         return p;
+    }
+
+    public void validateAndReduceInventoryQuantity(ProductPojo productPojo, Integer quantity) throws ApiException {
+        InventoryPojo inventoryPojo = get(productPojo.getId());
+
+        if(quantity>inventoryPojo.getQuantity())
+        {
+            throw new ApiException("Insufficient Inventory for product with barcode: " + productPojo.getBarcode());
+        }
+        Integer newQuantity = inventoryPojo.getQuantity() - quantity;
+        inventoryPojo.setQuantity(newQuantity);
+        update(productPojo.getId(),inventoryPojo);
     }
 }

@@ -53,11 +53,11 @@ public class ProductDtoTest extends AbstractUnitTest {
         assertEquals(brandCategoryPojo.getCategory(),"some category");
     }
 
-    @Test(expected = ApiException.class)
+    @Test
     public void addProductNullFieldTest() throws ApiException {
+        exceptionRule.expect(ApiException.class);
         ProductForm productForm = getProductForm("  "," ",null," ","  ");
         productDto.add(productForm);
-        exceptionRule.expect(ApiException.class);
     }
 
     @Test
@@ -72,10 +72,10 @@ public class ProductDtoTest extends AbstractUnitTest {
         assertEquals("some category",productData.getCategory());
     }
 
-    @Test(expected = ApiException.class)
+    @Test
     public void getInvalidProductTest() throws ApiException {
-        ProductData productData = productDto.get(123698745);
         exceptionRule.expect(ApiException.class);
+        ProductData productData = productDto.get(123698745);
     }
 
     @Test
@@ -90,10 +90,10 @@ public class ProductDtoTest extends AbstractUnitTest {
         assertEquals("some category",productData.getCategory());
     }
 
-    @Test(expected = ApiException.class)
+    @Test
     public void getProductByInvalidBarcodeTest() throws ApiException {
-        ProductData productData = productDto.getByBarcode("!@#$23fas21v");
         exceptionRule.expect(ApiException.class);
+        ProductData productData = productDto.getByBarcode("!@#$23fas21v");
     }
 
     @Test

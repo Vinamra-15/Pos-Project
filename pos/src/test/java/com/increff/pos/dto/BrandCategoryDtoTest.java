@@ -30,31 +30,33 @@ public class BrandCategoryDtoTest extends AbstractUnitTest {
         assertEquals("tshirt brnd",dataFromDB.getBrand());
         assertEquals("tshirts",dataFromDB.getCategory());
     }
-    @Test(expected = ApiException.class)
+    @Test
     public void addDuplicateBrandCategoryTest() throws ApiException {
+        exceptionRule.expect(ApiException.class);
         BrandCategoryForm brandCategoryForm = TestUtils.getBrandCategoryForm("   tShiRt brnd  "," tshirts ");
         brandCategoryDto.add(brandCategoryForm);
         BrandCategoryForm duplicateBrandCategoryForm = TestUtils.getBrandCategoryForm("tshirt brnd","tshirts");
         brandCategoryDto.add(duplicateBrandCategoryForm);
-        exceptionRule.expect(ApiException.class);
+
     }
-    @Test(expected = ApiException.class)
+    @Test
     public void addSpacesInBrandCategoryTest() throws ApiException {  // inputs blank spaces
+        exceptionRule.expect(ApiException.class);
         BrandCategoryForm brandCategoryForm = TestUtils.getBrandCategoryForm("     ","");
         BrandCategoryData brandCategoryData = brandCategoryDto.add(brandCategoryForm);
-        exceptionRule.expect(ApiException.class);
     }
-    @Test(expected = ApiException.class)
+    @Test
     public void addNullBrandTest() throws ApiException{
+        exceptionRule.expect(ApiException.class);
         BrandCategoryForm brandCategoryForm = TestUtils.getBrandCategoryForm(null,"  tshirts  ");
         BrandCategoryData brandCategoryData = brandCategoryDto.add(brandCategoryForm);
-        exceptionRule.expect(ApiException.class);
     }
-    @Test(expected = ApiException.class)
+    @Test
     public void addNullCategoryTest() throws ApiException{
+        exceptionRule.expect(ApiException.class);
         BrandCategoryForm brandCategoryForm = TestUtils.getBrandCategoryForm(" Brands  ",null);
         BrandCategoryData brandCategoryData = brandCategoryDto.add(brandCategoryForm);
-        exceptionRule.expect(ApiException.class);
+
     }
     @Test
     public void getAllBrandCategoryTest() throws ApiException {
@@ -80,11 +82,11 @@ public class BrandCategoryDtoTest extends AbstractUnitTest {
         assertEquals("tshirt brand",data.getBrand());
         assertEquals("tshirts",data.getCategory());
     }
-    @Test(expected = ApiException.class)
+    @Test
     public void searchInvalidIdTestId() throws ApiException {
+        exceptionRule.expect(ApiException.class);
         BrandCategoryForm brandCategoryForm = TestUtils.getBrandCategoryForm("  some name   ","  tshirts  ");
         BrandCategoryData brandCategoryData = brandCategoryDto.add(brandCategoryForm);
         BrandCategoryData data = brandCategoryDto.get(5);
-        exceptionRule.expect(ApiException.class);
     }
 }

@@ -150,4 +150,16 @@ public class ConvertUtil {
         p.setPassword(f.getPassword());
         return p;
     }
+
+    public static List<OrderItemData> getOrderItemDetailsList(List<OrderItemPojo> orderItems, List<ProductPojo> productPojos) {
+        List<OrderItemData> orderItemDataList = new ArrayList<OrderItemData>();
+        for(int i=0;i<orderItems.size();i++){
+            ProductPojo productPojo = productPojos.get(i);
+            OrderItemPojo orderItemPojo = orderItems.get(i);
+            OrderItemData orderItemData = convert(orderItemPojo,productPojo);
+            orderItemDataList.add(orderItemData);
+        }
+        return orderItemDataList;
+    }
+
 }

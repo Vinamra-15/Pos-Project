@@ -43,6 +43,9 @@ public class Validate {
     }
 
     public static void validateForm(List<OrderItemForm> orderItemForms) throws ApiException {
+        if(orderItemForms==null||orderItemForms.isEmpty()){
+            throw new ApiException("Order Items cannot be empty!");
+        }
         for(OrderItemForm orderItemForm:orderItemForms)
             validateForm(orderItemForm);
     }
