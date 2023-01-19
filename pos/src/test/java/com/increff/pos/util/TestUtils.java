@@ -4,6 +4,7 @@ import com.increff.pos.model.BrandCategoryForm;
 import com.increff.pos.model.InventoryForm;
 import com.increff.pos.model.OrderItemForm;
 import com.increff.pos.model.ProductForm;
+import com.increff.pos.pojo.ProductPojo;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -44,5 +45,14 @@ public class TestUtils {
             orderItemFormList.add(orderItemForm);
         }
         return orderItemFormList;
+    }
+
+    public static ProductPojo getProductPojo(String name,String barcode,Double mrp,Integer brandId){
+        ProductPojo productPojo = new ProductPojo();
+        productPojo.setBarcode(barcode);
+        productPojo.setName(name);
+        productPojo.setMrp(mrp);
+        productPojo.setBrandId(brandId);
+        return productPojo;
     }
 }

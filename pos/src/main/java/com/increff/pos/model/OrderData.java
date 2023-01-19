@@ -12,7 +12,6 @@ import java.util.Date;
 @Setter
 public class OrderData{
     private Integer id;
-
     private Date datetime;
 
     private String invoicePath;
