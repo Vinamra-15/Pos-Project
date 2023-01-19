@@ -49,13 +49,14 @@ public class OrderDto {
             4. get time and set in orderPojo
             5. save orderPojo in order table
      */
-    public OrderData createOrder(List<OrderItemForm> orderItemForms) throws ApiException, IOException {
-        normalizeForm(orderItemForms);
-        validateForm(orderItemForms);
-//        List<ProductPojo> productPojoList = getProductsFromOrderItemFormList(orderItemForms);
+    //        List<ProductPojo> productPojoList = getProductsFromOrderItemFormList(orderItemForms);
 //        List<InventoryPojo> inventoryPojoList = getInventoryFromProducts(productPojoList);
 //        validateInventoryQuantity(orderItemForms,productPojoList,inventoryPojoList);
 //        reduceInventoryQuantity(orderItemForms,inventoryPojoList);
+    public OrderData createOrder(List<OrderItemForm> orderItemForms) throws ApiException, IOException {
+        normalizeForm(orderItemForms);
+        validateForm(orderItemForms);
+
         for(OrderItemForm orderItemForm:orderItemForms){
             inventoryService.validateAndReduceInventoryQuantity(productService.getByBarcode(orderItemForm.getBarcode()),orderItemForm.getQuantity());
         }
@@ -164,53 +165,5 @@ public class OrderDto {
         }
         return productPojos;
     }
-    //    private void validateAndReduceInventoryQuantity(OrderItemForm orderItemForm) throws ApiException {
-//        ProductPojo productPojo = productService.getByBarcode(orderItemForm.getBarcode());
-//        InventoryPojo inventoryPojo = inventoryService.get(productPojo.getId());
-//
-//        if(orderItemForm.getQuantity()>inventoryPojo.getQuantity())
-//        {
-//            throw new ApiException("Insufficient Inventory for product with barcode: " + productPojo.getBarcode());
-//        }
-//        Integer newQuantity = inventoryPojo.getQuantity() - orderItemForm.getQuantity();
-//        inventoryPojo.setQuantity(newQuantity);
-//        inventoryService.update(productPojo.getId(),inventoryPojo);
-//    }
 
-//        private void reduceInventoryQuantity(List<OrderItemForm> orderItemForms, List<InventoryPojo> inventoryPojoList) throws ApiException {
-//        for(int i=0;i<orderItemForms.size();i++){
-//            InventoryPojo inventoryPojo = inventoryPojoList.get(i);
-//            inventoryService.update(inventoryPojo.getProductId(),inventoryPojo);
-//        }
-//    }
-//    private void validateInventoryQuantity(List<OrderItemForm> orderItemForms, List<ProductPojo> productPojoList, List<InventoryPojo> inventoryPojoList) throws ApiException {
-//        for(int i=0;i<orderItemForms.size();i++){
-//            InventoryPojo inventoryPojo = inventoryPojoList.get(i);
-//            OrderItemForm orderItemForm = orderItemForms.get(i);
-//            if(orderItemForm.getQuantity()>inventoryPojo.getQuantity()){
-//                throw new ApiException("Insufficient inventory for Product: "+productPojoList.get(i).getBarcode());
-//            }
-//
-//            Integer newQuantity = inventoryPojo.getQuantity() - orderItemForm.getQuantity();
-//            inventoryPojo.setQuantity(newQuantity);
-//            inventoryPojoList.set(i,inventoryPojo);
-//        }
-//    }
-//    private List<InventoryPojo> getInventoryFromProducts(List<ProductPojo> productPojoList) throws ApiException {
-//        List<InventoryPojo> inventoryPojoList = new ArrayList<InventoryPojo>();
-//        for(ProductPojo productPojo:productPojoList){
-//            InventoryPojo inventoryPojo = inventoryService.get(productPojo.getId());
-//            inventoryPojoList.add(inventoryPojo);
-//        }
-//        return inventoryPojoList;
-//    }
-
-//    private List<ProductPojo> getProductsFromOrderItemFormList(List<OrderItemForm> orderItemFormList) throws ApiException {
-//        List<ProductPojo> productPojos = new ArrayList<ProductPojo>();
-//        for(OrderItemForm orderItemForm:orderItemFormList){
-//            ProductPojo productPojo = productService.getByBarcode(orderItemForm.getBarcode());
-//            productPojos.add(productPojo);
-//        }
-//        return productPojos;
-//    }
 }

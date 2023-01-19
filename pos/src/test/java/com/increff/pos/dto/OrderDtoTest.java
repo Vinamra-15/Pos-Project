@@ -18,6 +18,8 @@ import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.ExpectedException;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.io.ByteArrayResource;
+import org.springframework.core.io.Resource;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -85,6 +87,13 @@ public class OrderDtoTest extends AbstractUnitTest {
     }
 
     @Test
+    public void addEmptyFieldOrderTest() throws ApiException, IOException {
+        List<OrderItemForm> orderItemFormList = addEmptyFieldOrderItemToForm() ;
+        exceptionRule.expect(ApiException.class);
+        OrderData orderData = orderDto.createOrder(orderItemFormList);
+    }
+
+    @Test
     public void insufficientInventoryOrderTest() throws ApiException, IOException {
         List<OrderItemForm> orderItemFormList = addMultipleOrderItemToForm();
         // set quantity greater than available inventory
@@ -123,8 +132,16 @@ public class OrderDtoTest extends AbstractUnitTest {
         assertEquals(1,orderDto.getOrderDetails(orderData.getId()).getItems().size());
         orderDto.update(orderData.getId(),addMultipleOrderItemToForm());
         assertEquals(2,orderDto.getOrderDetails(orderData.getId()).getItems().size());
-
     }
+
+    @Test
+    public void getFileResourceTest() throws IOException, ApiException {
+        List<OrderItemForm> orderItemFormList = addMultipleOrderItemToForm();
+        OrderData orderData = orderDto.createOrder(orderItemFormList);
+        Resource resource = orderDto.getFileResource(orderData.getId());
+        assertNotNull(resource);
+    }
+
 
 
 
@@ -136,6 +153,17 @@ public class OrderDtoTest extends AbstractUnitTest {
         quantities.add(6);
         List<Double>sellingPrices = new ArrayList<Double>();
         sellingPrices.add(1520.0);
+        List<OrderItemForm> orderItemFormList = TestUtils.getOrderItemArray(barcodes,quantities,sellingPrices);
+        return orderItemFormList;
+    }
+
+    private List<OrderItemForm> addEmptyFieldOrderItemToForm(){
+        List<String> barcodes = new ArrayList<String>();
+        barcodes.add("");
+        List<Integer>quantities = new ArrayList<Integer>();
+        quantities.add(null);
+        List<Double>sellingPrices = new ArrayList<Double>();
+        sellingPrices.add(null);
         List<OrderItemForm> orderItemFormList = TestUtils.getOrderItemArray(barcodes,quantities,sellingPrices);
         return orderItemFormList;
     }
