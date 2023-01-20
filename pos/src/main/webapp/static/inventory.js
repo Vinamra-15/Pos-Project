@@ -70,20 +70,22 @@ function uploadRows(){
    updateUploadDialog();
    //If everything processed then return
    if(processCount==fileData.length){
+      getInventoryList()
       return;
    }
 
    //Process next row
    var row = fileData[processCount];
+   barcode = row.barcode
    processCount++;
 
    var json = JSON.stringify(row);
-   var url = getInventoryUrl();
+   var url = getInventoryUrl() + '/' + barcode
 
    //Make ajax call
    $.ajax({
       url: url,
-      type: 'POST',
+      type: 'PUT',
       data: json,
       headers: {
            'Content-Type': 'application/json'
