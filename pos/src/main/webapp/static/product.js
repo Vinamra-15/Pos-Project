@@ -108,6 +108,7 @@ function uploadRows(){
 	updateUploadDialog();
 	//If everything processed then return
 	if(processCount==fileData.length){
+	    getProductList()
 		return;
 	}
 	
@@ -135,7 +136,6 @@ function uploadRows(){
 	   		uploadRows();
 	   }
 	});
-
 }
 
 function downloadErrors(){

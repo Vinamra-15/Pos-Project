@@ -116,6 +116,7 @@ function uploadRows(){
 	updateUploadDialog();
 	//If everything processed then return
 	if(processCount==fileData.length){
+	    getBrandCategoryList()
 		return;
 	}
 	
@@ -144,7 +145,7 @@ function uploadRows(){
 	   		uploadRows();
 	   }
 	});
-	getBrandCategoryList()
+
 
 
 }
@@ -239,6 +240,10 @@ function init(){
 	$('#process-data').click(processData);
 	$('#download-errors').click(downloadErrors);
     $('#brandFile').on('change', updateFileName)
+    $('#brandCategoryFile').on('change',function(){
+        var fileName = $(this).val();
+        $('#brandCategoryFileName').html(fileName);
+    });
 }
 
 $(document).ready(init);
