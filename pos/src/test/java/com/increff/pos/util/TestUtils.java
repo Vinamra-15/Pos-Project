@@ -1,12 +1,10 @@
 package com.increff.pos.util;
 
-import com.increff.pos.model.BrandCategoryForm;
-import com.increff.pos.model.InventoryForm;
-import com.increff.pos.model.OrderItemForm;
-import com.increff.pos.model.ProductForm;
+import com.increff.pos.model.*;
 import com.increff.pos.pojo.ProductPojo;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 public class TestUtils {
@@ -56,4 +54,12 @@ public class TestUtils {
         return productPojo;
     }
 
+    public static SalesReportForm getSalesReportForm(Date startDate, Date endDate, String brand, String category){
+        SalesReportForm salesReportForm = new SalesReportForm();
+        salesReportForm.setStartDate(startDate);
+        salesReportForm.setEndDate(endDate);
+        salesReportForm.setBrand(brand);
+        salesReportForm.setCategory(category);
+        return salesReportForm;
+    }
 }
