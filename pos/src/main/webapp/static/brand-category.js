@@ -101,6 +101,12 @@ function processData(){
 }
 
 function readFileDataCallback(results){
+//    console.log(results.data)
+    const MAX_ROWS = 5000
+    if(results.data.length>MAX_ROWS){
+        $.notify("File too big!","error");
+        return
+    }
 	fileData = results.data;
 	uploadRows();
 }
@@ -119,6 +125,7 @@ function uploadRows(){
 	
 	var json = JSON.stringify(row);
 	var url = getBrandCategoryUrl();
+//	console.log(json)
 
 	//Make ajax call
 	$.ajax({
@@ -137,6 +144,8 @@ function uploadRows(){
 	   		uploadRows();
 	   }
 	});
+	getBrandCategoryList()
+
 
 }
 
@@ -172,7 +181,7 @@ function displayBrandCategoryList(data){
 }
 
 function displayEditBrandCategory(id){
-	var url = getBrandCategoryUrl() + "/" + id;
+	let url = getBrandCategoryUrl() + "/" + id;
 	$.ajax({
 	   url: url,
 	   type: 'GET',
