@@ -13,6 +13,7 @@ import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.ExpectedException;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.test.annotation.Rollback;
 
 import java.util.List;
 
@@ -105,11 +106,11 @@ public class ProductDtoTest extends AbstractUnitTest {
         productService.add(productPojo2);
 
         List<ProductData> productDataList = productDto.getAll();
-        assertEquals("some product name",productDataList.get(2).getName());
-        assertEquals((Double) 2000.00,productDataList.get(2).getMrp());
-        assertEquals("!@#$23",productDataList.get(2).getBarcode());
-        assertEquals("some brand",productDataList.get(2).getBrand());
-        assertEquals("some category",productDataList.get(2).getCategory());
+        assertEquals("some product name",productDataList.get(productDataList.size()-2).getName());
+        assertEquals((Double) 2000.00,productDataList.get(productDataList.size()-2).getMrp());
+        assertEquals("!@#$23",productDataList.get(productDataList.size()-2).getBarcode());
+        assertEquals("some brand",productDataList.get(productDataList.size()-2).getBrand());
+        assertEquals("some category",productDataList.get(productDataList.size()-2).getCategory());
     }
 
     @Test
