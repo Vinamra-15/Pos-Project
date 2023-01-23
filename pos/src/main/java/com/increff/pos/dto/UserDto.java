@@ -22,7 +22,6 @@ import static com.increff.pos.util.ConvertUtil.convert;
 import static com.increff.pos.util.Validate.validateForm;
 
 @Component
-@PropertySource(value="file:./pos.properties")
 public class UserDto {
 
     @Autowired
@@ -42,6 +41,14 @@ public class UserDto {
         return true;
     }
 
+    public boolean signUp(HttpServletRequest req, SignUpForm signUpForm) throws ApiException {
+        validateForm(signUpForm);
+        UserPojo userPojo = convert(signUpForm);
+        userService.add(userPojo);
+        authenticate(req,userPojo);
+        return true;
+    }
+
     private void authenticate(HttpServletRequest req, UserPojo userPojo){
         // Create authentication object
         Authentication authentication = convert(userPojo,adminEmail);
@@ -51,13 +58,5 @@ public class UserDto {
         SecurityUtil.createContext(session);
         // Attach Authentication object to the Security Context
         SecurityUtil.setAuthentication(authentication);
-    }
-
-    public boolean signUp(HttpServletRequest req, SignUpForm signUpForm) throws ApiException {
-        validateForm(signUpForm);
-        UserPojo userPojo = convert(signUpForm);
-        userService.add(userPojo);
-        authenticate(req,userPojo);
-        return true;
     }
 }

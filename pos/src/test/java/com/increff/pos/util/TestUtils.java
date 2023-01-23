@@ -62,4 +62,21 @@ public class TestUtils {
         salesReportForm.setCategory(category);
         return salesReportForm;
     }
+    public static SignUpForm getSignUpForm(String email, String password, String confirmPassword){
+        SignUpForm signUpForm = new SignUpForm();
+        signUpForm.setEmail(email);
+        signUpForm.setPassword(password);
+        signUpForm.setConfirmPassword(confirmPassword);
+        return signUpForm;
+    }
+
+    public static LoginForm getLoginForm(String email, String password){
+        LoginForm loginForm = new LoginForm();
+        loginForm.setEmail(email);
+        loginForm.setPassword(password);
+        return loginForm;
+    }
+
+
+
 }

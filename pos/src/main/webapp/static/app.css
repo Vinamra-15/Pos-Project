@@ -24,6 +24,10 @@ body {
     font-size: 4rem;
 }
 
+.fa-edit{
+    font-size: 1rem;
+}
+
 .product-form{
     line-height: 4rem
 }

@@ -163,7 +163,7 @@ function displayBrandCategoryList(data){
 		var e = data[i];
 		//console.log(e);
 		//var buttonHtml = '<button onclick="deleteBrand(' + e.id + ')">delete</button>'
-		var buttonHtml = ' <button type="button" class="btn btn-outline-secondary" onclick="displayEditBrandCategory(' + e.id + ')">Edit</button>'
+		var buttonHtml = ' <button type="button" class="btn btn-outline-secondary" onclick="displayEditBrandCategory(' + e.id + ')"><i class="fas fa-edit fa-xs"></i></button>'
 		if(getRole()==="supervisor")
 		{var row = '<tr class="text-center">'
 		+ '<td class="text-center">' + e.brand + '</td>'

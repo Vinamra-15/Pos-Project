@@ -97,7 +97,7 @@ public class ReportDto {
     }
 
     @Scheduled(cron = "0 49 15 * * ?")
-    public void generateDailySalesReport() throws ApiException {
+    public DaySalesPojo generateDailySalesReport() throws ApiException {
         DaySalesPojo daySalesPojo = new DaySalesPojo();
         daySalesPojo.setDate(new Date());
 
@@ -123,6 +123,7 @@ public class ReportDto {
         daySalesPojo.setInvoiced_items_count(orderItemPojoList.size());
 
         reportService.add(daySalesPojo);
+        return daySalesPojo;
 
     }
 

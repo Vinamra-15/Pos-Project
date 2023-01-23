@@ -1,10 +1,8 @@
 package com.increff.pos.dto;
 
-import com.increff.pos.model.InventoryReportData;
-import com.increff.pos.model.OrderItemForm;
-import com.increff.pos.model.SalesReportData;
-import com.increff.pos.model.SalesReportForm;
+import com.increff.pos.model.*;
 import com.increff.pos.pojo.BrandCategoryPojo;
+import com.increff.pos.pojo.DaySalesPojo;
 import com.increff.pos.pojo.InventoryPojo;
 import com.increff.pos.pojo.ProductPojo;
 import com.increff.pos.service.*;
@@ -83,27 +81,27 @@ public class ReportDtoTest extends AbstractUnitTest {
     public void getSalesReportTest() throws ApiException {
         SalesReportForm salesReportForm = TestUtils.getSalesReportForm(null,null, "some brand","some category");
         List<SalesReportData> salesReportDataList = reportDto.getSalesReport(salesReportForm);
-        assertEquals("some brand",salesReportDataList.get(salesReportDataList.size()-1).getBrand());
-        assertEquals("some category",salesReportDataList.get(salesReportDataList.size()-1).getCategory());
-        assertEquals((Integer) 6,salesReportDataList.get(salesReportDataList.size()-1).getQuantity());
+        assertEquals("some brand",salesReportDataList.get(0).getBrand());
+        assertEquals("some category",salesReportDataList.get(0).getCategory());
+        assertEquals((Integer) 6,salesReportDataList.get(0).getQuantity());
 
         SalesReportForm salesReportForm2 = TestUtils.getSalesReportForm(null,null, "","some category");
         List<SalesReportData> salesReportDataList2 = reportDto.getSalesReport(salesReportForm2);
-        assertEquals("some brand",salesReportDataList.get(salesReportDataList.size()-1).getBrand());
-        assertEquals("some category",salesReportDataList.get(salesReportDataList.size()-1).getCategory());
-        assertEquals((Integer) 6,salesReportDataList.get(salesReportDataList.size()-1).getQuantity());
+        assertEquals("some brand",salesReportDataList.get(0).getBrand());
+        assertEquals("some category",salesReportDataList.get(0).getCategory());
+        assertEquals((Integer) 6,salesReportDataList.get(0).getQuantity());
 
         SalesReportForm salesReportForm3 = TestUtils.getSalesReportForm(null,null, "some brand","");
         List<SalesReportData> salesReportDataList3 = reportDto.getSalesReport(salesReportForm3);
-        assertEquals("some brand",salesReportDataList.get(salesReportDataList.size()-1).getBrand());
-        assertEquals("some category",salesReportDataList.get(salesReportDataList.size()-1).getCategory());
-        assertEquals((Integer) 6,salesReportDataList.get(salesReportDataList.size()-1).getQuantity());
+        assertEquals("some brand",salesReportDataList.get(0).getBrand());
+        assertEquals("some category",salesReportDataList.get(0).getCategory());
+        assertEquals((Integer) 6,salesReportDataList.get(0).getQuantity());
 
         SalesReportForm salesReportForm4 = TestUtils.getSalesReportForm(null,null, "","");
         List<SalesReportData> salesReportDataList4 = reportDto.getSalesReport(salesReportForm4);
-        assertEquals("some brand",salesReportDataList.get(salesReportDataList.size()-1).getBrand());
-        assertEquals("some category",salesReportDataList.get(salesReportDataList.size()-1).getCategory());
-        assertEquals((Integer) 6,salesReportDataList.get(salesReportDataList.size()-1).getQuantity());
+        assertEquals("some brand",salesReportDataList.get(0).getBrand());
+        assertEquals("some category",salesReportDataList.get(0).getCategory());
+        assertEquals((Integer) 6,salesReportDataList.get(0).getQuantity());
 
     }
     @Test
@@ -118,18 +116,18 @@ public class ReportDtoTest extends AbstractUnitTest {
     @Test
     public void generateDailySalesReportTest() throws ApiException {
         //to do
+        DaySalesPojo daySalesPojo = reportDto.generateDailySalesReport();
+        assertEquals((Integer) 2,daySalesPojo.getInvoiced_items_count());
+        assertEquals((Double) 9120.0,daySalesPojo.getTotal_revenue());
+        assertEquals((Integer) 1,daySalesPojo.getInvoiced_orders_count());
     }
 
     @Test
-    public void getDaySalesReport(){
-
+    public void getDaySalesReportTest() throws ApiException {
+        reportDto.generateDailySalesReport();
+        List<DaySalesData> daySalesDataList = reportDto.getDaySalesReport();
+        assertEquals(1,daySalesDataList.size());
     }
-
-
-
-
-
-
 
     private List<OrderItemForm> addMultipleOrderItemToForm(){
         List<String> barcodes = new ArrayList<String>();

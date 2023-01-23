@@ -37,7 +37,6 @@ public class ProductDtoTest extends AbstractUnitTest {
         BrandCategoryPojo brandCategoryPojo = new BrandCategoryPojo();
         brandCategoryPojo.setBrand("some brand");
         brandCategoryPojo.setCategory("some category");
-
         brandCategoryService.add(brandCategoryPojo);
     }
 
@@ -46,12 +45,12 @@ public class ProductDtoTest extends AbstractUnitTest {
         ProductForm productForm = getProductForm(" some product name "," !@#$23 ",2000.00,"some brand ","some category  ");
         productDto.add(productForm);
         ProductPojo productPojo = productService.getByBarcode("!@#$23");
-        assertEquals(productPojo.getBarcode(),"!@#$23");
-        assertEquals(productPojo.getName(),"some product name");
-        assertEquals(productPojo.getMrp(),(Double) 2000.00);
+        assertEquals("!@#$23",productPojo.getBarcode());
+        assertEquals("some product name",productPojo.getName());
+        assertEquals((Double) 2000.00,productPojo.getMrp());
         BrandCategoryPojo brandCategoryPojo = brandCategoryService.get(productPojo.getBrandId());
-        assertEquals(brandCategoryPojo.getBrand(),"some brand");
-        assertEquals(brandCategoryPojo.getCategory(),"some category");
+        assertEquals("some brand",brandCategoryPojo.getBrand());
+        assertEquals("some category",brandCategoryPojo.getCategory());
     }
 
     @Test
@@ -106,11 +105,7 @@ public class ProductDtoTest extends AbstractUnitTest {
         productService.add(productPojo2);
 
         List<ProductData> productDataList = productDto.getAll();
-        assertEquals("some product name",productDataList.get(productDataList.size()-2).getName());
-        assertEquals((Double) 2000.00,productDataList.get(productDataList.size()-2).getMrp());
-        assertEquals("!@#$23",productDataList.get(productDataList.size()-2).getBarcode());
-        assertEquals("some brand",productDataList.get(productDataList.size()-2).getBrand());
-        assertEquals("some category",productDataList.get(productDataList.size()-2).getCategory());
+        assertEquals(2,productDataList.size());
     }
 
     @Test

@@ -90,6 +90,7 @@ public class OrderDtoTest extends AbstractUnitTest {
     public void addEmptyFieldOrderTest() throws ApiException, IOException {
         List<OrderItemForm> orderItemFormList = addEmptyFieldOrderItemToForm() ;
         exceptionRule.expect(ApiException.class);
+        exceptionRule.expectMessage("Field(s) cannot be empty");
         OrderData orderData = orderDto.createOrder(orderItemFormList);
     }
 
@@ -101,8 +102,8 @@ public class OrderDtoTest extends AbstractUnitTest {
         orderItemForm.setQuantity(2);
         orderItemFormList.set(1,orderItemForm);
         exceptionRule.expect(ApiException.class);
-        OrderData orderData = orderDto.createOrder(orderItemFormList);
         exceptionRule.expectMessage("Insufficient Inventory for product with barcode: " + orderItemForm.getBarcode());
+        OrderData orderData = orderDto.createOrder(orderItemFormList);
     }
 
     @Test
@@ -117,11 +118,10 @@ public class OrderDtoTest extends AbstractUnitTest {
 
     @Test
     public void getAllOrderTest() throws IOException, ApiException {
-        Integer sizeOfOrderDataList = orderDto.getAll().size();
         List<OrderItemForm> orderItemFormList = addMultipleOrderItemToForm();
         OrderData orderData = orderDto.createOrder(orderItemFormList);
         List<OrderData> orderDataList = orderDto.getAll();
-        assertEquals(sizeOfOrderDataList+1,orderDataList.size());
+        assertEquals(1,orderDataList.size());
     }
 
     @Test

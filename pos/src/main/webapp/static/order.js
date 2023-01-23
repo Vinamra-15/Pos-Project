@@ -124,7 +124,7 @@ function displayCreateOrderItems(data) {
             style="width:70%" min="1">
         </td>
         <td>
-          <button onclick="deleteOrderItem('${item.barcode}','add')" class="btn btn-outline-danger">Delete</button>
+          <button onclick="deleteOrderItem('${item.barcode}','add')" class="btn btn-outline-danger"><i class="fa fa-trash" aria-hidden="true"></i></button>
         </td>
       </tr>
     `;
@@ -207,14 +207,16 @@ function displayOrderList(orders) {
             <td>${time}</td>
             <td>
                 <button type="button" class="btn btn-outline-secondary" onclick="fetchOrderDetails(${order.id},'add')">
-                  Details
+                  <i class="fa fa-info-circle" aria-hidden="true"></i>
+
                 </button>
 
                 <button type="button" class="btn btn-outline-secondary" onclick="editOrderDetails(${order.id})">
-                                  Edit
+                                  <i class="fas fa-edit fa-xs"></i>
                                 </button>
                 <button type="button" class="btn btn-outline-secondary downloadInvoiceBtn" id="invoiceBtn-${order.id}" onclick="downloadInvoice(${order.id})">
-                                                  Invoice
+                                                  <i class="fa fa-file-pdf-o" aria-hidden="true"></i>
+
                                                 </button>
             </td>
         </tr>
@@ -362,7 +364,7 @@ function displayEditOrderItems(data){
                     style="width:70%" min="1">
               </td>
               <td>
-                   <button onclick="deleteOrderItem('${item.barcode}','edit')" class="btn btn-outline-danger">Delete</button>
+                   <button onclick="deleteOrderItem('${item.barcode}','edit')" class="btn btn-outline-danger"><i class="fa fa-trash" aria-hidden="true"></i></button>
               </td>
 
             </tr>

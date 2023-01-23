@@ -37,51 +37,51 @@ public class InventoryDtoTest extends AbstractUnitTest {
     @Test
     public void getTest() throws ApiException {
         InventoryData inventoryData = inventoryDto.get(" $!@11  ");
-        assertEquals(inventoryData.getBarcode(),"$!@11");
-        assertEquals(inventoryData.getProductName(),"some tshirt");
-        assertEquals(inventoryData.getQuantity(),(Integer) 0);
+        assertEquals("$!@11",inventoryData.getBarcode());
+        assertEquals("some tshirt",inventoryData.getProductName());
+        assertEquals((Integer) 0,inventoryData.getQuantity());
     }
 
     @Test
     public void getAllTest() throws ApiException {
         List<InventoryData> list = inventoryDto.getAll();
-//        assertEquals(list.size(),3);
+        assertEquals(1,list.size());
     }
 
     @Test
     public void updateTest() throws ApiException {
         InventoryForm inventoryForm = getInventoryForm(" $!@11 ",2);
         InventoryData inventoryData = inventoryDto.update(" $!@11  ",inventoryForm);
-        assertEquals(inventoryData.getQuantity(),(Integer) 2);
-        assertEquals(inventoryData.getBarcode(),"$!@11");
-        assertEquals(inventoryData.getProductName(),"some tshirt");
+        assertEquals((Integer) 2,inventoryData.getQuantity());
+        assertEquals("$!@11",inventoryData.getBarcode());
+        assertEquals("some tshirt",inventoryData.getProductName());
     }
 
-    @Test(expected = ApiException.class)
+    @Test
     public void invalidBarcodeGetTest() throws ApiException {
-        InventoryData inventoryData= inventoryDto.get("     ");
         exceptionRule.expect(ApiException.class);
+        InventoryData inventoryData= inventoryDto.get("     ");
     }
 
-    @Test(expected = ApiException.class)
+    @Test
     public void invalidBarcodeUpdateTest() throws ApiException {
+        exceptionRule.expect(ApiException.class);
         InventoryForm inventoryForm = getInventoryForm(" $!@11 ",2);
         InventoryData inventoryData = inventoryDto.update("     ",inventoryForm);
-        exceptionRule.expect(ApiException.class);
     }
 
-    @Test(expected = ApiException.class)
+    @Test
     public void quantityTest() throws ApiException {
+        exceptionRule.expect(ApiException.class);
         InventoryForm inventoryForm = getInventoryForm(" $!@11 ",-2);
         InventoryData inventoryData = inventoryDto.update("   $!@11    ",inventoryForm);
-        exceptionRule.expect(ApiException.class);
     }
 
-    @Test(expected = ApiException.class)
+    @Test
     public void nullBarcodeQuantityTest() throws ApiException {
+        exceptionRule.expect(ApiException.class);
         InventoryForm inventoryForm = getInventoryForm(null,null);
         InventoryData inventoryData = inventoryDto.update("   $!@11    ",inventoryForm);
-        exceptionRule.expect(ApiException.class);
     }
 
 }
