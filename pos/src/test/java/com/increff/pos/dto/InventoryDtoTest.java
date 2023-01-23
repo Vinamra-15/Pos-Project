@@ -31,7 +31,7 @@ public class InventoryDtoTest extends AbstractUnitTest {
     public void addProduct() throws ApiException {
         BrandCategoryForm brandCategoryForm = getBrandCategoryForm("some brand","some category ");
         ProductForm productForm = getProductForm("some tshirt  "," $!@11" , 2222.0,"some brand ","some category  " );
-        brandCategoryDto.add(brandCategoryForm);
+        brandCategoryDto.addBrandCategory(brandCategoryForm);
         productDto.add(productForm);
     }
     @Test

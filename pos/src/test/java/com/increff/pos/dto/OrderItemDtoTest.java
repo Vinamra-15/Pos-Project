@@ -51,7 +51,7 @@ public class OrderItemDtoTest extends AbstractUnitTest {
             BrandCategoryPojo brandCategoryPojo = new BrandCategoryPojo();
             brandCategoryPojo.setBrand("some brand");
             brandCategoryPojo.setCategory("some category");
-            brandCategoryService.add(brandCategoryPojo);
+            brandCategoryService.addBrandCategory(brandCategoryPojo);
 
             ProductPojo productPojo = new ProductPojo();
             productPojo.setName("some product");

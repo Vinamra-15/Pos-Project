@@ -5,7 +5,6 @@ import com.increff.pos.model.OrderDetailsData;
 import com.increff.pos.model.OrderItemForm;
 import com.increff.pos.pojo.BrandCategoryPojo;
 import com.increff.pos.pojo.InventoryPojo;
-import com.increff.pos.pojo.OrderItemPojo;
 import com.increff.pos.pojo.ProductPojo;
 import com.increff.pos.service.ApiException;
 import com.increff.pos.service.BrandCategoryService;
@@ -18,7 +17,6 @@ import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.ExpectedException;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.core.io.ByteArrayResource;
 import org.springframework.core.io.Resource;
 
 import java.io.IOException;
@@ -50,7 +48,7 @@ public class OrderDtoTest extends AbstractUnitTest {
         BrandCategoryPojo brandCategoryPojo = new BrandCategoryPojo();
         brandCategoryPojo.setBrand("some brand");
         brandCategoryPojo.setCategory("some category");
-        brandCategoryService.add(brandCategoryPojo);
+        brandCategoryService.addBrandCategory(brandCategoryPojo);
 
         ProductPojo productPojo = new ProductPojo();
         productPojo.setName("some product");

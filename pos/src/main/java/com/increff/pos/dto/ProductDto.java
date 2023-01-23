@@ -10,14 +10,14 @@ import com.increff.pos.service.BrandCategoryService;
 import com.increff.pos.service.InventoryService;
 import com.increff.pos.service.ProductService;
 import com.increff.pos.util.ConvertUtil;
+import com.increff.pos.util.Normalize;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 import static com.increff.pos.util.ConvertUtil.convert;
-import static com.increff.pos.util.Normalize.normalizeForm;
+import static com.increff.pos.util.Normalize.normalizePojo;
 import static com.increff.pos.util.Validate.validateForm;
 
 @Component
@@ -32,7 +32,7 @@ public class ProductDto {
 
     @Transactional(rollbackFor = ApiException.class)
     public void add(ProductForm productForm) throws ApiException {
-        normalizeForm(productForm);
+        Normalize.normalizePojo(productForm);
         validateForm(productForm);
         BrandCategoryPojo brandCategoryPojo = brandCategoryService.getCheckWithBrandCategory(productForm.getBrand(),productForm.getCategory());
         ProductPojo productPojo = ConvertUtil.convert(productForm, brandCategoryPojo);
@@ -47,13 +47,13 @@ public class ProductDto {
 
     public ProductData get(Integer id) throws ApiException {
         ProductPojo productPojo = productService.get(id);
-        BrandCategoryPojo brandCategoryPojo = brandCategoryService.get(productPojo.getBrandId());
+        BrandCategoryPojo brandCategoryPojo = brandCategoryService.getBrandCategory(productPojo.getBrandId());
         return convert(productPojo, brandCategoryPojo);
     }
 
     public ProductData getByBarcode(String barcode) throws ApiException {
         ProductPojo productPojo = productService.getByBarcode(barcode);
-        BrandCategoryPojo brandCategoryPojo = brandCategoryService.get(productPojo.getBrandId());
+        BrandCategoryPojo brandCategoryPojo = brandCategoryService.getBrandCategory(productPojo.getBrandId());
         return convert(productPojo, brandCategoryPojo);
     }
 
@@ -61,14 +61,14 @@ public class ProductDto {
         List<ProductPojo> list = productService.getAll();
         List<ProductData> list2 = new ArrayList<ProductData>();
         for (ProductPojo productPojo : list) {
-            BrandCategoryPojo brandCategoryPojo = brandCategoryService.get(productPojo.getBrandId());
+            BrandCategoryPojo brandCategoryPojo = brandCategoryService.getBrandCategory(productPojo.getBrandId());
             list2.add(convert(productPojo, brandCategoryPojo));
         }
         return list2;
     }
 
     public void update(Integer id, ProductForm productForm) throws ApiException {
-        normalizeForm(productForm);
+        Normalize.normalizePojo(productForm);
         validateForm(productForm);
 
         BrandCategoryPojo brandCategoryPojo = brandCategoryService.getCheckWithBrandCategory(productForm.getBrand(),productForm.getCategory());

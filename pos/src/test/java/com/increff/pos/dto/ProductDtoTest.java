@@ -13,7 +13,6 @@ import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.ExpectedException;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.test.annotation.Rollback;
 
 import java.util.List;
 
@@ -37,7 +36,7 @@ public class ProductDtoTest extends AbstractUnitTest {
         BrandCategoryPojo brandCategoryPojo = new BrandCategoryPojo();
         brandCategoryPojo.setBrand("some brand");
         brandCategoryPojo.setCategory("some category");
-        brandCategoryService.add(brandCategoryPojo);
+        brandCategoryService.addBrandCategory(brandCategoryPojo);
     }
 
     @Test
@@ -48,7 +47,7 @@ public class ProductDtoTest extends AbstractUnitTest {
         assertEquals("!@#$23",productPojo.getBarcode());
         assertEquals("some product name",productPojo.getName());
         assertEquals((Double) 2000.00,productPojo.getMrp());
-        BrandCategoryPojo brandCategoryPojo = brandCategoryService.get(productPojo.getBrandId());
+        BrandCategoryPojo brandCategoryPojo = brandCategoryService.getBrandCategory(productPojo.getBrandId());
         assertEquals("some brand",brandCategoryPojo.getBrand());
         assertEquals("some category",brandCategoryPojo.getCategory());
     }
@@ -119,8 +118,8 @@ public class ProductDtoTest extends AbstractUnitTest {
         assertEquals("some other product name",productPojo1.getName());
         assertEquals((Double) 2000.00,productPojo1.getMrp());
         assertEquals("!@#$23",productPojo1.getBarcode());
-        assertEquals("some brand",brandCategoryService.get(productPojo1.getBrandId()).getBrand());
-        assertEquals("some category",brandCategoryService.get(productPojo1.getBrandId()).getCategory());
+        assertEquals("some brand",brandCategoryService.getBrandCategory(productPojo1.getBrandId()).getBrand());
+        assertEquals("some category",brandCategoryService.getBrandCategory(productPojo1.getBrandId()).getCategory());
     }
 
 }

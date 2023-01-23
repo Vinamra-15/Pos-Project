@@ -23,7 +23,7 @@ import java.time.Instant;
 import java.util.*;
 
 import static com.increff.pos.util.ConvertUtil.*;
-import static com.increff.pos.util.Normalize.normalizeForm;
+import static com.increff.pos.util.Normalize.normalizePojo;
 import static com.increff.pos.util.PdfUtil.generatePDF;
 import static com.increff.pos.util.Validate.validateForm;
 
@@ -54,7 +54,7 @@ public class OrderDto {
 //        validateInventoryQuantity(orderItemForms,productPojoList,inventoryPojoList);
 //        reduceInventoryQuantity(orderItemForms,inventoryPojoList);
     public OrderData createOrder(List<OrderItemForm> orderItemForms) throws ApiException, IOException {
-        normalizeForm(orderItemForms);
+        normalizePojo(orderItemForms);
         validateForm(orderItemForms);
 
         for(OrderItemForm orderItemForm:orderItemForms){
@@ -97,7 +97,7 @@ public class OrderDto {
         return list2;
     }
     public void update(Integer id, List<OrderItemForm> curOrderItemForms) throws ApiException, IOException {
-        normalizeForm(curOrderItemForms);
+        normalizePojo(curOrderItemForms);
         validateForm(curOrderItemForms);
         List<OrderItemPojo> prevOrderItemPojos = orderItemService.getByOrderId(id);
         for(OrderItemForm orderItemForm:curOrderItemForms){

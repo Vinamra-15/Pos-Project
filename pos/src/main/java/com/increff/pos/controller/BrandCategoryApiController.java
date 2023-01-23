@@ -26,26 +26,26 @@ public class BrandCategoryApiController {
 
 	@ApiOperation(value = "Adds a brand")
 	@RequestMapping(path = "/api/brands", method = RequestMethod.POST)
-	public BrandCategoryData add(@RequestBody BrandCategoryForm brandCategoryForm) throws ApiException {
-		return brandCategoryDto.add(brandCategoryForm);
+	public BrandCategoryData addBrandCategory(@RequestBody BrandCategoryForm brandCategoryForm) throws ApiException {
+		return brandCategoryDto.addBrandCategory(brandCategoryForm);
 	}
 
 
 	@ApiOperation(value = "Gets a brand by ID")
 	@RequestMapping(path = "/api/brands/{id}", method = RequestMethod.GET)
-	public BrandCategoryData get(@PathVariable Integer id) throws ApiException {
-		return brandCategoryDto.get(id);
+	public BrandCategoryData getBrandCategory(@PathVariable Integer id) throws ApiException {
+		return brandCategoryDto.getBrandCategory(id);
 	}
 
 	@ApiOperation(value = "Gets list of all brands")
 	@RequestMapping(path = "/api/brands", method = RequestMethod.GET)
-	public List<BrandCategoryData> getAll() {
-		return brandCategoryDto.getAll();
+	public List<BrandCategoryData> getAllBrandCategory() {
+		return brandCategoryDto.getAllBrandCategory();
 	}
 
 	@ApiOperation(value = "Updates a brand")
 	@RequestMapping(path = "/api/brands/{id}", method = RequestMethod.PUT)
-	public BrandCategoryData update(@PathVariable Integer id, @RequestBody BrandCategoryForm brandCategoryForm) throws ApiException {
+	public BrandCategoryData updateBrandCategory(@PathVariable Integer id, @RequestBody BrandCategoryForm brandCategoryForm) throws ApiException {
 		return brandCategoryDto.update(id, brandCategoryForm);
 	}
 }

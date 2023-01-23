@@ -11,8 +11,10 @@ import org.springframework.stereotype.Component;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import java.util.stream.Collectors;
+
 import static com.increff.pos.util.ConvertUtil.convert;
-import static com.increff.pos.util.Normalize.normalizeForm;
+import static com.increff.pos.util.Normalize.normalizePojo;
 import static com.increff.pos.util.Validate.validateForm;
 
 @Component
@@ -20,36 +22,32 @@ public class BrandCategoryDto {
 
     @Autowired
     private BrandCategoryService brandCategoryService;
-    public BrandCategoryData add(BrandCategoryForm brandCategoryForm) throws ApiException {
+    public BrandCategoryData addBrandCategory(BrandCategoryForm brandCategoryForm) throws ApiException {
         validateForm(brandCategoryForm);
-        normalizeForm(brandCategoryForm);
-        BrandCategoryPojo p = ConvertUtil.convert(brandCategoryForm);
-		brandCategoryService.add(p);
-        return convert(p);
+        BrandCategoryPojo brandCategoryPojo = ConvertUtil.convert(brandCategoryForm);
+		brandCategoryService.addBrandCategory(brandCategoryPojo);
+        return convert(brandCategoryPojo);
     }
 
-    public BrandCategoryData get(Integer id) throws ApiException {
-        BrandCategoryPojo pojo = brandCategoryService.get(id);
+    public BrandCategoryData getBrandCategory(Integer id) throws ApiException {
+        BrandCategoryPojo pojo = brandCategoryService.getBrandCategory(id);
         return convert(pojo);
     }
 
-    public List<BrandCategoryData> getAll()
+    public List<BrandCategoryData> getAllBrandCategory()
     {
-        List<BrandCategoryPojo> list = brandCategoryService.getAll();
-        List<BrandCategoryData> list2 = new ArrayList<BrandCategoryData>();
-        for (BrandCategoryPojo p : list) {
-            list2.add(convert(p));
-        }
-        Collections.reverse(list2);
-        return list2;
+        List<BrandCategoryData> brandCategoryDataList = brandCategoryService.getAllBrandCategory()
+                .stream()
+                .map(ConvertUtil::convert)
+                .collect(Collectors.toList());
+        return brandCategoryDataList;
     }
 
     public BrandCategoryData update(Integer id, BrandCategoryForm form) throws ApiException {
         validateForm(form);
-        normalizeForm(form);
-        BrandCategoryPojo p = ConvertUtil.convert(form);
-        brandCategoryService.update(id, p);
-        return convert(p);
+        BrandCategoryPojo brandCategoryPojo = ConvertUtil.convert(form);
+        brandCategoryService.update(id, brandCategoryPojo);
+        return convert(brandCategoryPojo);
     }
 
 

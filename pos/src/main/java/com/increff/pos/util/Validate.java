@@ -13,9 +13,13 @@ import static com.increff.pos.util.TimeUtil.getStartOfDay;
 
 public class Validate {
     public static void validateForm(BrandCategoryForm brandCategoryForm) throws ApiException {
-        if(StringUtil.isEmpty(brandCategoryForm.getBrand())||StringUtil.isEmpty(brandCategoryForm.getCategory())) {
-            throw new ApiException("Field(s) cannot be empty");
+        if(StringUtil.isEmpty(brandCategoryForm.getBrand())) {
+            throw new ApiException("Brand field cannot be empty");
         }
+        if(StringUtil.isEmpty(brandCategoryForm.getCategory())) {
+            throw new ApiException("Category field cannot be empty");
+        }
+
     }
     public static void validateForm(InventoryForm inventoryForm) throws ApiException {
 

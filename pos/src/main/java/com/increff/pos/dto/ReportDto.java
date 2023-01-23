@@ -47,13 +47,13 @@ public class ReportDto {
 
         List<BrandCategoryPojo> brandCategoryPojos = new ArrayList<BrandCategoryPojo>();
         if(brand.equals("")&&category.equals("")){
-            brandCategoryPojos = brandCategoryService.getAll();
+            brandCategoryPojos = brandCategoryService.getAllBrandCategory();
         }
         else if(brand.equals("")){
-            brandCategoryPojos = brandCategoryService.getByCategory(category);
+            brandCategoryPojos = brandCategoryService.getBrandCategoryByCategory(category);
         }
         else if(category.equals("")){
-            brandCategoryPojos = brandCategoryService.getByBrand(brand);
+            brandCategoryPojos = brandCategoryService.getBrandCategoryByBrand(brand);
         }
         else{
             BrandCategoryPojo brandCategoryPojo = brandCategoryService.getByBrandCategory(brand,category);
@@ -70,7 +70,7 @@ public class ReportDto {
         for(ProductPojo productPojo:productPojos){
             InventoryPojo inventoryPojo = inventoryService.get(productPojo.getId());
             Integer brandId = productPojo.getBrandId();
-            BrandCategoryPojo brandCategoryPojo = brandCategoryService.get(brandId);
+            BrandCategoryPojo brandCategoryPojo = brandCategoryService.getBrandCategory(brandId);
             if(brandIdToInventoryReportDataMap.containsKey(brandId)==false){
                 InventoryReportData inventoryReportData = new InventoryReportData();
                 inventoryReportData.setBrand(brandCategoryPojo.getBrand());
