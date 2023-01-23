@@ -3,7 +3,6 @@ package com.increff.pos.service;
 import com.increff.pos.dao.InventoryDao;
 import com.increff.pos.pojo.InventoryPojo;
 import com.increff.pos.pojo.ProductPojo;
-import io.swagger.models.auth.In;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -14,48 +13,46 @@ import java.util.List;
 @Transactional(rollbackFor = ApiException.class)
 public class InventoryService {
     @Autowired
-    private InventoryDao dao;
+    private InventoryDao inventoryDao;
 
-    public void add(InventoryPojo inventoryPojo) throws ApiException {
-        dao.insert(inventoryPojo);
+    public void addInventory(InventoryPojo inventoryPojo) throws ApiException {
+        inventoryDao.insert(inventoryPojo);
     }
 
-    public InventoryPojo get(Integer productId) throws ApiException {
+    public InventoryPojo getInventory(Integer productId) throws ApiException {
         return getCheck(productId);
     }
 
-    public List<InventoryPojo> getAll() {
-        return dao.selectAll();
+    public List<InventoryPojo> getAllInventories() {
+        return inventoryDao.selectAll();
     }
 
 
-    public void update(Integer productId, InventoryPojo inventoryPojo) throws ApiException {
-
-        InventoryPojo ex = getCheck(productId);
-        ex.setProductId(inventoryPojo.getProductId());
+    public void updateInventory(Integer productId, InventoryPojo inventoryPojo) throws ApiException {
         if(inventoryPojo.getQuantity()<0)
             throw new ApiException("Quantity should be non negative number!");
-        ex.setQuantity(inventoryPojo.getQuantity());
-        dao.update(ex);
+        InventoryPojo existing = getCheck(productId);
+        existing.setProductId(inventoryPojo.getProductId());
+        existing.setQuantity(inventoryPojo.getQuantity());
+        inventoryDao.update(existing);
     }
 
     public InventoryPojo getCheck(Integer productId) throws ApiException {
-        InventoryPojo p = dao.select(productId);
-        if (p == null) {
-            throw new ApiException("Product with given barcode does not exist");
+        InventoryPojo inventoryPojo = inventoryDao.select(productId);
+        if (inventoryPojo == null) {
+            throw new ApiException("Product does not exist!");
         }
-        return p;
+        return inventoryPojo;
     }
 
-    public void validateAndReduceInventoryQuantity(ProductPojo productPojo, Integer quantity) throws ApiException {
-        InventoryPojo inventoryPojo = get(productPojo.getId());
-
+    public void validateAndReduceInventoryQuantity(Integer productId, Integer quantity) throws ApiException {
+        InventoryPojo inventoryPojo = getInventory(productId);
         if(quantity>inventoryPojo.getQuantity())
         {
-            throw new ApiException("Insufficient Inventory for product with barcode: " + productPojo.getBarcode());
+            throw new ApiException("Insufficient Inventory!");
         }
         Integer newQuantity = inventoryPojo.getQuantity() - quantity;
         inventoryPojo.setQuantity(newQuantity);
-        update(productPojo.getId(),inventoryPojo);
+        updateInventory(productId,inventoryPojo);
     }
 }

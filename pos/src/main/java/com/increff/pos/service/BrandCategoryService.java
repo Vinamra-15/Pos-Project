@@ -65,13 +65,6 @@ public class BrandCategoryService {
 		nullBrandCategoryPojoException(brandCategoryPojo);
 		return brandCategoryPojo;
 	}
-
-	public BrandCategoryPojo getCheckWithBrandCategory(String brand, String category) throws ApiException{
-		BrandCategoryPojo brandCategoryPojo = brandCategoryDao.select(brand,category);
-		nullBrandCategoryPojoException(brandCategoryPojo);
-		return brandCategoryPojo;
-	}
-
 	private void nullBrandCategoryPojoException(BrandCategoryPojo brandCategoryPojo) throws ApiException {
 		if (brandCategoryPojo == null) {
 			throw new ApiException("Brand Category does not exist");
@@ -79,7 +72,6 @@ public class BrandCategoryService {
 	}
 
 	private void checkBrandCatDuplicateExists(String brand, String category) throws ApiException {
-
 		BrandCategoryPojo brandCategoryPojo = brandCategoryDao.select(brand,category);
 		if(brandCategoryPojo!=null)
 			throw new ApiException("Brand: " + brand + " in the category: " + category + " already exists.");

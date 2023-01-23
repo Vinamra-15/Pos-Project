@@ -20,31 +20,31 @@ public class ProductApiController {
     private ProductDto productDto;
     @ApiOperation(value = "Adds a product")
     @RequestMapping(path = "/api/products", method = RequestMethod.POST)
-    public void add(@RequestBody ProductForm form) throws ApiException {
-        productDto.add(form);
+    public void addProduct(@RequestBody ProductForm productForm) throws ApiException {
+        productDto.addProduct(productForm);
     }
 
     @ApiOperation(value = "Gets a product by ID")
     @RequestMapping(path = "/api/products/{id}", method = RequestMethod.GET)
-    public ProductData get(@PathVariable Integer id) throws ApiException {
-        return productDto.get(id);
+    public ProductData getProduct(@PathVariable Integer id) throws ApiException {
+        return productDto.getProduct(id);
     }
     @ApiOperation(value = "Gets a product by barcode")
     @RequestMapping(path = "/api/products",params = "barcode", method = RequestMethod.GET)
-    public ProductData get(@RequestParam("barcode") String barcode) throws ApiException {
-        return productDto.getByBarcode(barcode);
+    public ProductData getProduct(@RequestParam("barcode") String barcode) throws ApiException {
+        return productDto.getProductByBarcode(barcode);
     }
 
     @ApiOperation(value = "Gets list of all products")
     @RequestMapping(path = "/api/products",method = RequestMethod.GET)
-    public List<ProductData> getAll() throws ApiException {
-        return productDto.getAll();
+    public List<ProductData> getAllProducts() throws ApiException {
+        return productDto.getAllProducts();
     }
 
     @ApiOperation(value = "Updates a product")
     @RequestMapping(path = "/api/products/{id}", method = RequestMethod.PUT)
-    public void update(@PathVariable Integer id, @RequestBody ProductForm form) throws ApiException {
-        productDto.update(id,form);
+    public void update(@PathVariable Integer id, @RequestBody ProductForm productForm) throws ApiException {
+        productDto.updateProduct(id,productForm);
     }
 
 }

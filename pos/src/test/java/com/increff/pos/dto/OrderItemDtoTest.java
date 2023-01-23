@@ -59,12 +59,12 @@ public class OrderItemDtoTest extends AbstractUnitTest {
             productPojo.setMrp(1200.00);
             productPojo.setBrandId(brandCategoryPojo.getId());
 //        productPojo.setBrandId(brandCategoryService.getByBrandCategory("some brand","some category").getId());
-            productService.add(productPojo);
+            productService.addProduct(productPojo);
             product1Id = productPojo.getId();
             InventoryPojo inventoryPojo = new InventoryPojo();
             inventoryPojo.setQuantity(20);
             inventoryPojo.setProductId(productPojo.getId());
-            inventoryService.add(inventoryPojo);
+            inventoryService.addInventory(inventoryPojo);
 
             ProductPojo productPojo2 = new ProductPojo();
             productPojo2.setName("some product");
@@ -72,11 +72,11 @@ public class OrderItemDtoTest extends AbstractUnitTest {
             productPojo2.setMrp(1400.00);
             productPojo2.setBrandId(brandCategoryPojo.getId());
 //        productPojo.setBrandId(brandCategoryService.getByBrandCategory("some brand","some category").getId());
-            productService.add(productPojo2);
+            productService.addProduct(productPojo2);
             InventoryPojo inventoryPojo2 = new InventoryPojo();
             inventoryPojo2.setQuantity(0);
             inventoryPojo2.setProductId(productPojo2.getId());
-            inventoryService.add(inventoryPojo2);
+            inventoryService.addInventory(inventoryPojo2);
             //inventory quantity: 0
 
         OrderData orderData = orderDto.createOrder(addMultipleOrderItemToForm());

@@ -11,6 +11,7 @@ import org.springframework.stereotype.Component;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 import static com.increff.pos.util.ConvertUtil.convert;
 
@@ -21,17 +22,26 @@ public class OrderItemDto {
     @Autowired
     private ProductService productService;
     public List<OrderItemData> get(Integer id) throws ApiException {
-        List<OrderItemPojo> list = orderItemService.getByOrderId(id);
-        List<OrderItemData> list2 = new ArrayList<OrderItemData>();
-        for(OrderItemPojo orderItemPojo:list){
-            ProductPojo productPojo = productService.get(orderItemPojo.getProductId());
-            list2.add(convert(orderItemPojo,productPojo));
-        }
-        return list2;
+        return orderItemService.getByOrderId(id)
+                .stream()
+                .map(orderItemPojo-> {
+                    try {
+                        return convert(orderItemPojo,productService.getProduct(orderItemPojo.getProductId()));
+                    } catch (ApiException e) {
+                        throw new RuntimeException(e);
+                    }
+                })
+                .collect(Collectors.toList());
+//        List<OrderItemData> list2 = new ArrayList<OrderItemData>();
+//        for(OrderItemPojo orderItemPojo:list){
+//            ProductPojo productPojo = productService.getProduct(orderItemPojo.getProductId());
+//            list2.add(convert(orderItemPojo,productPojo));
+//        }
+//        return list2;
     }
     public OrderItemData getByOrderIdProductId(Integer orderId, Integer productId) throws ApiException {
         OrderItemPojo orderItemPojo = orderItemService.getByOrderIdProductId(orderId,productId);
-        ProductPojo productPojo = productService.get(productId);
+        ProductPojo productPojo = productService.getProduct(productId);
         return convert(orderItemPojo,productPojo);
     }
 }

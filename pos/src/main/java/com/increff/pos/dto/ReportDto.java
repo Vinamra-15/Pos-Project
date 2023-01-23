@@ -66,9 +66,9 @@ public class ReportDto {
     public List<InventoryReportData> getInventoryReport() throws ApiException {
 
         Map<Integer,InventoryReportData> brandIdToInventoryReportDataMap = new HashMap<Integer,InventoryReportData>();
-        List<ProductPojo> productPojos = productService.getAll();
+        List<ProductPojo> productPojos = productService.getAllProducts();
         for(ProductPojo productPojo:productPojos){
-            InventoryPojo inventoryPojo = inventoryService.get(productPojo.getId());
+            InventoryPojo inventoryPojo = inventoryService.getInventory(productPojo.getId());
             Integer brandId = productPojo.getBrandId();
             BrandCategoryPojo brandCategoryPojo = brandCategoryService.getBrandCategory(brandId);
             if(brandIdToInventoryReportDataMap.containsKey(brandId)==false){
@@ -141,7 +141,7 @@ public class ReportDto {
             Integer quantity = 0;
             Double revenue = 0.0;
             for(OrderItemPojo orderItemPojo:orderItemPojos){
-                ProductPojo productPojo = productService.get(orderItemPojo.getProductId());
+                ProductPojo productPojo = productService.getProduct(orderItemPojo.getProductId());
                 if(productPojo.getBrandId()==brandCategoryPojo.getId()){
                     quantity += orderItemPojo.getQuantity();
                     revenue += (orderItemPojo.getQuantity())*(orderItemPojo.getSellingPrice());

@@ -58,7 +58,7 @@ public class OrderDto {
         validateForm(orderItemForms);
 
         for(OrderItemForm orderItemForm:orderItemForms){
-            inventoryService.validateAndReduceInventoryQuantity(productService.getByBarcode(orderItemForm.getBarcode()),orderItemForm.getQuantity());
+            inventoryService.validateAndReduceInventoryQuantity(productService.getProductByBarcode(orderItemForm.getBarcode()).getId(),orderItemForm.getQuantity());
         }
 
         OrderPojo orderPojo = new OrderPojo();
@@ -67,7 +67,7 @@ public class OrderDto {
         orderService.add(orderPojo);
 
         for(OrderItemForm orderItemForm:orderItemForms){
-            ProductPojo productPojo = productService.getByBarcode(orderItemForm.getBarcode());
+            ProductPojo productPojo = productService.getProductByBarcode(orderItemForm.getBarcode());
             OrderItemPojo orderItemPojo = convert(orderItemForm, productPojo, orderPojo);
             orderItemService.add(orderItemPojo);
         }
@@ -102,16 +102,16 @@ public class OrderDto {
         List<OrderItemPojo> prevOrderItemPojos = orderItemService.getByOrderId(id);
         for(OrderItemForm orderItemForm:curOrderItemForms){
             if(!contains(prevOrderItemPojos, orderItemForm)){
-                inventoryService.validateAndReduceInventoryQuantity(productService.getByBarcode(orderItemForm.getBarcode()),orderItemForm.getQuantity());
-                ProductPojo productPojo = productService.getByBarcode(orderItemForm.getBarcode());
+                inventoryService.validateAndReduceInventoryQuantity(productService.getProductByBarcode(orderItemForm.getBarcode()).getId(),orderItemForm.getQuantity());
+                ProductPojo productPojo = productService.getProductByBarcode(orderItemForm.getBarcode());
                 OrderPojo orderPojo = orderService.get(id);
                 orderItemService.add(convert(orderItemForm,productPojo,orderPojo));
             }
             else
             {
-                ProductPojo productPojo = productService.getByBarcode(orderItemForm.getBarcode());
+                ProductPojo productPojo = productService.getProductByBarcode(orderItemForm.getBarcode());
                 OrderItemPojo prevOrderItemPojo = orderItemService.getByOrderIdProductId(id,productPojo.getId());
-                InventoryPojo inventoryPojo = inventoryService.get(productPojo.getId());
+                InventoryPojo inventoryPojo = inventoryService.getInventory(productPojo.getId());
 
                 Integer newQuantity = inventoryPojo.getQuantity() + prevOrderItemPojo.getQuantity() - orderItemForm.getQuantity();
                 if(newQuantity<0){
@@ -120,7 +120,7 @@ public class OrderDto {
                 prevOrderItemPojo.setQuantity(orderItemForm.getQuantity());
                 prevOrderItemPojo.setSellingPrice(orderItemForm.getSellingPrice());
                 inventoryPojo.setQuantity(newQuantity);
-                inventoryService.update(productPojo.getId(),inventoryPojo);
+                inventoryService.updateInventory(productPojo.getId(),inventoryPojo);
                 orderItemService.update(prevOrderItemPojo.getId(),prevOrderItemPojo);
                 prevOrderItemPojos.remove(prevOrderItemPojo);
             }
@@ -128,10 +128,10 @@ public class OrderDto {
 
         // deleting orderItems which existed earlier but not in current orderItemForm after order is edited
         for(OrderItemPojo orderItemPojo:prevOrderItemPojos){
-            InventoryPojo inventoryPojo = inventoryService.get(orderItemPojo.getProductId());
+            InventoryPojo inventoryPojo = inventoryService.getInventory(orderItemPojo.getProductId());
             Integer newQuantity = inventoryPojo.getQuantity() +  orderItemPojo.getQuantity();
             inventoryPojo.setQuantity(newQuantity);
-            inventoryService.update(orderItemPojo.getProductId(),inventoryPojo);
+            inventoryService.updateInventory(orderItemPojo.getProductId(),inventoryPojo);
             orderItemService.delete(orderItemPojo.getId());
         }
         OrderPojo orderPojo = orderService.get(id);
@@ -151,7 +151,7 @@ public class OrderDto {
     }
     private boolean contains(List<OrderItemPojo> prevOrderItemPojos,OrderItemForm orderItemForm) throws ApiException {
         for(OrderItemPojo prevPojo:prevOrderItemPojos){
-            ProductPojo productPojo = productService.get(prevPojo.getProductId());
+            ProductPojo productPojo = productService.getProduct(prevPojo.getProductId());
             if(Objects.equals(orderItemForm.getBarcode(), productPojo.getBarcode()))
                 return true;
         }
@@ -160,7 +160,7 @@ public class OrderDto {
     private List<ProductPojo> getProductsFromOrderItemPojoList(List<OrderItemPojo> orderItems) throws ApiException {
         List<ProductPojo> productPojos = new ArrayList<ProductPojo>();
         for(OrderItemPojo orderItemPojo:orderItems){
-            ProductPojo productPojo = productService.get(orderItemPojo.getProductId());
+            ProductPojo productPojo = productService.getProduct(orderItemPojo.getProductId());
             productPojos.add(productPojo);
         }
         return productPojos;

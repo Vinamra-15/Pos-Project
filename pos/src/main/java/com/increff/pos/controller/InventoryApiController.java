@@ -19,19 +19,19 @@ public class InventoryApiController {
 
     @ApiOperation(value = "Gets a product-quantity detail by ID")
     @RequestMapping(path = "/api/inventory/{barcode}", method = RequestMethod.GET)
-    public InventoryData get(@PathVariable String barcode) throws ApiException {
-        return inventoryDto.get(barcode);
+    public InventoryData getInventory(@PathVariable String barcode) throws ApiException {
+        return inventoryDto.getInventory(barcode);
     }
 
     @ApiOperation(value = "Gets list of all product-quantity details")
     @RequestMapping(path = "/api/inventory", method = RequestMethod.GET)
-    public List<InventoryData> getAll() throws ApiException {
-        return inventoryDto.getAll();
+    public List<InventoryData> getAllInventories() throws ApiException {
+        return inventoryDto.getAllInventories();
     }
 
     @ApiOperation(value = "Updates a product-quantity detail")
     @RequestMapping(path = "/api/inventory/{barcode}", method = RequestMethod.PUT)
-    public void update(@PathVariable String barcode, @RequestBody InventoryForm form) throws ApiException {
-        inventoryDto.update(barcode,form);
+    public void updateInventory(@PathVariable String barcode, @RequestBody InventoryForm inventoryForm) throws ApiException {
+        inventoryDto.updateInventory(barcode,inventoryForm);
     }
 }

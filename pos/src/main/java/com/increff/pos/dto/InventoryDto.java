@@ -14,8 +14,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
+import java.util.stream.Collectors;
 
 import static com.increff.pos.util.ConvertUtil.convert;
 import static com.increff.pos.util.Validate.validateForm;
@@ -27,27 +27,29 @@ public class InventoryDto {
     private InventoryService inventoryService;
     @Autowired
     private ProductService productService;
-    public InventoryData get(String barcode) throws ApiException {
-        barcode = StringUtil.toLowerCase(barcode).trim();
-        ProductPojo productPojo = productService.getByBarcode(barcode);
-        InventoryPojo inventoryPojo = inventoryService.get(productPojo.getId());
+    public InventoryData getInventory(String barcode) throws ApiException {
+        ProductPojo productPojo = productService.getProductByBarcode(barcode);
+        InventoryPojo inventoryPojo = inventoryService.getInventory(productPojo.getId());
         return convert(inventoryPojo,productPojo);
     }
-    public List<InventoryData> getAll() throws ApiException {
-        List<InventoryPojo> list = inventoryService.getAll();
-        List<InventoryData> list2 = new ArrayList<InventoryData>();
-        for (InventoryPojo inventoryPojo : list) {
-            ProductPojo productPojo = productService.get(inventoryPojo.getProductId());
-            list2.add(convert(inventoryPojo,productPojo));
-        }
-        return list2;
+    public List<InventoryData> getAllInventories() throws ApiException {
+        return inventoryService.getAllInventories()
+                .stream()
+                .map(inventoryPojo -> {
+                    try {
+                        return convert(inventoryPojo,
+                                productService.getProduct(inventoryPojo.getProductId()));
+                    } catch (ApiException e) {
+                        throw new RuntimeException(e);
+                    }
+                })
+                .collect(Collectors.toList());
     }
-    public InventoryData update(String barcode, InventoryForm inventoryForm) throws ApiException {
+    public InventoryData updateInventory(String barcode, InventoryForm inventoryForm) throws ApiException {
             validateForm(inventoryForm);
-            barcode = StringUtil.toLowerCase(barcode).trim();
-            ProductPojo productPojo = productService.getByBarcode(barcode);
+            ProductPojo productPojo = productService.getProductByBarcode(barcode);
             InventoryPojo inventoryPojo = ConvertUtil.convert(inventoryForm,productPojo);
-            inventoryService.update(productPojo.getId(), inventoryPojo);
-            return convert(inventoryService.get(productPojo.getId()),productPojo);
+            inventoryService.updateInventory(productPojo.getId(), inventoryPojo);
+            return convert(inventoryService.getInventory(productPojo.getId()),productPojo);
     }
 }

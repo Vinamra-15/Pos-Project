@@ -23,8 +23,11 @@ public class Validate {
     }
     public static void validateForm(InventoryForm inventoryForm) throws ApiException {
 
-        if(StringUtil.isEmpty(inventoryForm.getBarcode())|| inventoryForm.getQuantity()==null) {
-            throw new ApiException("Field(s) cannot be empty");
+        if(StringUtil.isEmpty(inventoryForm.getBarcode())) {
+            throw new ApiException("Barcode field cannot be empty!");
+        }
+        if(inventoryForm.getQuantity()==null) {
+            throw new ApiException("Quantity field cannot be empty!");
         }
 
         if(inventoryForm.getQuantity()<0)
@@ -35,8 +38,20 @@ public class Validate {
 
     public static void validateForm(ProductForm productForm) throws ApiException {
 
-        if(StringUtil.isEmpty(productForm.getName())||StringUtil.isEmpty(productForm.getBarcode())||StringUtil.isEmpty(productForm.getBrand())||StringUtil.isEmpty(productForm.getCategory())||productForm.getMrp()==null) {
-            throw new ApiException("Field(s) cannot be empty");
+        if(StringUtil.isEmpty(productForm.getBarcode())) {
+            throw new ApiException("Barcode field cannot be empty!");
+        }
+        if(StringUtil.isEmpty(productForm.getName())) {
+            throw new ApiException("Name field cannot be empty!");
+        }
+        if(StringUtil.isEmpty(productForm.getBrand())) {
+            throw new ApiException("Brand Field cannot be empty!");
+        }
+        if(StringUtil.isEmpty(productForm.getCategory())) {
+            throw new ApiException("Category field cannot be empty");
+        }
+        if(productForm.getMrp()==null) {
+            throw new ApiException("MRP field cannot be empty");
         }
 
 

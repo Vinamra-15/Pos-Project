@@ -10,12 +10,13 @@ import com.increff.pos.service.BrandCategoryService;
 import com.increff.pos.service.InventoryService;
 import com.increff.pos.service.ProductService;
 import com.increff.pos.util.ConvertUtil;
-import com.increff.pos.util.Normalize;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
-import java.util.ArrayList;
+
 import java.util.List;
+import java.util.stream.Collectors;
+
 import static com.increff.pos.util.ConvertUtil.convert;
 import static com.increff.pos.util.Normalize.normalizePojo;
 import static com.increff.pos.util.Validate.validateForm;
@@ -30,49 +31,50 @@ public class ProductDto {
     private InventoryService inventoryService;
 
 
-    @Transactional(rollbackFor = ApiException.class)
-    public void add(ProductForm productForm) throws ApiException {
-        Normalize.normalizePojo(productForm);
-        validateForm(productForm);
-        BrandCategoryPojo brandCategoryPojo = brandCategoryService.getCheckWithBrandCategory(productForm.getBrand(),productForm.getCategory());
-        ProductPojo productPojo = ConvertUtil.convert(productForm, brandCategoryPojo);
-        productService.add(productPojo);
 
-        //For every new added product, initialize its quantity in Inventory to Zero.
+    //For every new added product, initialize its quantity in Inventory to Zero.
+    @Transactional(rollbackFor = ApiException.class)
+    public void addProduct(ProductForm productForm) throws ApiException {
+        validateForm(productForm);
+        BrandCategoryPojo brandCategoryPojo = brandCategoryService.getByBrandCategory(productForm.getBrand(),productForm.getCategory());
+        ProductPojo productPojo = ConvertUtil.convert(productForm, brandCategoryPojo);
+        productService.addProduct(productPojo);
         InventoryPojo inventoryPojo = new InventoryPojo();
         inventoryPojo.setProductId(productPojo.getId());
         inventoryPojo.setQuantity(0);
-        inventoryService.add(inventoryPojo);
+        inventoryService.addInventory(inventoryPojo);
     }
 
-    public ProductData get(Integer id) throws ApiException {
-        ProductPojo productPojo = productService.get(id);
+    public ProductData getProduct(Integer id) throws ApiException {
+        ProductPojo productPojo = productService.getProduct(id);
         BrandCategoryPojo brandCategoryPojo = brandCategoryService.getBrandCategory(productPojo.getBrandId());
         return convert(productPojo, brandCategoryPojo);
     }
 
-    public ProductData getByBarcode(String barcode) throws ApiException {
-        ProductPojo productPojo = productService.getByBarcode(barcode);
+    public ProductData getProductByBarcode(String barcode) throws ApiException {
+        ProductPojo productPojo = productService.getProductByBarcode(barcode);
         BrandCategoryPojo brandCategoryPojo = brandCategoryService.getBrandCategory(productPojo.getBrandId());
         return convert(productPojo, brandCategoryPojo);
     }
 
-    public List<ProductData> getAll() throws ApiException {
-        List<ProductPojo> list = productService.getAll();
-        List<ProductData> list2 = new ArrayList<ProductData>();
-        for (ProductPojo productPojo : list) {
-            BrandCategoryPojo brandCategoryPojo = brandCategoryService.getBrandCategory(productPojo.getBrandId());
-            list2.add(convert(productPojo, brandCategoryPojo));
-        }
-        return list2;
+    public List<ProductData> getAllProducts() throws ApiException {
+        return productService.getAllProducts()
+                .stream()
+                .map(productPojo -> {
+                    try {
+                        return convert(productPojo
+                                ,brandCategoryService.getBrandCategory(productPojo.getBrandId()));
+                    } catch (ApiException e) {
+                        throw new RuntimeException(e);
+                    }
+                })
+                .collect(Collectors.toList());
     }
 
-    public void update(Integer id, ProductForm productForm) throws ApiException {
-        Normalize.normalizePojo(productForm);
+    public void updateProduct(Integer id, ProductForm productForm) throws ApiException {
         validateForm(productForm);
-
-        BrandCategoryPojo brandCategoryPojo = brandCategoryService.getCheckWithBrandCategory(productForm.getBrand(),productForm.getCategory());
+        BrandCategoryPojo brandCategoryPojo = brandCategoryService.getByBrandCategory(productForm.getBrand(),productForm.getCategory());
         ProductPojo productPojo = ConvertUtil.convert(productForm, brandCategoryPojo);
-        productService.update(id, productPojo);
+        productService.updateProduct(id, productPojo);
     }
 }
