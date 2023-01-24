@@ -9,6 +9,7 @@ import javax.servlet.http.HttpSession;
 
 import com.increff.pos.dto.UserDto;
 import com.increff.pos.model.SignUpForm;
+import com.increff.pos.model.UserData;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.PropertySource;
@@ -37,24 +38,28 @@ import static com.increff.pos.util.ConvertUtil.convert;
 public class LoginController {
 	@Autowired
 	private UserDto userDto;
+	@Value("${admin.email}")
+	private String adminEmail;
 
 	@ApiOperation(value = "Logs in a user")
 	@RequestMapping(path = "/session/login", method = RequestMethod.POST, consumes = MediaType.APPLICATION_FORM_URLENCODED_VALUE)
 	public ModelAndView login(HttpServletRequest req, LoginForm loginForm) throws ApiException {
-		boolean authenticated = userDto.login(req,loginForm);
-		if (!authenticated) {
+		UserData authenticatedUser = userDto.login(loginForm);
+		if (authenticatedUser==null) {
 			return new ModelAndView("redirect:/site/login");
 		}
+		authenticate(req,authenticatedUser);
 		return new ModelAndView("redirect:/ui/home");
 	}
 
 	@ApiOperation(value = "Signs up a user")
 	@RequestMapping(path = "/session/signup", method = RequestMethod.POST, consumes = MediaType.APPLICATION_FORM_URLENCODED_VALUE)
 	public ModelAndView signUp(HttpServletRequest req, SignUpForm signUpForm) throws ApiException {
-		boolean signedUp = userDto.signUp(req,signUpForm);
-		if(!signedUp){
+		UserData signedUpUserData = userDto.signUp(signUpForm);
+		if(signedUpUserData==null){
 			return new ModelAndView("redirect:/site/signup");
 		}
+		authenticate(req,signedUpUserData);
 		return new ModelAndView("redirect:/ui/home");
 	}
 
@@ -64,6 +69,16 @@ public class LoginController {
 		return new ModelAndView("redirect:/site/logout");
 	}
 
+	private void authenticate(HttpServletRequest req, UserData userData){
+		// Create authentication object
+		Authentication authentication = convert(userData,adminEmail);
+		// Create new session
+		HttpSession session = req.getSession(true);
+		// Attach Spring SecurityContext to this new session
+		SecurityUtil.createContext(session);
+		// Attach Authentication object to the Security Context
+		SecurityUtil.setAuthentication(authentication);
+	}
 
 
 }

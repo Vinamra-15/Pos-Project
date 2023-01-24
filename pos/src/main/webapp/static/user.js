@@ -1,4 +1,3 @@
-
 function getUserUrl(){
 	var baseUrl = $("meta[name=baseUrl]").attr("content")
 	return baseUrl + "/api/admin/user";

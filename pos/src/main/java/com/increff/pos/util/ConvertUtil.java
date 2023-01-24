@@ -113,16 +113,16 @@ public class ConvertUtil {
         return userPojo;
     }
 
-    public static Authentication convert(UserPojo p,String adminEmail) {
+    public static Authentication convert(UserData userData,String adminEmail) {
         // Create principal
         UserPrincipal principal = new UserPrincipal();
-        principal.setEmail(p.getEmail());
-        principal.setId(p.getId());
+        principal.setEmail(userData.getEmail());
+        principal.setId(userData.getId());
 
         // Create Authorities
         ArrayList<SimpleGrantedAuthority> authorities = new ArrayList<SimpleGrantedAuthority>();
 
-        if(adminEmail.equals(p.getEmail()))
+        if(adminEmail.equals(userData.getEmail()))
         authorities.add(new SimpleGrantedAuthority("supervisor"));
         else{
             authorities.add(new SimpleGrantedAuthority("operator"));

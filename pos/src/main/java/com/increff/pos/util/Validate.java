@@ -101,8 +101,14 @@ public class Validate {
     }
 
     public static void validateForm(SignUpForm signUpForm) throws ApiException {
-        if(signUpForm.getEmail()==null||signUpForm.getPassword()==null||signUpForm.getConfirmPassword()==null){
-            throw new ApiException("Field(s) cannot be empty!");
+        if(StringUtil.isEmpty(signUpForm.getEmail())){
+            throw new ApiException("Please enter email!");
+        }
+        if(StringUtil.isEmpty(signUpForm.getPassword())){
+            throw new ApiException("Please enter password!");
+        }
+        if(StringUtil.isEmpty(signUpForm.getConfirmPassword())){
+            throw new ApiException("Please confirm password!");
         }
         if(!signUpForm.getPassword().equals(signUpForm.getConfirmPassword())){
             throw new ApiException("Passwords do not match!");

@@ -2,6 +2,7 @@ package com.increff.pos.service;
 
 import java.util.List;
 
+import com.increff.pos.util.StringUtil;
 import org.springframework.transaction.annotation.Transactional;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -28,6 +29,7 @@ public class UserService {
 
 
 	public UserPojo get(String email) throws ApiException {
+		StringUtil.toLowerCase(email);
 		return dao.select(email);
 	}
 
