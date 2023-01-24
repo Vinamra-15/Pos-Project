@@ -87,8 +87,7 @@ public class OrderDto {
         String billDirPath =  orderPojo.getInvoicePath();   //"D:\\IncreffProjectPOS BILLS\\bills\\" + orderId + ".pdf";
         File file = new File(billDirPath);
         Path path = Paths.get(file.getAbsolutePath());
-        ByteArrayResource resource = new ByteArrayResource(Files.readAllBytes(path));
-        return resource;
+        return new ByteArrayResource(Files.readAllBytes(path));
     }
 
     private void revertInventory(Integer orderId) throws ApiException {

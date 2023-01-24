@@ -248,6 +248,7 @@ function init(){
 	$('#process-data').click(processData);
 	$('#download-errors').click(downloadErrors);
     $('#productFile').on('change', updateFileName)
+    $('#products-link').addClass('active')
 }
 
 $(document).ready(init);

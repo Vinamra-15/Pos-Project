@@ -39,3 +39,6 @@ body {
 #brand-category-edit-form{
     line-height: 4rem
 }
+.active{
+    font-weight: 500
+}

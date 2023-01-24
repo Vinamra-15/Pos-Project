@@ -194,6 +194,7 @@ function init(){
    $('#process-data').click(processData);
    $('#download-errors').click(downloadErrors);
     $('#employeeFile').on('change', updateFileName)
+    $('#inventory-link').addClass('active')
 }
 
 $(document).ready(init);

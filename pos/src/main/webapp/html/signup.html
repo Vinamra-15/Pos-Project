@@ -19,7 +19,7 @@
           SignUp
         </div>
         <div class="card-body">
-          <form class="form" id="signup-form" method="POST" th:action="@{/session/signup}">
+          <form class="form" id="signup-form" method="POST" th:action="@{/site/signup}">
             <div class="form-group">
               <label for="email" class="col-sm-10 col-form-label">Email</label>
               <div class="col-sm-10">
@@ -42,7 +42,7 @@
           </form>
         </div>
         <div class="card-footer text-danger">
-          [[${info.getMessage()}]]
+          [[${info.getSignUpMessage()}]]
         </div>
 
       </div>

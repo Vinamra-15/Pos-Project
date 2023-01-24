@@ -544,6 +544,7 @@ function init() {
   $('#upload-data').click(displayUploadData);
   $('#place-order-btn').click(placeNewOrder);
   $('#update-order-btn').click(updateOrder);
+  $('#orders-link').addClass('active')
 }
 
 $(document).ready(init);

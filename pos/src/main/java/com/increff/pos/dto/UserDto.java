@@ -7,16 +7,9 @@ import com.increff.pos.model.UserData;
 import com.increff.pos.pojo.UserPojo;
 import com.increff.pos.service.ApiException;
 import com.increff.pos.service.UserService;
-import com.increff.pos.util.SecurityUtil;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
-import org.springframework.context.annotation.PropertySource;
-import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Component;
-import org.springframework.web.servlet.ModelAndView;
 
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpSession;
 import java.util.Objects;
 
 import static com.increff.pos.util.ConvertUtil.convert;
@@ -34,14 +27,13 @@ public class UserDto {
         UserPojo userPojo = userService.get(loginForm.getEmail());
         boolean authenticated = (userPojo != null && Objects.equals(userPojo.getPassword(), loginForm.getPassword()));
         if (!authenticated) {
-            info.setMessage("Invalid username or password");
+            info.setLoginMessage("Invalid username or password");
             return null;
         }
         return convert(userPojo);
     }
 
     public UserData signUp(SignUpForm signUpForm) throws ApiException {
-        info.setMessage("");
         try
         {
             validateForm(signUpForm);
@@ -51,13 +43,13 @@ public class UserDto {
                 return convert(userPojo);
             }
             catch (ApiException e){
-                info.setMessage(e.getMessage());
+                info.setSignUpMessage(e.getMessage());
             }
 
 
         }
         catch (ApiException e){
-            info.setMessage(e.getMessage());
+            info.setSignUpMessage(e.getMessage());
         }
 
         return null;
