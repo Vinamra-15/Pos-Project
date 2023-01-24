@@ -9,7 +9,6 @@ import com.increff.pos.service.ProductService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -22,7 +21,7 @@ public class OrderItemDto {
     @Autowired
     private ProductService productService;
     public List<OrderItemData> get(Integer id) throws ApiException {
-        return orderItemService.getByOrderId(id)
+        return orderItemService.getOrderItemsByOrderId(id)
                 .stream()
                 .map(orderItemPojo-> {
                     try {
@@ -40,7 +39,7 @@ public class OrderItemDto {
 //        return list2;
     }
     public OrderItemData getByOrderIdProductId(Integer orderId, Integer productId) throws ApiException {
-        OrderItemPojo orderItemPojo = orderItemService.getByOrderIdProductId(orderId,productId);
+        OrderItemPojo orderItemPojo = orderItemService.getOrderItemByOrderIdProductId(orderId,productId);
         ProductPojo productPojo = productService.getProduct(productId);
         return convert(orderItemPojo,productPojo);
     }

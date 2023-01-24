@@ -57,8 +57,8 @@ function getCurrentOrderItem(typeOfOperation) {
 }
 
 function addItem(item) {
-  if(item.barcode==null){
-    alert("Please enter barcode!")
+  if(item.barcode===""){
+    $.notify("Please enter barcode!","error")
     return
   }
   const index = orderItems.findIndex((it) => it.barcode === item.barcode);
@@ -71,6 +71,23 @@ function addItem(item) {
 
 function addOrderItem(typeOfOperation) {
   const item = getCurrentOrderItem(typeOfOperation);
+  if(item.barcode==="")
+  {
+    $.notify("Please enter barcode!","error")
+    return
+  }
+  if(!item.quantity)
+    {
+      $.notify("Please enter quantity!","error")
+      return
+    }
+
+    if(!item.sellingPrice)
+    {
+      $.notify("Please enter selling price!","error")
+      return
+    }
+
   if(typeOfOperation==='add')
   {
     getProductByBarcode(item.barcode, (product) => {
@@ -113,7 +130,17 @@ function displayCreateOrderItems(data) {
       <tr class="text-center">
         <td class="barcodeData">${item.barcode}</td>
         <td>${item.name}</td>
-        <td >${item.sellingPrice}</td>
+        <td style="display:flex; justify-content:center;">
+            <input
+                id="order-item-${item.barcode}-sellingPrice"
+                type="number"
+                class="form-control"
+                value="${item.sellingPrice}"
+                onchange="onSellingPriceChanged('${item.barcode}',event)"
+                style="width:90%" min="0"
+                step="0.01">
+        </td>
+
         <td>
           <input
             id="order-item-${item.barcode}"
@@ -121,7 +148,7 @@ function displayCreateOrderItems(data) {
             class="form-control"
             value="${item.quantity}"
             onchange="onQuantityChanged('${item.barcode}',event)"
-            style="width:70%" min="1">
+            style="width:90%" min="1">
         </td>
         <td>
           <button onclick="deleteOrderItem('${item.barcode}','add')" class="btn btn-outline-danger"><i class="fa fa-trash" aria-hidden="true"></i></button>
@@ -353,7 +380,16 @@ function displayEditOrderItems(data){
             <tr class="text-center">
               <td class="barcodeData">${item.barcode}</td>
               <td>${item.name}</td>
-              <td >${item.sellingPrice}</td>
+              <td style="display:flex; justify-content:center;">
+                <input
+                    id="order-item-${item.barcode}-sellingPrice"
+                    type="number"
+                    class="form-control"
+                    value="${item.sellingPrice}"
+                    onchange="onSellingPriceChanged('${item.barcode}',event)"
+                    style="width:90%" min="0"
+                    step="0.01">
+              </td>
               <td>
                 <input
                     id="order-item-${item.barcode}"
@@ -361,7 +397,7 @@ function displayEditOrderItems(data){
                     class="form-control"
                     value = "${item.quantity}"
                     onchange="onQuantityChanged('${item.barcode}',event)"
-                    style="width:70%" min="1">
+                    style="width:90%" min="1">
               </td>
               <td>
                    <button onclick="deleteOrderItem('${item.barcode}','edit')" class="btn btn-outline-danger"><i class="fa fa-trash" aria-hidden="true"></i></button>
@@ -384,6 +420,15 @@ function onQuantityChanged(barcode,event) {
 //$(`#order-item-${barcode}`)
   const newQuantity = event.target.value
   orderItems[index].quantity = Number.parseInt(newQuantity);
+}
+
+function onSellingPriceChanged(barcode,event){
+    const index = orderItems.findIndex((it) => it.barcode === barcode);
+      if (index == -1) return;
+
+    //$(`#order-item-${barcode}`)
+      const newSellingPrice = event.target.value
+      orderItems[index].sellingPrice = Number.parseFloat(newSellingPrice);
 }
 
 

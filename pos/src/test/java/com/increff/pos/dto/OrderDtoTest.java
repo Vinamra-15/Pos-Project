@@ -88,19 +88,19 @@ public class OrderDtoTest extends AbstractUnitTest {
     public void addEmptyFieldOrderTest() throws ApiException, IOException {
         List<OrderItemForm> orderItemFormList = addEmptyFieldOrderItemToForm() ;
         exceptionRule.expect(ApiException.class);
-        exceptionRule.expectMessage("Field(s) cannot be empty");
+        exceptionRule.expectMessage("Barcode field cannot be empty");
         OrderData orderData = orderDto.createOrder(orderItemFormList);
     }
 
+    // set quantity greater than available inventory
     @Test
     public void insufficientInventoryOrderTest() throws ApiException, IOException {
         List<OrderItemForm> orderItemFormList = addMultipleOrderItemToForm();
-        // set quantity greater than available inventory
         OrderItemForm orderItemForm = orderItemFormList.get(1);
         orderItemForm.setQuantity(2);
         orderItemFormList.set(1,orderItemForm);
         exceptionRule.expect(ApiException.class);
-        exceptionRule.expectMessage("Insufficient Inventory for product with barcode: " + orderItemForm.getBarcode());
+        exceptionRule.expectMessage("Insufficient inventory for product with barcode: " + orderItemForm.getBarcode());
         OrderData orderData = orderDto.createOrder(orderItemFormList);
     }
 
@@ -118,7 +118,7 @@ public class OrderDtoTest extends AbstractUnitTest {
     public void getAllOrderTest() throws IOException, ApiException {
         List<OrderItemForm> orderItemFormList = addMultipleOrderItemToForm();
         OrderData orderData = orderDto.createOrder(orderItemFormList);
-        List<OrderData> orderDataList = orderDto.getAll();
+        List<OrderData> orderDataList = orderDto.getAllOrders();
         assertEquals(1,orderDataList.size());
     }
 
@@ -126,9 +126,9 @@ public class OrderDtoTest extends AbstractUnitTest {
     public void updateOrderTest() throws IOException, ApiException {
         List<OrderItemForm> orderItemFormList = addMultipleOrderItemToForm();
         OrderData orderData = orderDto.createOrder(orderItemFormList);
-        orderDto.update(orderData.getId(),addSingleOrderItemToForm());
+        orderDto.updateOrder(orderData.getId(),addSingleOrderItemToForm());
         assertEquals(1,orderDto.getOrderDetails(orderData.getId()).getItems().size());
-        orderDto.update(orderData.getId(),addMultipleOrderItemToForm());
+        orderDto.updateOrder(orderData.getId(),addMultipleOrderItemToForm());
         assertEquals(2,orderDto.getOrderDetails(orderData.getId()).getItems().size());
     }
 

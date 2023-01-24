@@ -15,29 +15,29 @@ public class OrderService {
     @Autowired
     private OrderDao orderDao;
 
-    public List<OrderPojo> getAll(){
+    public List<OrderPojo> getAllOrders(){
         return orderDao.selectAll();
     }
 
-    public OrderPojo get(Integer id) throws ApiException{
-        OrderPojo orderPojo = orderDao.select(id);
+    public OrderPojo getOrder(Integer orderId) throws ApiException{
+        OrderPojo orderPojo = orderDao.select(orderId);
         if(orderPojo==null)
-            throw new ApiException("No order found with Id: " + id);
+            throw new ApiException("No order found with Id: " + orderId);
         return orderPojo;
     }
 
-    public void add(OrderPojo orderPojo){
+    public void addOrder(OrderPojo orderPojo){
         orderDao.insert(orderPojo);
     }
 
-    public void update(Integer id, OrderPojo orderPojo) throws ApiException {
-        OrderPojo ex = get(id);
+    public void updateOrder(Integer id, OrderPojo orderPojo) throws ApiException {
+        OrderPojo ex = getOrder(id);
         ex.setInvoicePath(orderPojo.getInvoicePath());
         orderDao.update(ex);
     }
 
 
-    public List<OrderPojo> getByStartDateEndDate(Date startDate, Date endDate) {
+    public List<OrderPojo> getOrderByStartDateEndDate(Date startDate, Date endDate) {
         return orderDao.selectByStartDateEndDate(startDate,endDate);
     }
 }

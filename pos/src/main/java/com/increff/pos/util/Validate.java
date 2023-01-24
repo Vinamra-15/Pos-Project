@@ -70,8 +70,14 @@ public class Validate {
     }
 
     public static void validateForm(OrderItemForm orderItemForm) throws ApiException {
-        if(StringUtil.isEmpty(orderItemForm.getBarcode())||orderItemForm.getQuantity()==null||orderItemForm.getSellingPrice()==null) {
-            throw new ApiException("Field(s) cannot be empty");
+        if(StringUtil.isEmpty(orderItemForm.getBarcode())) {
+            throw new ApiException("Barcode field cannot be empty!");
+        }
+        if(orderItemForm.getQuantity()==null) {
+            throw new ApiException("Quantity field cannot be empty!");
+        }
+        if(orderItemForm.getSellingPrice()==null) {
+            throw new ApiException("Selling Price field cannot be empty!");
         }
         if(orderItemForm.getQuantity()<0){
             throw new ApiException("Quantity must be a non-negative number!");

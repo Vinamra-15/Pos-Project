@@ -13,47 +13,41 @@ import java.util.List;
 public class OrderItemService {
     @Autowired
     private OrderItemDao orderItemDao;
-    public List<OrderItemPojo> getByOrderId(Integer id){
-        return orderItemDao.selectByOrderId(id);
+    public List<OrderItemPojo> getOrderItemsByOrderId(Integer orderId){
+        return orderItemDao.selectByOrderId(orderId);
     }
-
-    public OrderItemPojo getByOrderIdProductId(Integer orderId, Integer productId) throws ApiException {
+    public OrderItemPojo getOrderItem(Integer id) throws ApiException {
+        OrderItemPojo orderItemPojo = getCheckOrderItem(id);
+        return orderItemPojo;
+    }
+    public OrderItemPojo getOrderItemByOrderIdProductId(Integer orderId, Integer productId) throws ApiException {
         OrderItemPojo orderItemPojo = orderItemDao.selectByOrderIdProductId(orderId,productId);
         if(orderItemPojo==null){
-            throw new ApiException("No order item for concerned orderId and productId exists!");
+            throw new ApiException("No order item for orderId: " + orderId + "and productId: " + productId + "exists!");
         }
         return orderItemPojo;
     }
-
-    public OrderItemPojo get(Integer id) throws ApiException {
-        OrderItemPojo orderItemPojo = orderItemDao.select(id);
-        if(orderItemPojo==null){
-            throw new ApiException("No order item for concerned orderId and productId exists!");
-        }
-        return orderItemPojo;
+    public void addOrderItem(OrderItemPojo orderItemPojo){
+        orderItemDao.insert(orderItemPojo);
     }
-
-    public void update(Integer id, OrderItemPojo orderItemPojo) throws ApiException{
-        OrderItemPojo exOrderItemPojo = orderItemDao.select(id);
-        if(exOrderItemPojo==null){
-            throw new ApiException("No order item for concerned orderId and productId exists!");
-        }
+    public void updateOrderItem(Integer id, OrderItemPojo orderItemPojo) throws ApiException{
+        OrderItemPojo exOrderItemPojo = getCheckOrderItem(id);
         exOrderItemPojo.setQuantity(orderItemPojo.getQuantity());
         exOrderItemPojo.setSellingPrice(orderItemPojo.getSellingPrice());
         orderItemDao.update(exOrderItemPojo);
     }
-
-    public void delete(Integer id) throws ApiException {
-        OrderItemPojo orderItemPojo = orderItemDao.select(id);
-        if(orderItemPojo==null){
-            throw new ApiException("No order item for concerned orderId and productId exists!");
-        }
+    public void deleteOrderItem(Integer id) throws ApiException {
+        OrderItemPojo orderItemPojo = getCheckOrderItem(id);
         orderItemDao.delete(id);
     }
-
-    public void add(OrderItemPojo orderItemPojo){
-        orderItemDao.insert(orderItemPojo);
+    public void deleteByOrderId(Integer orderId){
+        orderItemDao.deleteByOrderId(orderId);
     }
-
-
+    private OrderItemPojo getCheckOrderItem(Integer id) throws ApiException {
+        OrderItemPojo orderItemPojo = orderItemDao.select(id);
+        if(orderItemPojo==null){
+            throw new ApiException("Order item does not exist!");
+        }
+        return orderItemPojo;
+    }
 }

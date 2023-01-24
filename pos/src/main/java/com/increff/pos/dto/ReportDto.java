@@ -38,10 +38,10 @@ public class ReportDto {
         String brand = salesReportForm.getBrand();
         String category = salesReportForm.getCategory();
 
-        List<OrderPojo> orderPojos = orderService.getByStartDateEndDate(startDate,endDate);
+        List<OrderPojo> orderPojos = orderService.getOrderByStartDateEndDate(startDate,endDate);
         List<OrderItemPojo> orderItemPojos = new ArrayList<OrderItemPojo>();
         for(OrderPojo orderPojo:orderPojos){
-            List<OrderItemPojo> orderItemPojoList = orderItemService.getByOrderId(orderPojo.getId());
+            List<OrderItemPojo> orderItemPojoList = orderItemService.getOrderItemsByOrderId(orderPojo.getId());
             orderItemPojos.addAll(orderItemPojoList);
         }
 
@@ -106,10 +106,10 @@ public class ReportDto {
         Date yesterday = TimeUtil.getStartOfDay(calendar.getTime(),calendar);
 //        System.out.println("From: " + yesterday.toString() + "\nTo: " + new Date().toString());
 
-        List<OrderPojo> orderPojoList = orderService.getByStartDateEndDate(yesterday, new Date());
+        List<OrderPojo> orderPojoList = orderService.getOrderByStartDateEndDate(yesterday, new Date());
         List<OrderItemPojo> orderItemPojoList = new ArrayList<OrderItemPojo>();
         for(OrderPojo orderPojo : orderPojoList) {
-            List<OrderItemPojo> orderItemPojo = orderItemService.getByOrderId(orderPojo.getId());
+            List<OrderItemPojo> orderItemPojo = orderItemService.getOrderItemsByOrderId(orderPojo.getId());
             orderItemPojoList.addAll(orderItemPojo);
         }
 
