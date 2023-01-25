@@ -59,14 +59,4 @@ public class InventoryService {
         updateInventory(productId,newQuantity);
     }
 
-//    public void validateAndReduceInventoryQuantity(Integer productId, Integer quantity) throws ApiException {
-//        InventoryPojo inventoryPojo = getInventory(productId);
-//        if(quantity>inventoryPojo.getQuantity())
-//        {
-//            throw new ApiException("Insufficient Inventory!");
-//        }
-//        Integer newQuantity = inventoryPojo.getQuantity() - quantity;
-//        inventoryPojo.setQuantity(newQuantity);
-//        updateInventory(productId,inventoryPojo);
-//    }
 }

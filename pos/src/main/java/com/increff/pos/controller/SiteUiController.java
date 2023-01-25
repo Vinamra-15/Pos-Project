@@ -50,14 +50,4 @@ public class SiteUiController extends AbstractUiController {
 		return mav("logout.html");
 	}
 
-//	@RequestMapping(value = "/site/pricing")
-//	public ModelAndView pricing() {
-//		return mav("pricing.html");
-//	}
-//
-//	@RequestMapping(value = "/site/features")
-//	public ModelAndView features() {
-//		return mav("features.html");
-//	}
-
 }

@@ -115,27 +115,4 @@ public class ReportDto {
         }
         return brandSalesMapping;
     }
-//    private List<SalesReportData> getSalesReportData(List<BrandCategoryPojo> brandCategoryPojos,
-//                                                     List<OrderItemPojo> orderItemPojos) throws ApiException {
-//        List<SalesReportData> salesReportDataList = new ArrayList<SalesReportData>();
-//        for(BrandCategoryPojo brandCategoryPojo:brandCategoryPojos){
-//            SalesReportData salesReportData = new SalesReportData();
-//            salesReportData.setCategory(brandCategoryPojo.getCategory());
-//            salesReportData.setBrand(brandCategoryPojo.getBrand());
-//            Integer quantity = 0;
-//            Double revenue = 0.0;
-//            for(OrderItemPojo orderItemPojo:orderItemPojos){
-//                ProductPojo productPojo = productService.getProduct(orderItemPojo.getProductId());
-//                if(productPojo.getBrandId()==brandCategoryPojo.getId()){
-//                    quantity += orderItemPojo.getQuantity();
-//                    revenue += (orderItemPojo.getQuantity())*(orderItemPojo.getSellingPrice());
-//                }
-//            }
-//            salesReportData.setQuantity(quantity);
-//            salesReportData.setRevenue(revenue);
-//            salesReportDataList.add(salesReportData);
-//        }
-//        return salesReportDataList;
-//    }
-
 }
