@@ -1,5 +1,6 @@
 package com.increff.pos.service;
 
+import java.util.Collections;
 import java.util.List;
 
 import com.increff.pos.util.StringUtil;
@@ -78,4 +79,17 @@ public class BrandCategoryService {
 	}
 
 
+	public List<BrandCategoryPojo> getAlikeBrandCategory(String brand, String category) throws ApiException {
+		brand = StringUtil.toLowerCase(brand);
+		category = StringUtil.toLowerCase(category);
+		if(brand.isEmpty() && category.isEmpty()) {
+			return getAllBrandCategory();
+		} else if(category.isEmpty()) {
+			return getBrandCategoryByBrand(brand);
+		} else if(brand.isEmpty()) {
+			return getBrandCategoryByCategory(category);
+		} else {
+			return Collections.singletonList(getByBrandCategory(brand, category));
+		}
+	}
 }

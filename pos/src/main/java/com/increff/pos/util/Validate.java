@@ -96,8 +96,8 @@ public class Validate {
         if(salesReportForm.getStartDate()==null) {
             salesReportForm.setStartDate(new GregorianCalendar(2021, Calendar.JANUARY, 1).getTime());
         }
-        salesReportForm.setStartDate(getStartOfDay(salesReportForm.getStartDate(),Calendar.getInstance()));
-        salesReportForm.setEndDate(getEndOfDay(salesReportForm.getEndDate(),Calendar.getInstance()));
+        salesReportForm.setStartDate(getStartOfDay(salesReportForm.getStartDate()));
+        salesReportForm.setEndDate(getEndOfDay(salesReportForm.getEndDate()));
     }
 
     public static void validateForm(SignUpForm signUpForm) throws ApiException {

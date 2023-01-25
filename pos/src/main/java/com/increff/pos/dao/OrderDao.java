@@ -18,6 +18,8 @@ public class OrderDao extends AbstractDao{
     private static String select_all = "select p from OrderPojo p";
 
     private static String select_between_date = "select p from OrderPojo p where p.datetime between :startDate and :endDate";
+    private static String select_after = "select p from OrderPojo p where p.datetime >= :startDate";
+    private static String select_before = "select p from OrderPojo p where p.datetime <= :endDate";
     @PersistenceContext
     private EntityManager em;
     public void insert(OrderPojo orderPojo) {
@@ -34,6 +36,17 @@ public class OrderDao extends AbstractDao{
         TypedQuery<OrderPojo> query = getQuery(select_all, OrderPojo.class);
         List<OrderPojo> result = query.getResultList();
         return result;
+    }
+
+    public List<OrderPojo> selectAfter(Date startDate) {
+        TypedQuery<OrderPojo>query = em.createQuery(select_after, OrderPojo.class);
+        query.setParameter("startDate",startDate);
+        return query.getResultList();
+    }
+    public List<OrderPojo> selectBefore(Date endDate){
+        TypedQuery<OrderPojo>query = em.createQuery(select_before, OrderPojo.class);
+        query.setParameter("endDate",endDate);
+        return query.getResultList();
     }
 
 

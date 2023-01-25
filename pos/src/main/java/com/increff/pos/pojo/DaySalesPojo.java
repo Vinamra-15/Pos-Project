@@ -24,4 +24,13 @@ public class DaySalesPojo {
     @Column(nullable = false)
     private Double total_revenue;
 
+    public  DaySalesPojo(){
+
+    }
+    public DaySalesPojo(Date date, Integer invoiced_orders_count, Integer invoiced_items_count, Double total_revenue) {
+        this.date = date;
+        this.invoiced_orders_count = invoiced_orders_count;
+        this.invoiced_items_count = invoiced_items_count;
+        this.total_revenue = total_revenue;
+    }
 }

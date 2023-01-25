@@ -4,8 +4,8 @@ import java.util.Calendar;
 import java.util.Date;
 
 public class TimeUtil {
-    public static Date getStartOfDay(Date day, Calendar cal) {
-        if (day == null) day = new Date();
+    public static Date getStartOfDay(Date day) {
+        Calendar cal = Calendar.getInstance();
         cal.setTime(day);
         cal.set(Calendar.HOUR_OF_DAY, cal.getMinimum(Calendar.HOUR_OF_DAY));
         cal.set(Calendar.MINUTE,      cal.getMinimum(Calendar.MINUTE));
@@ -14,8 +14,8 @@ public class TimeUtil {
         return cal.getTime();
     }
 
-    public static Date getEndOfDay(Date day,Calendar cal) {
-        if (day == null) day = new Date();
+    public static Date getEndOfDay(Date day) {
+        Calendar cal = Calendar.getInstance();
         cal.setTime(day);
         cal.set(Calendar.HOUR_OF_DAY, cal.getMaximum(Calendar.HOUR_OF_DAY));
         cal.set(Calendar.MINUTE,      cal.getMaximum(Calendar.MINUTE));

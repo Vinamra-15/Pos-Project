@@ -12,6 +12,7 @@ import org.springframework.security.core.authority.SimpleGrantedAuthority;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 public class ConvertUtil {
 
@@ -112,14 +113,24 @@ public class ConvertUtil {
         userPojo.setPassword(signUpForm.getPassword());
         return userPojo;
     }
+    public static List<SalesReportData> convertMapToSalesReportDataList(Map<Integer,SalesReportData> brandSalesMapping){
+        List<SalesReportData> salesReportDataList = new ArrayList<>();
+        for (Map.Entry<Integer,SalesReportData> entry : brandSalesMapping.entrySet())
+            salesReportDataList.add(entry.getValue());
+        return salesReportDataList;
+    }
+    public static List<InventoryReportData> convertMaptoInventoryReportDataList(Map<Integer,InventoryReportData> brandIdToInventoryReportDataMap){
+        List<InventoryReportData> inventoryReportDataList = new ArrayList<InventoryReportData>();
+        for(Map.Entry m:brandIdToInventoryReportDataMap.entrySet()){
+            inventoryReportDataList.add((InventoryReportData) m.getValue());
+        }
+        return inventoryReportDataList;
+    }
 
     public static Authentication convert(UserData userData,String adminEmail) {
-        // Create principal
         UserPrincipal principal = new UserPrincipal();
         principal.setEmail(userData.getEmail());
         principal.setId(userData.getId());
-
-        // Create Authorities
         ArrayList<SimpleGrantedAuthority> authorities = new ArrayList<SimpleGrantedAuthority>();
 
         if(adminEmail.equals(userData.getEmail()))
@@ -127,9 +138,6 @@ public class ConvertUtil {
         else{
             authorities.add(new SimpleGrantedAuthority("operator"));
         }
-        // you can add more roles if required
-
-        // Create Authentication
         UsernamePasswordAuthenticationToken token = new UsernamePasswordAuthenticationToken(principal, null,
                 authorities);
         return token;
@@ -161,5 +169,6 @@ public class ConvertUtil {
         }
         return orderItemDataList;
     }
+
 
 }

@@ -2,6 +2,7 @@ package com.increff.pos.service;
 
 import com.increff.pos.dao.OrderDao;
 import com.increff.pos.pojo.OrderPojo;
+import com.increff.pos.util.TimeUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -38,6 +39,24 @@ public class OrderService {
 
 
     public List<OrderPojo> getOrderByStartDateEndDate(Date startDate, Date endDate) {
-        return orderDao.selectByStartDateEndDate(startDate,endDate);
+        if(startDate==null&&endDate==null){
+            return orderDao.selectAll();
+        }
+        else if(startDate==null){
+            endDate = TimeUtil.getEndOfDay(endDate);
+            return orderDao.selectBefore(endDate);
+
+        }
+        else if(endDate==null){
+            startDate = TimeUtil.getStartOfDay(startDate);
+            return orderDao.selectAfter(startDate);
+        }
+        else
+        {
+            startDate = TimeUtil.getStartOfDay(startDate);
+            endDate = TimeUtil.getEndOfDay(endDate);
+            return orderDao.selectByStartDateEndDate(startDate,endDate);
+        }
+
     }
 }

@@ -35,6 +35,7 @@ function displaySalesReport(data) {
 //INITIALIZATION CODE
 function init(){
    $('#get-daily-sales-report').click(filterSalesReport);
+   $('#reports-link').addClass('active')
 }
 
 function convertTimeStampToDateTime(timestamp) {
