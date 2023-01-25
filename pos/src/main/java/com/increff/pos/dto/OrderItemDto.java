@@ -9,6 +9,7 @@ import com.increff.pos.service.ProductService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -21,22 +22,12 @@ public class OrderItemDto {
     @Autowired
     private ProductService productService;
     public List<OrderItemData> get(Integer id) throws ApiException {
-        return orderItemService.getOrderItemsByOrderId(id)
-                .stream()
-                .map(orderItemPojo-> {
-                    try {
-                        return convert(orderItemPojo,productService.getProduct(orderItemPojo.getProductId()));
-                    } catch (ApiException e) {
-                        throw new RuntimeException(e);
-                    }
-                })
-                .collect(Collectors.toList());
-//        List<OrderItemData> list2 = new ArrayList<OrderItemData>();
-//        for(OrderItemPojo orderItemPojo:list){
-//            ProductPojo productPojo = productService.getProduct(orderItemPojo.getProductId());
-//            list2.add(convert(orderItemPojo,productPojo));
-//        }
-//        return list2;
+        List<OrderItemPojo> orderItemPojoList = orderItemService.getOrderItemsByOrderId(id);
+        List<OrderItemData> orderItemDataList = new ArrayList<>();
+        for(OrderItemPojo orderItemPojo:orderItemPojoList){
+            orderItemDataList.add(convert(orderItemPojo,productService.getProduct(orderItemPojo.getProductId())));
+        }
+        return orderItemDataList;
     }
     public OrderItemData getByOrderIdProductId(Integer orderId, Integer productId) throws ApiException {
         OrderItemPojo orderItemPojo = orderItemService.getOrderItemByOrderIdProductId(orderId,productId);

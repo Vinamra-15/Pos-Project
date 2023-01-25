@@ -14,6 +14,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -58,17 +59,12 @@ public class ProductDto {
     }
 
     public List<ProductData> getAllProducts() throws ApiException {
-        return productService.getAllProducts()
-                .stream()
-                .map(productPojo -> {
-                    try {
-                        return convert(productPojo
-                                ,brandCategoryService.getBrandCategory(productPojo.getBrandId()));
-                    } catch (ApiException e) {
-                        throw new RuntimeException(e);
-                    }
-                })
-                .collect(Collectors.toList());
+        List<ProductData> productDataList = new ArrayList<>();
+        List<ProductPojo> productPojoList = productService.getAllProducts();
+        for(ProductPojo productPojo:productPojoList){
+            productDataList.add(convert(productPojo,brandCategoryService.getBrandCategory(productPojo.getBrandId())));
+        }
+        return productDataList;
     }
 
     public void updateProduct(Integer id, ProductForm productForm) throws ApiException {

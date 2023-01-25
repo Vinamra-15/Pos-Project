@@ -33,17 +33,13 @@ public class InventoryDto {
         return convert(inventoryPojo,productPojo);
     }
     public List<InventoryData> getAllInventories() throws ApiException {
-        return inventoryService.getAllInventories()
-                .stream()
-                .map(inventoryPojo -> {
-                    try {
-                        return convert(inventoryPojo,
-                                productService.getProduct(inventoryPojo.getProductId()));
-                    } catch (ApiException e) {
-                        throw new RuntimeException(e);
-                    }
-                })
-                .collect(Collectors.toList());
+        List<InventoryPojo> inventoryPojoList = inventoryService.getAllInventories();
+        List<InventoryData> inventoryDataList = new ArrayList<>();
+        for(InventoryPojo inventoryPojo:inventoryPojoList){
+            inventoryDataList.add(convert(inventoryPojo,
+                    productService.getProduct(inventoryPojo.getProductId())));
+        }
+        return inventoryDataList;
     }
     public InventoryData updateInventory(String barcode, InventoryForm inventoryForm) throws ApiException {
             validateForm(inventoryForm);

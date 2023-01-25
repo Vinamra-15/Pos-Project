@@ -19,14 +19,11 @@ public class BrandCategoryDtoTest extends AbstractUnitTest {
     public ExpectedException exceptionRule = ExpectedException.none();
     @Autowired
     private BrandCategoryDto brandCategoryDto;
-    @Value("${admin.email}")
-    private String name;
     @Test
     public void addBrandCategoryTest() throws ApiException {
         BrandCategoryForm brandCategoryForm = TestUtils.getBrandCategoryForm("   tShiRt brnd  ","  tshirts  ");
         BrandCategoryData brandCategoryData = brandCategoryDto.addBrandCategory(brandCategoryForm);
         BrandCategoryData dataFromDB = brandCategoryDto.getBrandCategory(brandCategoryData.getId());
-        System.out.println(name);
         assertEquals("tshirt brnd",dataFromDB.getBrand());
         assertEquals("tshirts",dataFromDB.getCategory());
     }

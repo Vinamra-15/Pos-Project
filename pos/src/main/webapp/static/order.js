@@ -465,10 +465,10 @@ function displayUploadData() {
 }
 
 function displayOrderDetails(data) {
-  const datetime = new Date(data.datetime)
+  const datetime = (new Date(data.datetime)).toString()
   displayOrderDetailsModal();
   const $time = $('#date-time')
-  $time.text("Order placed on: " + datetime)
+  $time.text("Order placed on: " + datetime.split('G')[0])
   const $id = $('#order-id')
   $id.text("Order Id: " + data.id)
   const $tbody = $('#order-details-table').find('tbody');
