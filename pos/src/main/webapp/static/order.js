@@ -8,8 +8,6 @@ function getOrderUrl(){
 function getProductUrl(){
 	return getBaseUrl() + "/api/products";
 }
-
-
 function getOrderList() {
   var url = getOrderUrl();
   $.ajax({
@@ -258,10 +256,6 @@ function convertDate(datetime){
     `;
     $tbody.append(row);
   };
-
-
-
-
 }
 
 function downloadInvoice(orderId) {
@@ -339,28 +333,21 @@ function displayEditOrderItems(data){
 
             </tr>
           `;
-
           $tbody.append(row);
         }
 }
-
 function onQuantityChanged(barcode,event) {
   const index = orderItems.findIndex((it) => it.barcode === barcode);
   if (index == -1) return;
   const newQuantity = event.target.value
   orderItems[index].quantity = Number.parseInt(newQuantity);
 }
-
 function onSellingPriceChanged(barcode,event){
     const index = orderItems.findIndex((it) => it.barcode === barcode);
       if (index == -1) return;
       const newSellingPrice = event.target.value
       orderItems[index].sellingPrice = Number.parseFloat(newSellingPrice);
 }
-
-
-
-
 function resetUploadDialog() {
   var $file = $('#orderFile');
   $file.val('');
@@ -449,15 +436,8 @@ function hideEditingModal() {
   $('#edit-order-modal').modal('toggle');
   getOrderList();
 }
-
-//function registerUpdateButton(id){
-//$('#update-order-btn').click(()=> updateOrder(id))
-//}
-
 function editOrderDetails(id){
-//    registerUpdateButton(id)
     fetchOrderDetails(id,'edit');
-
 }
 // Place Order
 function placeNewOrder() {
@@ -468,11 +448,14 @@ function placeNewOrder() {
       sellingPrice:it.sellingPrice
     };
   });
-
-  const json = JSON.stringify(data);
-  placeOrder(json, hideCreationModal);
+  placeOrder(data, hideCreationModal);
 }
-function placeOrder(json, onSuccess) {
+function placeOrder(data, onSuccess) {
+  if(data.length===0){
+          $.notify("Please add some orders!","error");
+          return;
+  }
+  const json = JSON.stringify(data);
   const url = getOrderUrl();
   $.ajax({
     url: url,
@@ -500,6 +483,10 @@ function updateOrder(){
           sellingPrice:it.sellingPrice
         };
       });
+      if(data.length===0){
+        $.notify("Please add some orders!","error");
+        return;
+      }
 
       const json = JSON.stringify(data);
       const url = getOrderUrl() + id;
