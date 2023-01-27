@@ -40,6 +40,7 @@ function displayInventoryReportList(data) {
 //INITIALIZATION CODE
 function init() {
   $("#refresh-data").click(getInventoryReport);
+  $('#reports-link').addClass('active').css("border-bottom","2px solid black")
 }
 
 $(document).ready(init);

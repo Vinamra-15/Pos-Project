@@ -57,8 +57,8 @@ function getCurrentOrderItem(typeOfOperation) {
 }
 
 function addItem(item) {
-  if(item.barcode==null){
-    alert("Please enter barcode!")
+  if(item.barcode===""){
+    $.notify("Please enter barcode!","error")
     return
   }
   const index = orderItems.findIndex((it) => it.barcode === item.barcode);
@@ -71,6 +71,23 @@ function addItem(item) {
 
 function addOrderItem(typeOfOperation) {
   const item = getCurrentOrderItem(typeOfOperation);
+  if(item.barcode==="")
+  {
+    $.notify("Please enter barcode!","error")
+    return
+  }
+  if(!item.quantity)
+    {
+      $.notify("Please enter quantity!","error")
+      return
+    }
+
+    if(!item.sellingPrice)
+    {
+      $.notify("Please enter selling price!","error")
+      return
+    }
+
   if(typeOfOperation==='add')
   {
     getProductByBarcode(item.barcode, (product) => {
@@ -107,13 +124,30 @@ function displayCreateOrderItems(data) {
   const $tbody = $('#create-order-table').find('tbody');
   $tbody.empty();
 
+  if(data.length===0){
+    $('#create-order-table').hide()
+  }
+  else{
+    $('#create-order-table').show()
+  }
+
   for (let i in data) {
     const item = data[i];
     const row = `
       <tr class="text-center">
         <td class="barcodeData">${item.barcode}</td>
         <td>${item.name}</td>
-        <td >${item.sellingPrice}</td>
+        <td style="display:flex; justify-content:center;">
+            <input
+                id="order-item-${item.barcode}-sellingPrice"
+                type="number"
+                class="form-control"
+                value="${item.sellingPrice}"
+                onchange="onSellingPriceChanged('${item.barcode}',event)"
+                style="width:90%" min="0"
+                step="0.01">
+        </td>
+
         <td>
           <input
             id="order-item-${item.barcode}"
@@ -121,10 +155,10 @@ function displayCreateOrderItems(data) {
             class="form-control"
             value="${item.quantity}"
             onchange="onQuantityChanged('${item.barcode}',event)"
-            style="width:70%" min="1">
+            style="width:90%" min="1">
         </td>
         <td>
-          <button onclick="deleteOrderItem('${item.barcode}','add')" class="btn btn-outline-danger">Delete</button>
+          <button onclick="deleteOrderItem('${item.barcode}','add')" class="btn btn-outline-danger"><i class="fa fa-trash" aria-hidden="true"></i></button>
         </td>
       </tr>
     `;
@@ -207,14 +241,16 @@ function displayOrderList(orders) {
             <td>${time}</td>
             <td>
                 <button type="button" class="btn btn-outline-secondary" onclick="fetchOrderDetails(${order.id},'add')">
-                  Details
+                  <i class="fa fa-info-circle" aria-hidden="true"></i>
+
                 </button>
 
                 <button type="button" class="btn btn-outline-secondary" onclick="editOrderDetails(${order.id})">
-                                  Edit
+                                  <i class="fas fa-edit fa-xs"></i>
                                 </button>
                 <button type="button" class="btn btn-outline-secondary downloadInvoiceBtn" id="invoiceBtn-${order.id}" onclick="downloadInvoice(${order.id})">
-                                                  Invoice
+                                                  <i class="fa fa-file-pdf-o" aria-hidden="true"></i>
+
                                                 </button>
             </td>
         </tr>
@@ -263,10 +299,6 @@ function downloadInvoice(orderId) {
           link.click();
           $.notify("Invoice Generated for order: " + orderId,"success");
             // Request finished. Do processing here.
-          }
-          else
-          {
-            $.notify("Invoice Generation in progress!","warning");
           }
 
         }
@@ -351,7 +383,16 @@ function displayEditOrderItems(data){
             <tr class="text-center">
               <td class="barcodeData">${item.barcode}</td>
               <td>${item.name}</td>
-              <td >${item.sellingPrice}</td>
+              <td style="display:flex; justify-content:center;">
+                <input
+                    id="order-item-${item.barcode}-sellingPrice"
+                    type="number"
+                    class="form-control"
+                    value="${item.sellingPrice}"
+                    onchange="onSellingPriceChanged('${item.barcode}',event)"
+                    style="width:90%" min="0"
+                    step="0.01">
+              </td>
               <td>
                 <input
                     id="order-item-${item.barcode}"
@@ -359,10 +400,10 @@ function displayEditOrderItems(data){
                     class="form-control"
                     value = "${item.quantity}"
                     onchange="onQuantityChanged('${item.barcode}',event)"
-                    style="width:70%" min="1">
+                    style="width:90%" min="1">
               </td>
               <td>
-                   <button onclick="deleteOrderItem('${item.barcode}','edit')" class="btn btn-outline-danger">Delete</button>
+                   <button onclick="deleteOrderItem('${item.barcode}','edit')" class="btn btn-outline-danger"><i class="fa fa-trash" aria-hidden="true"></i></button>
               </td>
 
             </tr>
@@ -382,6 +423,15 @@ function onQuantityChanged(barcode,event) {
 //$(`#order-item-${barcode}`)
   const newQuantity = event.target.value
   orderItems[index].quantity = Number.parseInt(newQuantity);
+}
+
+function onSellingPriceChanged(barcode,event){
+    const index = orderItems.findIndex((it) => it.barcode === barcode);
+      if (index == -1) return;
+
+    //$(`#order-item-${barcode}`)
+      const newSellingPrice = event.target.value
+      orderItems[index].sellingPrice = Number.parseFloat(newSellingPrice);
 }
 
 
@@ -418,16 +468,16 @@ function displayUploadData() {
 }
 
 function displayOrderDetails(data) {
-  const datetime = new Date(data.datetime)
+  const datetime = (new Date(data.datetime)).toString()
   displayOrderDetailsModal();
   const $time = $('#date-time')
-  $time.text("Order placed on: " + datetime)
-  const $id = $('#order-id')
+  $time.text(datetime.split('G')[0]).wrapInner("<strong />");
+  const $id = $('#order-details-heading')
   $id.text("Order Id: " + data.id)
   const $tbody = $('#order-details-table').find('tbody');
   $tbody.empty();
   const items = data.items;
-  let billAmount = 0;
+  let billAmount = 0.0;
     for (let i in items) {
       const item = items[i];
       billAmount+=item.sellingPrice*item.quantity;
@@ -435,7 +485,7 @@ function displayOrderDetails(data) {
         <tr class="text-center">
           <td>${item.barcode}</td>
           <td>${item.name}</td>
-          <td >${item.sellingPrice}</td>
+          <td >${numberWithCommas(item.sellingPrice.toFixed(2))}</td>
           <td>${item.quantity}</td>
         </tr>
       `;
@@ -447,7 +497,7 @@ function displayOrderDetails(data) {
                 <td>Bill Amount: </td>
                 <td></td>
                <td></td>
-              <td>${billAmount}</td>
+              <td><strong>${numberWithCommas(billAmount.toFixed(2))}</strong></td>
             </tr>
           `;
     $tbody.append(row);
@@ -497,6 +547,7 @@ function init() {
   $('#upload-data').click(displayUploadData);
   $('#place-order-btn').click(placeNewOrder);
   $('#update-order-btn').click(updateOrder);
+  $('#orders-link').addClass('active').css("border-bottom","2px solid black")
 }
 
 $(document).ready(init);

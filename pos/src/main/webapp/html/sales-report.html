@@ -10,22 +10,22 @@
 
 <div class="container mt-4">
 
-    <h3 class="col my-auto" style="text-align:center;">Sales Report</h3>
+    <h3>Sales Report</h3>
 
     <!-- Top row with form-->
     <div class="container">
         <form id="sales-form">
-            <div class="row justify-content-center">
+            <div class="row">
                 <div class="col-10 col-sm-5 form-group">
                     <label for="inputBrand" class="col-form-label">Brand</label>
                     <div class="">
-                        <input type="text" class="form-control" name="brand" id="inputBrand" placeholder="Enter brand name" />
+                        <input type="text" class="form-control" name="brand" id="inputBrand" placeholder="Enter Brand" />
                     </div>
                 </div>
                 <div class="col-10 col-sm-5 form-group">
                     <label for="inputCategory" class="col-form-label">Category</label>
                     <div class="">
-                        <input type="text" class="form-control" name="category" id="inputCategory" placeholder="Enter category" />
+                        <input type="text" class="form-control" name="category" id="inputCategory" placeholder="Enter Category" />
                     </div>
                 </div>
                 <div class="col-10 col-sm-5 form-group">
@@ -41,8 +41,8 @@
                     </div>
                 </div>
             </div>
-            <div class="row justify-content-center m-auto">
-                <button type="button" class="btn btn-success px-4 m-2 shadow" id="filter-sales-report">Filter</button>
+            <div class="row">
+                <button type="button" class="btn btn-primary px-4 ml-3" id="filter-sales-report">Filter</button>
             </div>
         </form>
     </div>
@@ -57,7 +57,7 @@
         <!-- Table -->
         <div class="col-12">
             <table class="table table-bordered table-striped css-serial text-center" id="sales-table">
-                <thead class="thead-dark">
+                <thead class="thead-dark sticky-top" style="top:78px">
                 <tr>
                     <th scope="col">Sr. No</th>
                     <th scope="col">Brand</th>

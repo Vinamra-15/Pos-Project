@@ -11,11 +11,9 @@
 <div class="container pt-3">
 
 	<div class="row">
-		<h3 class="column">Inventory</h3>
+		<h3 class="column" style="margin-left:1rem;">Inventory</h3>
 		<div class="col d-flex justify-content-end" float="left">
-			<button type="button" class="btn btn-primary" id="refresh-data">Refresh</button>
-			&nbsp;
-			<button type="button" class="btn btn-primary" id="upload-data">Upload</button>
+			<button th:if="${info.getRole() == 'supervisor'}" type="button" class="btn btn-primary" id="upload-data"><i class="fa fa-upload" aria-hidden="true"></i></button>
 		</div>
 	</div>
 
@@ -31,7 +29,7 @@
 		<!-- Table -->
 		<div class="col-12">
 			<table class="table table-bordered table-striped" id="inventory-table">
-				<thead class="thead-dark">
+				<thead class="thead-dark sticky-top" style="top:78px">
 				<tr class="text-center">
 					<th scope="col">Barcode</th>
 					<th scope="col">Product Name</th>
@@ -53,7 +51,7 @@
 		<div class="modal-dialog" role="document">
 			<div class="modal-content">
 				<div class="modal-header">
-					<h5 class="modal-title">Edit Inventory</h5>
+					<h5 class="modal-title">Update Inventory</h5>
 					<button type="button" class="close" data-dismiss="modal" aria-label="Close">
 						<span aria-hidden="true">&times;</span>
 					</button>
@@ -69,7 +67,7 @@
 						<div class="form-group">
 							<label for="inputQuantity" class="col-sm-2 col-form-label">Quantity</label>
 							<div class="col-sm-10">
-								<input type="number" class="form-control" name="quantity" id="inputQuantity" placeholder="enter quantity">
+								<input type="number" class="form-control" name="quantity" id="inputQuantity" placeholder="enter quantity" min="0">
 							</div>
 						</div>
 						<input type="hidden" name="id" >
@@ -89,7 +87,7 @@
 			<div class="modal-content">
 
 				<div class="modal-header">
-					<h5 class="modal-title">Upload Employee</h5>
+					<h5 class="modal-title">Upload Inventory</h5>
 					<button type="button" class="close" data-dismiss="modal" aria-label="Close">
 						<span aria-hidden="true">&times;</span>
 					</button>

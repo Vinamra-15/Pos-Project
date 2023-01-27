@@ -13,14 +13,21 @@ import static com.increff.pos.util.TimeUtil.getStartOfDay;
 
 public class Validate {
     public static void validateForm(BrandCategoryForm brandCategoryForm) throws ApiException {
-        if(StringUtil.isEmpty(brandCategoryForm.getBrand())||StringUtil.isEmpty(brandCategoryForm.getCategory())) {
-            throw new ApiException("Field(s) cannot be empty");
+        if(StringUtil.isEmpty(brandCategoryForm.getBrand())) {
+            throw new ApiException("Brand field cannot be empty");
         }
+        if(StringUtil.isEmpty(brandCategoryForm.getCategory())) {
+            throw new ApiException("Category field cannot be empty");
+        }
+
     }
     public static void validateForm(InventoryForm inventoryForm) throws ApiException {
 
-        if(StringUtil.isEmpty(inventoryForm.getBarcode())|| inventoryForm.getQuantity()==null) {
-            throw new ApiException("Field(s) cannot be empty");
+        if(StringUtil.isEmpty(inventoryForm.getBarcode())) {
+            throw new ApiException("Barcode field cannot be empty!");
+        }
+        if(inventoryForm.getQuantity()==null) {
+            throw new ApiException("Quantity field cannot be empty!");
         }
 
         if(inventoryForm.getQuantity()<0)
@@ -31,8 +38,20 @@ public class Validate {
 
     public static void validateForm(ProductForm productForm) throws ApiException {
 
-        if(StringUtil.isEmpty(productForm.getName())||StringUtil.isEmpty(productForm.getBarcode())||StringUtil.isEmpty(productForm.getBrand())||StringUtil.isEmpty(productForm.getCategory())||productForm.getMrp()==null) {
-            throw new ApiException("Field(s) cannot be empty");
+        if(StringUtil.isEmpty(productForm.getBarcode())) {
+            throw new ApiException("Barcode field cannot be empty!");
+        }
+        if(StringUtil.isEmpty(productForm.getName())) {
+            throw new ApiException("Name field cannot be empty!");
+        }
+        if(StringUtil.isEmpty(productForm.getBrand())) {
+            throw new ApiException("Brand Field cannot be empty!");
+        }
+        if(StringUtil.isEmpty(productForm.getCategory())) {
+            throw new ApiException("Category field cannot be empty");
+        }
+        if(productForm.getMrp()==null) {
+            throw new ApiException("MRP field cannot be empty");
         }
 
 
@@ -51,8 +70,14 @@ public class Validate {
     }
 
     public static void validateForm(OrderItemForm orderItemForm) throws ApiException {
-        if(StringUtil.isEmpty(orderItemForm.getBarcode())||orderItemForm.getQuantity()==null||orderItemForm.getSellingPrice()==null) {
-            throw new ApiException("Field(s) cannot be empty");
+        if(StringUtil.isEmpty(orderItemForm.getBarcode())) {
+            throw new ApiException("Barcode field cannot be empty!");
+        }
+        if(orderItemForm.getQuantity()==null) {
+            throw new ApiException("Quantity field cannot be empty!");
+        }
+        if(orderItemForm.getSellingPrice()==null) {
+            throw new ApiException("Selling Price field cannot be empty!");
         }
         if(orderItemForm.getQuantity()<0){
             throw new ApiException("Quantity must be a non-negative number!");
@@ -71,13 +96,19 @@ public class Validate {
         if(salesReportForm.getStartDate()==null) {
             salesReportForm.setStartDate(new GregorianCalendar(2021, Calendar.JANUARY, 1).getTime());
         }
-        salesReportForm.setStartDate(getStartOfDay(salesReportForm.getStartDate(),Calendar.getInstance()));
-        salesReportForm.setEndDate(getEndOfDay(salesReportForm.getEndDate(),Calendar.getInstance()));
+        salesReportForm.setStartDate(getStartOfDay(salesReportForm.getStartDate()));
+        salesReportForm.setEndDate(getEndOfDay(salesReportForm.getEndDate()));
     }
 
     public static void validateForm(SignUpForm signUpForm) throws ApiException {
-        if(signUpForm.getEmail()==null||signUpForm.getPassword()==null||signUpForm.getConfirmPassword()==null){
-            throw new ApiException("Field(s) cannot be empty!");
+        if(StringUtil.isEmpty(signUpForm.getEmail())){
+            throw new ApiException("Please enter email!");
+        }
+        if(StringUtil.isEmpty(signUpForm.getPassword())){
+            throw new ApiException("Please enter password!");
+        }
+        if(StringUtil.isEmpty(signUpForm.getConfirmPassword())){
+            throw new ApiException("Please confirm password!");
         }
         if(!signUpForm.getPassword().equals(signUpForm.getConfirmPassword())){
             throw new ApiException("Passwords do not match!");

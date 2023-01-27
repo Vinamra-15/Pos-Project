@@ -4,11 +4,11 @@ import com.increff.pos.model.OrderData;
 import com.increff.pos.model.OrderDetailsData;
 import com.increff.pos.model.OrderItemData;
 import com.increff.pos.model.OrderItemForm;
-import com.increff.pos.pojo.InventoryPojo;
 import com.increff.pos.pojo.OrderItemPojo;
 import com.increff.pos.pojo.OrderPojo;
 import com.increff.pos.pojo.ProductPojo;
 import com.increff.pos.service.*;
+import com.increff.pos.util.ConvertUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.ByteArrayResource;
 import org.springframework.core.io.Resource;
@@ -21,9 +21,10 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.time.Instant;
 import java.util.*;
+import java.util.stream.Collectors;
 
 import static com.increff.pos.util.ConvertUtil.*;
-import static com.increff.pos.util.Normalize.normalizeForm;
+import static com.increff.pos.util.Normalize.normalizePojo;
 import static com.increff.pos.util.PdfUtil.generatePDF;
 import static com.increff.pos.util.Validate.validateForm;
 
@@ -49,37 +50,31 @@ public class OrderDto {
             4. get time and set in orderPojo
             5. save orderPojo in order table
      */
-    //        List<ProductPojo> productPojoList = getProductsFromOrderItemFormList(orderItemForms);
-//        List<InventoryPojo> inventoryPojoList = getInventoryFromProducts(productPojoList);
-//        validateInventoryQuantity(orderItemForms,productPojoList,inventoryPojoList);
-//        reduceInventoryQuantity(orderItemForms,inventoryPojoList);
     public OrderData createOrder(List<OrderItemForm> orderItemForms) throws ApiException, IOException {
-        normalizeForm(orderItemForms);
         validateForm(orderItemForms);
-
-        for(OrderItemForm orderItemForm:orderItemForms){
-            inventoryService.validateAndReduceInventoryQuantity(productService.getByBarcode(orderItemForm.getBarcode()),orderItemForm.getQuantity());
-        }
-
         OrderPojo orderPojo = new OrderPojo();
         orderPojo.setDatetime(Date.from(Instant.now()));
         orderPojo.setInvoicePath(null);
-        orderService.add(orderPojo);
-
-        for(OrderItemForm orderItemForm:orderItemForms){
-            ProductPojo productPojo = productService.getByBarcode(orderItemForm.getBarcode());
-            OrderItemPojo orderItemPojo = convert(orderItemForm, productPojo, orderPojo);
-            orderItemService.add(orderItemPojo);
-        }
-        String invoicePath = generatePDF(getOrderDetails(orderPojo.getId()));;
-        orderPojo.setInvoicePath(invoicePath);
-        orderService.update(orderPojo.getId(),orderPojo);
+        orderService.addOrder(orderPojo);
+        addOrderItems(orderItemForms,orderPojo);
+        savePdf(orderPojo);
         return convert(orderPojo);
     }
-    public OrderDetailsData getOrderDetails(Integer id) throws ApiException {
+    public void updateOrder(Integer orderId, List<OrderItemForm> orderItems) throws ApiException, IOException {
+        validateForm(orderItems);
+        revertInventory(orderId);
+        orderItemService.deleteByOrderId(orderId);
+        OrderPojo orderPojo = orderService.getOrder(orderId);
+        addOrderItems(orderItems,orderPojo);
+        savePdf(orderPojo);
+    }
+    public List<OrderData> getAllOrders() {
+        return orderService.getAllOrders().stream().map(ConvertUtil::convert).collect(Collectors.toList());
+    }
+    public OrderDetailsData getOrderDetails(Integer orderId) throws ApiException {
         OrderDetailsData orderDetailsData = new OrderDetailsData();
-        OrderPojo orderPojo = orderService.get(id);
-        List<OrderItemPojo> orderItems = orderItemService.getByOrderId(id);
+        OrderPojo orderPojo = orderService.getOrder(orderId);
+        List<OrderItemPojo> orderItems = orderItemService.getOrderItemsByOrderId(orderId);
         List<ProductPojo> productPojos = getProductsFromOrderItemPojoList(orderItems);
         List<OrderItemData> orderItemDataList = getOrderItemDetailsList(orderItems,productPojos);
         orderDetailsData.setId(orderPojo.getId());
@@ -87,83 +82,42 @@ public class OrderDto {
         orderDetailsData.setItems(orderItemDataList);
         return orderDetailsData;
     }
-    public List<OrderData> getAll() {
-        List<OrderPojo> list = orderService.getAll();
-        List<OrderData> list2 = new ArrayList<OrderData>();
-        for(OrderPojo orderPojo:list){
-            list2.add(convert(orderPojo));
-        }
-        Collections.reverse(list2);
-        return list2;
-    }
-    public void update(Integer id, List<OrderItemForm> curOrderItemForms) throws ApiException, IOException {
-        normalizeForm(curOrderItemForms);
-        validateForm(curOrderItemForms);
-        List<OrderItemPojo> prevOrderItemPojos = orderItemService.getByOrderId(id);
-        for(OrderItemForm orderItemForm:curOrderItemForms){
-            if(!contains(prevOrderItemPojos, orderItemForm)){
-                inventoryService.validateAndReduceInventoryQuantity(productService.getByBarcode(orderItemForm.getBarcode()),orderItemForm.getQuantity());
-                ProductPojo productPojo = productService.getByBarcode(orderItemForm.getBarcode());
-                OrderPojo orderPojo = orderService.get(id);
-                orderItemService.add(convert(orderItemForm,productPojo,orderPojo));
-            }
-            else
-            {
-                ProductPojo productPojo = productService.getByBarcode(orderItemForm.getBarcode());
-                OrderItemPojo prevOrderItemPojo = orderItemService.getByOrderIdProductId(id,productPojo.getId());
-                InventoryPojo inventoryPojo = inventoryService.get(productPojo.getId());
-
-                Integer newQuantity = inventoryPojo.getQuantity() + prevOrderItemPojo.getQuantity() - orderItemForm.getQuantity();
-                if(newQuantity<0){
-                    throw new ApiException("Insufficient Inventory for product with barcode: " + productPojo.getBarcode());
-                }
-                prevOrderItemPojo.setQuantity(orderItemForm.getQuantity());
-                prevOrderItemPojo.setSellingPrice(orderItemForm.getSellingPrice());
-                inventoryPojo.setQuantity(newQuantity);
-                inventoryService.update(productPojo.getId(),inventoryPojo);
-                orderItemService.update(prevOrderItemPojo.getId(),prevOrderItemPojo);
-                prevOrderItemPojos.remove(prevOrderItemPojo);
-            }
-        }
-
-        // deleting orderItems which existed earlier but not in current orderItemForm after order is edited
-        for(OrderItemPojo orderItemPojo:prevOrderItemPojos){
-            InventoryPojo inventoryPojo = inventoryService.get(orderItemPojo.getProductId());
-            Integer newQuantity = inventoryPojo.getQuantity() +  orderItemPojo.getQuantity();
-            inventoryPojo.setQuantity(newQuantity);
-            inventoryService.update(orderItemPojo.getProductId(),inventoryPojo);
-            orderItemService.delete(orderItemPojo.getId());
-        }
-        OrderPojo orderPojo = orderService.get(id);
-        String invoicePath = generatePDF(getOrderDetails(orderPojo.getId()));
-        orderPojo.setInvoicePath(invoicePath);
-        orderService.update(orderPojo.getId(),orderPojo);
-
-    }
-
     public Resource getFileResource(Integer orderId) throws ApiException, IOException {
-        OrderPojo orderPojo = orderService.get(orderId);
+        OrderPojo orderPojo = orderService.getOrder(orderId);
         String billDirPath =  orderPojo.getInvoicePath();   //"D:\\IncreffProjectPOS BILLS\\bills\\" + orderId + ".pdf";
         File file = new File(billDirPath);
         Path path = Paths.get(file.getAbsolutePath());
-        ByteArrayResource resource = new ByteArrayResource(Files.readAllBytes(path));
-        return resource;
+        return new ByteArrayResource(Files.readAllBytes(path));
     }
-    private boolean contains(List<OrderItemPojo> prevOrderItemPojos,OrderItemForm orderItemForm) throws ApiException {
-        for(OrderItemPojo prevPojo:prevOrderItemPojos){
-            ProductPojo productPojo = productService.get(prevPojo.getProductId());
-            if(Objects.equals(orderItemForm.getBarcode(), productPojo.getBarcode()))
-                return true;
+
+    private void revertInventory(Integer orderId) throws ApiException {
+        List<OrderItemPojo> orderItemPojoList = orderItemService.getOrderItemsByOrderId(orderId);
+        for(OrderItemPojo orderItemPojo:orderItemPojoList){
+            inventoryService.increaseByQuantity(orderItemPojo.getProductId(),orderItemPojo.getQuantity());
         }
-        return false;
     }
     private List<ProductPojo> getProductsFromOrderItemPojoList(List<OrderItemPojo> orderItems) throws ApiException {
         List<ProductPojo> productPojos = new ArrayList<ProductPojo>();
         for(OrderItemPojo orderItemPojo:orderItems){
-            ProductPojo productPojo = productService.get(orderItemPojo.getProductId());
+            ProductPojo productPojo = productService.getProduct(orderItemPojo.getProductId());
             productPojos.add(productPojo);
         }
         return productPojos;
     }
 
+    private void addOrderItems(List<OrderItemForm> orderItemForms, OrderPojo orderPojo) throws ApiException {
+        for(OrderItemForm orderItemForm:orderItemForms){
+            ProductPojo productPojo = productService.getCheckSellingPrice(orderItemForm.getBarcode(),orderItemForm.getSellingPrice());
+            OrderItemPojo orderItemPojo = convert(orderItemForm, productPojo, orderPojo);
+            inventoryService.reduceInventory(orderItemForm.getBarcode(),productPojo.getId(),orderItemForm.getQuantity());
+            orderItemService.addOrderItem(orderItemPojo);
+        }
+    }
+    private void savePdf(OrderPojo orderPojo) throws ApiException, IOException {
+        String invoicePath = generatePDF(getOrderDetails(orderPojo.getId()));;
+        orderPojo.setInvoicePath(invoicePath);
+        orderService.updateOrder(orderPojo.getId(),orderPojo);
+    }
+
 }
+

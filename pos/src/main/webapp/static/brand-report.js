@@ -9,7 +9,7 @@ function getbrandReport() {
     url: url,
     type: "GET",
     success: function (data) {
-      console.log(data);
+//      console.log(data);
       displaybrandReportList(data);
     },
     error: handleAjaxError,
@@ -38,6 +38,7 @@ function displaybrandReportList(data) {
 //INITIALIZATION CODE
 function init() {
   $("#refresh-data").click(getbrandReport);
+  $('#reports-link').addClass('active').css("border-bottom","2px solid black")
 }
 
 $(document).ready(init);

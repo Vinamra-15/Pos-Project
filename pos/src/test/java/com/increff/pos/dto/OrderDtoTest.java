@@ -5,20 +5,18 @@ import com.increff.pos.model.OrderDetailsData;
 import com.increff.pos.model.OrderItemForm;
 import com.increff.pos.pojo.BrandCategoryPojo;
 import com.increff.pos.pojo.InventoryPojo;
-import com.increff.pos.pojo.OrderItemPojo;
 import com.increff.pos.pojo.ProductPojo;
 import com.increff.pos.service.ApiException;
 import com.increff.pos.service.BrandCategoryService;
 import com.increff.pos.service.InventoryService;
 import com.increff.pos.service.ProductService;
 import com.increff.pos.spring.AbstractUnitTest;
-import com.increff.pos.util.TestUtils;
+import com.increff.pos.helper.TestUtils;
 import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.ExpectedException;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.core.io.ByteArrayResource;
 import org.springframework.core.io.Resource;
 
 import java.io.IOException;
@@ -50,7 +48,7 @@ public class OrderDtoTest extends AbstractUnitTest {
         BrandCategoryPojo brandCategoryPojo = new BrandCategoryPojo();
         brandCategoryPojo.setBrand("some brand");
         brandCategoryPojo.setCategory("some category");
-        brandCategoryService.add(brandCategoryPojo);
+        brandCategoryService.addBrandCategory(brandCategoryPojo);
 
         ProductPojo productPojo = new ProductPojo();
         productPojo.setName("some product");
@@ -58,11 +56,11 @@ public class OrderDtoTest extends AbstractUnitTest {
         productPojo.setMrp(1200.00);
         productPojo.setBrandId(brandCategoryPojo.getId());
 //        productPojo.setBrandId(brandCategoryService.getByBrandCategory("some brand","some category").getId());
-        productService.add(productPojo);
+        productService.addProduct(productPojo);
         InventoryPojo inventoryPojo = new InventoryPojo();
         inventoryPojo.setQuantity(20);
         inventoryPojo.setProductId(productPojo.getId());
-        inventoryService.add(inventoryPojo);
+        inventoryService.addInventory(inventoryPojo);
 
         ProductPojo productPojo2 = new ProductPojo();
         productPojo2.setName("some product");
@@ -70,11 +68,11 @@ public class OrderDtoTest extends AbstractUnitTest {
         productPojo2.setMrp(1400.00);
         productPojo2.setBrandId(brandCategoryPojo.getId());
 //        productPojo.setBrandId(brandCategoryService.getByBrandCategory("some brand","some category").getId());
-        productService.add(productPojo2);
+        productService.addProduct(productPojo2);
         InventoryPojo inventoryPojo2 = new InventoryPojo();
         inventoryPojo2.setQuantity(0);
         inventoryPojo2.setProductId(productPojo2.getId());
-        inventoryService.add(inventoryPojo2);
+        inventoryService.addInventory(inventoryPojo2);
         //inventory quantity: 0
     }
     @Test
@@ -90,19 +88,20 @@ public class OrderDtoTest extends AbstractUnitTest {
     public void addEmptyFieldOrderTest() throws ApiException, IOException {
         List<OrderItemForm> orderItemFormList = addEmptyFieldOrderItemToForm() ;
         exceptionRule.expect(ApiException.class);
+        exceptionRule.expectMessage("Barcode field cannot be empty");
         OrderData orderData = orderDto.createOrder(orderItemFormList);
     }
 
+    // set quantity greater than available inventory
     @Test
     public void insufficientInventoryOrderTest() throws ApiException, IOException {
         List<OrderItemForm> orderItemFormList = addMultipleOrderItemToForm();
-        // set quantity greater than available inventory
         OrderItemForm orderItemForm = orderItemFormList.get(1);
         orderItemForm.setQuantity(2);
         orderItemFormList.set(1,orderItemForm);
         exceptionRule.expect(ApiException.class);
+        exceptionRule.expectMessage("Insufficient inventory for product with barcode: " + orderItemForm.getBarcode());
         OrderData orderData = orderDto.createOrder(orderItemFormList);
-        exceptionRule.expectMessage("Insufficient Inventory for product with barcode: " + orderItemForm.getBarcode());
     }
 
     @Test
@@ -117,20 +116,19 @@ public class OrderDtoTest extends AbstractUnitTest {
 
     @Test
     public void getAllOrderTest() throws IOException, ApiException {
-        Integer sizeOfOrderDataList = orderDto.getAll().size();
         List<OrderItemForm> orderItemFormList = addMultipleOrderItemToForm();
         OrderData orderData = orderDto.createOrder(orderItemFormList);
-        List<OrderData> orderDataList = orderDto.getAll();
-        assertEquals(sizeOfOrderDataList+1,orderDataList.size());
+        List<OrderData> orderDataList = orderDto.getAllOrders();
+        assertEquals(1,orderDataList.size());
     }
 
     @Test
     public void updateOrderTest() throws IOException, ApiException {
         List<OrderItemForm> orderItemFormList = addMultipleOrderItemToForm();
         OrderData orderData = orderDto.createOrder(orderItemFormList);
-        orderDto.update(orderData.getId(),addSingleOrderItemToForm());
+        orderDto.updateOrder(orderData.getId(),addSingleOrderItemToForm());
         assertEquals(1,orderDto.getOrderDetails(orderData.getId()).getItems().size());
-        orderDto.update(orderData.getId(),addMultipleOrderItemToForm());
+        orderDto.updateOrder(orderData.getId(),addMultipleOrderItemToForm());
         assertEquals(2,orderDto.getOrderDetails(orderData.getId()).getItems().size());
     }
 

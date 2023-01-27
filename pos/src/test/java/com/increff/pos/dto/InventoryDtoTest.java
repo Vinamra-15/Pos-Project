@@ -14,7 +14,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 
 import java.util.List;
 
-import static com.increff.pos.util.TestUtils.*;
+import static com.increff.pos.helper.TestUtils.*;
 import static org.junit.Assert.assertEquals;
 
 public class InventoryDtoTest extends AbstractUnitTest {
@@ -31,57 +31,57 @@ public class InventoryDtoTest extends AbstractUnitTest {
     public void addProduct() throws ApiException {
         BrandCategoryForm brandCategoryForm = getBrandCategoryForm("some brand","some category ");
         ProductForm productForm = getProductForm("some tshirt  "," $!@11" , 2222.0,"some brand ","some category  " );
-        brandCategoryDto.add(brandCategoryForm);
-        productDto.add(productForm);
+        brandCategoryDto.addBrandCategory(brandCategoryForm);
+        productDto.addProduct(productForm);
     }
     @Test
     public void getTest() throws ApiException {
-        InventoryData inventoryData = inventoryDto.get(" $!@11  ");
-        assertEquals(inventoryData.getBarcode(),"$!@11");
-        assertEquals(inventoryData.getProductName(),"some tshirt");
-        assertEquals(inventoryData.getQuantity(),(Integer) 0);
+        InventoryData inventoryData = inventoryDto.getInventory(" $!@11  ");
+        assertEquals("$!@11",inventoryData.getBarcode());
+        assertEquals("some tshirt",inventoryData.getProductName());
+        assertEquals((Integer) 0,inventoryData.getQuantity());
     }
 
     @Test
     public void getAllTest() throws ApiException {
-        List<InventoryData> list = inventoryDto.getAll();
-//        assertEquals(list.size(),3);
+        List<InventoryData> list = inventoryDto.getAllInventories();
+        assertEquals(1,list.size());
     }
 
     @Test
     public void updateTest() throws ApiException {
         InventoryForm inventoryForm = getInventoryForm(" $!@11 ",2);
-        InventoryData inventoryData = inventoryDto.update(" $!@11  ",inventoryForm);
-        assertEquals(inventoryData.getQuantity(),(Integer) 2);
-        assertEquals(inventoryData.getBarcode(),"$!@11");
-        assertEquals(inventoryData.getProductName(),"some tshirt");
+        InventoryData inventoryData = inventoryDto.updateInventory(" $!@11  ",inventoryForm);
+        assertEquals((Integer) 2,inventoryData.getQuantity());
+        assertEquals("$!@11",inventoryData.getBarcode());
+        assertEquals("some tshirt",inventoryData.getProductName());
     }
 
-    @Test(expected = ApiException.class)
+    @Test
     public void invalidBarcodeGetTest() throws ApiException {
-        InventoryData inventoryData= inventoryDto.get("     ");
         exceptionRule.expect(ApiException.class);
+        InventoryData inventoryData= inventoryDto.getInventory("     ");
     }
 
-    @Test(expected = ApiException.class)
+    @Test
     public void invalidBarcodeUpdateTest() throws ApiException {
+        exceptionRule.expect(ApiException.class);
         InventoryForm inventoryForm = getInventoryForm(" $!@11 ",2);
-        InventoryData inventoryData = inventoryDto.update("     ",inventoryForm);
-        exceptionRule.expect(ApiException.class);
+        InventoryData inventoryData = inventoryDto.updateInventory("     ",inventoryForm);
     }
 
-    @Test(expected = ApiException.class)
+    @Test
     public void quantityTest() throws ApiException {
-        InventoryForm inventoryForm = getInventoryForm(" $!@11 ",-2);
-        InventoryData inventoryData = inventoryDto.update("   $!@11    ",inventoryForm);
         exceptionRule.expect(ApiException.class);
+        InventoryForm inventoryForm = getInventoryForm(" $!@11 ",-2);
+        InventoryData inventoryData = inventoryDto.updateInventory("   $!@11    ",inventoryForm);
     }
 
-    @Test(expected = ApiException.class)
+    @Test
     public void nullBarcodeQuantityTest() throws ApiException {
-        InventoryForm inventoryForm = getInventoryForm(null,null);
-        InventoryData inventoryData = inventoryDto.update("   $!@11    ",inventoryForm);
         exceptionRule.expect(ApiException.class);
+        InventoryForm inventoryForm = getInventoryForm(null,null);
+        InventoryData inventoryData = inventoryDto.updateInventory("   $!@11    ",inventoryForm);
     }
 
 }

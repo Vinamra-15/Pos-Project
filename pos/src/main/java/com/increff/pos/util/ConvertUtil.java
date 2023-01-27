@@ -12,6 +12,7 @@ import org.springframework.security.core.authority.SimpleGrantedAuthority;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 public class ConvertUtil {
 
@@ -82,14 +83,22 @@ public class ConvertUtil {
         return orderItemPojo;
     }
 
-
-
     public static OrderData convert(OrderPojo orderPojo){
         OrderData orderData = new OrderData();
         orderData.setId(orderPojo.getId());
         orderData.setDatetime(orderPojo.getDatetime());
         orderData.setInvoicePath(orderPojo.getInvoicePath());
         return orderData;
+    }
+    public static List<OrderItemData> getOrderItemDetailsList(List<OrderItemPojo> orderItems, List<ProductPojo> productPojos) {
+        List<OrderItemData> orderItemDataList = new ArrayList<OrderItemData>();
+        for(int i=0;i<orderItems.size();i++){
+            ProductPojo productPojo = productPojos.get(i);
+            OrderItemPojo orderItemPojo = orderItems.get(i);
+            OrderItemData orderItemData = convert(orderItemPojo,productPojo);
+            orderItemDataList.add(orderItemData);
+        }
+        return orderItemDataList;
     }
 
     public static List<DaySalesData> convert(List<DaySalesPojo> daySalesPojoList){
@@ -106,33 +115,41 @@ public class ConvertUtil {
         return daySalesDataList;
     }
 
+    public static List<SalesReportData> convertMapToSalesReportDataList(Map<Integer,SalesReportData> brandSalesMapping){
+        List<SalesReportData> salesReportDataList = new ArrayList<>();
+        for (Map.Entry<Integer,SalesReportData> entry : brandSalesMapping.entrySet())
+            salesReportDataList.add(entry.getValue());
+        return salesReportDataList;
+    }
+    public static List<InventoryReportData> convertMaptoInventoryReportDataList(Map<Integer,InventoryReportData> brandIdToInventoryReportDataMap){
+        List<InventoryReportData> inventoryReportDataList = new ArrayList<InventoryReportData>();
+        for(Map.Entry m:brandIdToInventoryReportDataMap.entrySet()){
+            inventoryReportDataList.add((InventoryReportData) m.getValue());
+        }
+        return inventoryReportDataList;
+    }
+
+    public static Authentication convert(UserData userData,String adminEmail) {
+        UserPrincipal principal = new UserPrincipal();
+        principal.setEmail(userData.getEmail());
+        principal.setId(userData.getId());
+        ArrayList<SimpleGrantedAuthority> authorities = new ArrayList<SimpleGrantedAuthority>();
+
+        if(adminEmail.equals(userData.getEmail()))
+        authorities.add(new SimpleGrantedAuthority("supervisor"));
+        else{
+            authorities.add(new SimpleGrantedAuthority("operator"));
+        }
+        UsernamePasswordAuthenticationToken token = new UsernamePasswordAuthenticationToken(principal, null,
+                authorities);
+        return token;
+    }
+
     public static UserPojo convert(SignUpForm signUpForm){
         UserPojo userPojo = new UserPojo();
         userPojo.setEmail(signUpForm.getEmail());
         userPojo.setPassword(signUpForm.getPassword());
         return userPojo;
-    }
-
-    public static Authentication convert(UserPojo p,String adminEmail) {
-        // Create principal
-        UserPrincipal principal = new UserPrincipal();
-        principal.setEmail(p.getEmail());
-        principal.setId(p.getId());
-
-        // Create Authorities
-        ArrayList<SimpleGrantedAuthority> authorities = new ArrayList<SimpleGrantedAuthority>();
-
-        if(adminEmail.equals(p.getEmail()))
-        authorities.add(new SimpleGrantedAuthority("supervisor"));
-        else{
-            authorities.add(new SimpleGrantedAuthority("operator"));
-        }
-        // you can add more roles if required
-
-        // Create Authentication
-        UsernamePasswordAuthenticationToken token = new UsernamePasswordAuthenticationToken(principal, null,
-                authorities);
-        return token;
     }
 
     public static UserData convert(UserPojo p) {
@@ -151,15 +168,7 @@ public class ConvertUtil {
         return p;
     }
 
-    public static List<OrderItemData> getOrderItemDetailsList(List<OrderItemPojo> orderItems, List<ProductPojo> productPojos) {
-        List<OrderItemData> orderItemDataList = new ArrayList<OrderItemData>();
-        for(int i=0;i<orderItems.size();i++){
-            ProductPojo productPojo = productPojos.get(i);
-            OrderItemPojo orderItemPojo = orderItems.get(i);
-            OrderItemData orderItemData = convert(orderItemPojo,productPojo);
-            orderItemDataList.add(orderItemData);
-        }
-        return orderItemDataList;
-    }
+
+
 
 }

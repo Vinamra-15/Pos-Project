@@ -13,7 +13,7 @@ import java.util.List;
 public class ReportService {
     @Autowired
     private DaySalesDao daySalesDao;
-    public void add(DaySalesPojo daySalesPojo){
+    public void addDaySales(DaySalesPojo daySalesPojo){
         daySalesDao.insert(daySalesPojo);
     }
 

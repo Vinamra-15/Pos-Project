@@ -115,7 +115,7 @@ function displayInventoryList(data){
       var e = data[i];
       if(getRole()==="supervisor")
       {
-          var buttonHtml = ' <button type="button" class="btn btn-outline-secondary" onclick="displayEditInventory(\'' + e.barcode + '\')">Edit</button>'
+          var buttonHtml = ' <button type="button" class="btn btn-outline-secondary" onclick="displayEditInventory(\'' + e.barcode + '\')"><i class="fas fa-edit fa-xs"></i></button>'
           var row = '<tr class="text-center">'
           + '<td>' + e.barcode + '</td>'
           + '<td>' + e.productName + '</td>'
@@ -194,6 +194,7 @@ function init(){
    $('#process-data').click(processData);
    $('#download-errors').click(downloadErrors);
     $('#employeeFile').on('change', updateFileName)
+    $('#inventory-link').addClass('active').css("border-bottom","2px solid black")
 }
 
 $(document).ready(init);

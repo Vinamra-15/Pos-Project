@@ -27,6 +27,15 @@ function filterSalesReport() {
 function displaySalesReport(data) {
     var $tbody = $('#sales-table').find('tbody');
     $tbody.empty();
+
+    if(data.length===0)
+    {
+        $('#sales-table').hide()
+    }
+    else
+    {
+        $('#sales-table').show()
+    }
     for(var i in data){
         let srNo = Number.parseInt(i) + 1
         var b = data[i];
@@ -35,7 +44,7 @@ function displaySalesReport(data) {
         + '<td>' + b.brand + '</td>'
         + '<td>' + b.category + '</td>'
         + '<td>' + b.quantity + '</td>'
-        + '<td>' + b.revenue + '</td>'
+        + '<td>' + numberWithCommas(b.revenue.toFixed(2)) + '</td>'
         + '</tr>';
         $tbody.append(row);
     }
@@ -44,6 +53,8 @@ function displaySalesReport(data) {
 //INITIALIZATION CODE
 function init(){
    $('#filter-sales-report').click(filterSalesReport);
+   $('#reports-link').addClass('active').css("border-bottom","2px solid black")
+   displaySalesReport([])
 }
 
 $(document).ready(init);

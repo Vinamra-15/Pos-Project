@@ -26,7 +26,7 @@ function displaySalesReport(data) {
         + '<td>' + convertTimeStampToDateTime(item.date) + '</td>'
         + '<td>' + item.invoiced_orders_count + '</td>'
         + '<td>' + item.invoiced_items_count + '</td>'
-        + '<td>' + item.total_revenue + '</td>'
+        + '<td>' + numberWithCommas(item.total_revenue.toFixed(2)) + '</td>'
         + '</tr>';
         $tbody.append(row);
     }
@@ -35,6 +35,7 @@ function displaySalesReport(data) {
 //INITIALIZATION CODE
 function init(){
    $('#get-daily-sales-report').click(filterSalesReport);
+   $('#reports-link').addClass('active').css("border-bottom","2px solid black")
 }
 
 function convertTimeStampToDateTime(timestamp) {

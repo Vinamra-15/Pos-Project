@@ -12,21 +12,26 @@
 
 
 	 <!-- Top row with form-->
-	<div class="row m-3">
+	<div class="row m-3 justify-content-around">
 		 <div class="col-4" style="text-align:center;">
-			<a th:href="@{/ui/brands}" title="Brands"> <img style="width:10rem ;height:15rem ;padding-bottom:4rem;" th:src="@{/static/assets/brands_icon.png}"/> </a>
+			<a th:href="@{/ui/brands}" title="Brands"> <img style="width:10rem ;height:12rem;" th:src="@{/static/assets/brands_icon.png}"/> </a>
+			 <p style="margin-top:1rem">Brands</p>
 		 </div>
 		<div class="col-4" style="text-align:center;">
-			<a th:href="@{/ui/products}" title="Products"> <img style="width:10rem ;height:15rem ;padding-bottom:4rem;" th:src="@{/static/assets/products_icon.png}"/> </a>
+			<a th:href="@{/ui/products}" title="Products"> <img style="width:10rem ;height:12rem;" th:src="@{/static/assets/products_icon.png}"/> </a>
+			<p style="margin-top:1rem">Products</p>
 		</div>
 		<div class="col-4" style="text-align:center;">
-			<a th:href="@{/ui/orders}" title="Orders"> <img style="width:10rem ;height:15rem ;padding-bottom:4rem;" th:src="@{/static/assets/orders_icon.jpg}"/> </a>
+			<a th:href="@{/ui/orders}" title="Orders"> <img style="width:10rem ;height:12rem;" th:src="@{/static/assets/orders_icon.jpg}"/> </a>
+			<p style="margin-top:1rem;margin-left:2rem">Orders</p>
 		</div>
-		<div class="col-6" style="text-align:center;">
-			<a th:href="@{/ui/inventory}" title="Inventory"> <img style="width:10rem ;height:15rem ;padding-bottom:4rem;" th:src="@{/static/assets/inventory_icon.png}"/> </a>
+		<div class="col-4" style="text-align:center;">
+			<a th:href="@{/ui/inventory}" title="Inventory"> <img style="width:10rem ;height:12rem;" th:src="@{/static/assets/inventory_icon.png}"/> </a>
+			<p style="margin-top:-1rem">Inventory</p>
 		</div>
-		<div class="col-6" style="text-align:center;">
-			<a th:href="@{/ui/reports}" title="Reports"> <img style="width:10rem ;height:11rem ;padding-bottom:0rem;" th:src="@{/static/assets/report_icon.png}"/> </a>
+		<div class="col-4" style="text-align:center;">
+			<a th:href="@{/ui/reports}" title="Reports"> <img style="width:10rem ;height:11rem ;" th:src="@{/static/assets/report_icon.png}"/> </a>
+			<p style="margin-right:2rem">Reports</p>
 		</div>
 
 	</div>
@@ -36,7 +41,9 @@
 </div> <!-- Container end-->
 
 <footer th:replace="snippets.html :: name_footer"></footer>
-
+<script>
+	$("#navbar-page-links").hide();
+</script>
 
 </body>	
 

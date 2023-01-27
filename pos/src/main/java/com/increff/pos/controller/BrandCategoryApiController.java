@@ -13,7 +13,6 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.increff.pos.service.ApiException;
-import com.increff.pos.service.BrandCategoryService;
 
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -23,30 +22,30 @@ import io.swagger.annotations.ApiOperation;
 public class BrandCategoryApiController {
 
 	@Autowired
-	private BrandCategoryDto dto;
+	private BrandCategoryDto brandCategoryDto;
 
 	@ApiOperation(value = "Adds a brand")
 	@RequestMapping(path = "/api/brands", method = RequestMethod.POST)
-	public BrandCategoryData add(@RequestBody BrandCategoryForm brandCategoryForm) throws ApiException {
-		return dto.add(brandCategoryForm);
+	public BrandCategoryData addBrandCategory(@RequestBody BrandCategoryForm brandCategoryForm) throws ApiException {
+		return brandCategoryDto.addBrandCategory(brandCategoryForm);
 	}
 
 
 	@ApiOperation(value = "Gets a brand by ID")
 	@RequestMapping(path = "/api/brands/{id}", method = RequestMethod.GET)
-	public BrandCategoryData get(@PathVariable Integer id) throws ApiException {
-		return dto.get(id);
+	public BrandCategoryData getBrandCategory(@PathVariable Integer id) throws ApiException {
+		return brandCategoryDto.getBrandCategory(id);
 	}
 
 	@ApiOperation(value = "Gets list of all brands")
 	@RequestMapping(path = "/api/brands", method = RequestMethod.GET)
-	public List<BrandCategoryData> getAll() {
-		return dto.getAll();
+	public List<BrandCategoryData> getAllBrandCategory() {
+		return brandCategoryDto.getAllBrandCategory();
 	}
 
 	@ApiOperation(value = "Updates a brand")
 	@RequestMapping(path = "/api/brands/{id}", method = RequestMethod.PUT)
-	public BrandCategoryData update(@PathVariable Integer id, @RequestBody BrandCategoryForm brandCategoryForm) throws ApiException {
-		return dto.update(id, brandCategoryForm);
+	public BrandCategoryData updateBrandCategory(@PathVariable Integer id, @RequestBody BrandCategoryForm brandCategoryForm) throws ApiException {
+		return brandCategoryDto.update(id, brandCategoryForm);
 	}
 }
