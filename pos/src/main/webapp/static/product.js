@@ -157,7 +157,7 @@ function displayProductList(data){
             + '<td>' + e.name + '</td>'
             + '<td>' + e.brand + '</td>'
             + '<td>'  + e.category + '</td>'
-            + '<td>' + e.mrp + '</td>'
+            + '<td>' + numberWithCommas( e.mrp.toFixed(2)) + '</td>'
             + '<td>' + buttonHtml + '</td>'
             + '</tr>';
             $tbody.append(row);
@@ -169,7 +169,7 @@ function displayProductList(data){
                         + '<td>' + e.name + '</td>'
                         + '<td>' + e.brand + '</td>'
                         + '<td>'  + e.category + '</td>'
-                        + '<td>' + e.mrp + '</td>'
+                        + '<td>' + numberWithCommas( e.mrp.toFixed(2))  + '</td>'
                         + '</tr>';
             $tbody.append(row);
         }
@@ -248,7 +248,7 @@ function init(){
 	$('#process-data').click(processData);
 	$('#download-errors').click(downloadErrors);
     $('#productFile').on('change', updateFileName)
-    $('#products-link').addClass('active')
+    $('#products-link').addClass('active').css("border-bottom","2px solid black")
 }
 
 $(document).ready(init);

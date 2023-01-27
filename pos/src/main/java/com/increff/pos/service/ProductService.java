@@ -65,8 +65,17 @@ public class ProductService {
 		return productPojo;
 	}
 	private void checkProductDuplicateExists(String barcode) throws ApiException {
+		barcode = StringUtil.toLowerCase(barcode);
 		ProductPojo productPojo = productDao.selectByBarcode(barcode);
 		if(productPojo!=null)
 			throw new ApiException("Product with barcode: " + barcode+ " already exists.");
 	}
+
+    public ProductPojo getCheckSellingPrice(String barcode, Double sellingPrice) throws ApiException {
+		ProductPojo productPojo = getProductByBarcode(barcode);
+		if(sellingPrice>productPojo.getMrp()){
+			throw new ApiException("Selling Price cannot be greater than MRP for barcode: " + productPojo.getBarcode() +  ", Mrp: " + productPojo.getMrp());
+		}
+		return productPojo;
+    }
 }

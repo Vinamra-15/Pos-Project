@@ -32,29 +32,29 @@ public class AdminApiController {
 
 
 
-	@ApiOperation(value = "Adds a user")
-	@RequestMapping(path = "/api/admin/user", method = RequestMethod.POST)
-	public void addUser(@RequestBody UserForm form) throws ApiException {
-		UserPojo p = convert(form);
-		service.add(p);
-	}
-
-	@ApiOperation(value = "Deletes a user")
-	@RequestMapping(path = "/api/admin/user/{id}", method = RequestMethod.DELETE)
-	public void deleteUser(@PathVariable Integer id) {
-		service.delete(id);
-	}
-
-	@ApiOperation(value = "Gets list of all users")
-	@RequestMapping(path = "/api/admin/user", method = RequestMethod.GET)
-	public List<UserData> getAllUser() {
-		List<UserPojo> list = service.getAll();
-		List<UserData> list2 = new ArrayList<UserData>();
-		for (UserPojo p : list) {
-			list2.add(convert(p));
-		}
-		return list2;
-	}
+//	@ApiOperation(value = "Adds a user")
+//	@RequestMapping(path = "/api/admin/user", method = RequestMethod.POST)
+//	public void addUser(@RequestBody UserForm form) throws ApiException {
+//		UserPojo p = convert(form);
+//		service.add(p);
+//	}
+//
+//	@ApiOperation(value = "Deletes a user")
+//	@RequestMapping(path = "/api/admin/user/{id}", method = RequestMethod.DELETE)
+//	public void deleteUser(@PathVariable Integer id) {
+//		service.delete(id);
+//	}
+//
+//	@ApiOperation(value = "Gets list of all users")
+//	@RequestMapping(path = "/api/admin/user", method = RequestMethod.GET)
+//	public List<UserData> getAllUser() {
+//		List<UserPojo> list = service.getAll();
+//		List<UserData> list2 = new ArrayList<UserData>();
+//		for (UserPojo p : list) {
+//			list2.add(convert(p));
+//		}
+//		return list2;
+//	}
 
 
 

@@ -244,7 +244,7 @@ function init(){
         var fileName = $(this).val();
         $('#brandCategoryFileName').html(fileName);
     });
-    $('#brands-link').addClass('active')
+    $('#brands-link').addClass('active').css("border-bottom","2px solid black")
 }
 
 $(document).ready(init);

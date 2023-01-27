@@ -194,7 +194,7 @@ function init(){
    $('#process-data').click(processData);
    $('#download-errors').click(downloadErrors);
     $('#employeeFile').on('change', updateFileName)
-    $('#inventory-link').addClass('active')
+    $('#inventory-link').addClass('active').css("border-bottom","2px solid black")
 }
 
 $(document).ready(init);

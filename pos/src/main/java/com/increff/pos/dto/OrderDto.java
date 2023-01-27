@@ -107,7 +107,7 @@ public class OrderDto {
 
     private void addOrderItems(List<OrderItemForm> orderItemForms, OrderPojo orderPojo) throws ApiException {
         for(OrderItemForm orderItemForm:orderItemForms){
-            ProductPojo productPojo = productService.getProductByBarcode(orderItemForm.getBarcode());
+            ProductPojo productPojo = productService.getCheckSellingPrice(orderItemForm.getBarcode(),orderItemForm.getSellingPrice());
             OrderItemPojo orderItemPojo = convert(orderItemForm, productPojo, orderPojo);
             inventoryService.reduceInventory(orderItemForm.getBarcode(),productPojo.getId(),orderItemForm.getQuantity());
             orderItemService.addOrderItem(orderItemPojo);

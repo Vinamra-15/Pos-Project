@@ -44,7 +44,7 @@ function displaySalesReport(data) {
         + '<td>' + b.brand + '</td>'
         + '<td>' + b.category + '</td>'
         + '<td>' + b.quantity + '</td>'
-        + '<td>' + b.revenue + '</td>'
+        + '<td>' + numberWithCommas(b.revenue.toFixed(2)) + '</td>'
         + '</tr>';
         $tbody.append(row);
     }
@@ -53,7 +53,7 @@ function displaySalesReport(data) {
 //INITIALIZATION CODE
 function init(){
    $('#filter-sales-report').click(filterSalesReport);
-   $('#reports-link').addClass('active')
+   $('#reports-link').addClass('active').css("border-bottom","2px solid black")
    displaySalesReport([])
 }
 
