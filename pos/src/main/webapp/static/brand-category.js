@@ -12,6 +12,7 @@ function getRole(){
 
 //BUTTON ACTIONS
 function addBrandCategory(event){
+    event.preventDefault()
 	//Set the values to update
 	var $form = $("#brand-category-form");
 	var json = toJson($form);
@@ -37,7 +38,8 @@ function addBrandCategory(event){
 }
 
 function updateBrandCategory(event){
-	$('#edit-brand-category-modal').modal('toggle');
+    event.preventDefault()
+
 	//Get the ID
 	var id = $("#brand-category-edit-form input[name=id]").val();
 	var url = getBrandCategoryUrl() + "/" + id;
@@ -55,7 +57,9 @@ function updateBrandCategory(event){
        },	   
 	   success: function(response) {
 	   		getBrandCategoryList();
+	   		$('#edit-brand-category-modal').modal('toggle');
 	   		$.notify("Edit successful!","success");
+
 	   },
 	   error: handleAjaxError
 	});
@@ -233,8 +237,8 @@ function displayBrandCategory(data){
 
 //INITIALIZATION CODE
 function init(){
-	$('#add-brand-category').click(addBrandCategory);
-	$('#update-brand-category').click(updateBrandCategory);
+	$('#add-brand-category').submit(addBrandCategory);
+	$('#brand-category-edit-form').submit(updateBrandCategory);
 	$('#refresh-data').click(getBrandCategoryList);
 	$('#upload-data').click(displayUploadData);
 	$('#process-data').click(processData);

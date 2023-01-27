@@ -12,7 +12,8 @@ function getRole(){
 //BUTTON ACTIONS
 function addProduct(event){
 	//Set the values to update
-    var $modal = $("#add-product-modal").modal('toggle');
+	event.preventDefault()
+
 	var $form = $("#product-add-form");
 	var json = toJson($form);
 	var url = getProductUrl();
@@ -26,6 +27,7 @@ function addProduct(event){
        },	   
 	   success: function(response) {
 	   		getProductList();
+	   		var $modal = $("#add-product-modal").modal('toggle');
 	   		$.notify("Product added successfully!","success");
 	   },
 	   error: handleAjaxError
@@ -35,7 +37,8 @@ function addProduct(event){
 }
 
 function updateProduct(event){
-	$('#edit-product-modal').modal('toggle');
+    event.preventDefault()
+
 	//Get the ID
 	var id = $("#product-edit-form input[name=id]").val();	
 	var url = getProductUrl() + "/" + id;
@@ -53,6 +56,7 @@ function updateProduct(event){
        },	   
 	   success: function(response) {
 	   		getProductList();
+	   		$('#edit-product-modal').modal('toggle');
 	   		$.notify("Product update successful for product: " + JSON.parse(json).barcode,"success");
 	   },
 	   error: handleAjaxError
@@ -241,8 +245,8 @@ function displayAddProductModal(){
 
 //INITIALIZATION CODE
 function init(){
-	$('#add-product').click(addProduct);
-	$('#update-product').click(updateProduct);
+	$('#product-add-form').submit(addProduct);
+	$('#product-edit-form').submit(updateProduct);
 	$('#refresh-data').click(getProductList);
 	$('#upload-data').click(displayUploadData);
 	$('#process-data').click(processData);

@@ -27,7 +27,7 @@
                 <tr class="text-center">
                     <th scope="col-2">ID</th>
                     <th scope="col-3">Time</th>
-                    <th scope="col-4">Action</th>
+                    <th scope="col-4">Actions</th>
                 </tr>
                 </thead>
                 <tbody class="text-center"></tbody>
@@ -76,92 +76,93 @@
     </div>
 </div>
 
-    <!-- Order Creation Modal -->
-    <div class="modal" tabindex="-1" role="dialog" id="create-order-modal">
-        <div class="modal-dialog modal-lg" role="document">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title">Add Items</h5>
-                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                        <span aria-hidden="true">&times;</span>
-                    </button>
+<!-- Order Creation Modal -->
+<div class="modal" tabindex="-1" role="dialog" id="create-order-modal">
+    <div class="modal-dialog modal-lg" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Add Items</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+
+            <div class="modal-body">
+                <!-- Add Item From -->
+                <form class="form-inline justify-content-between" id="add-item-form-add-modal">
+                    <div class="form-group p-1">
+                        <label for="inputAddModalBarcode" class="col-sm-2 col-form-label">Barcode</label>
+                        <div class="col-sm-1">
+                            <input
+                                    type="text"
+                                    class="form-control"
+                                    id="inputAddModalBarcode"
+                                    name="barcode"
+                                    placeholder="Enter Barcode"
+                                    required
+                            />
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="inputAddModalQuantity" class="col-sm-2 col-form-label">Quantity</label>
+                        <div class="col-sm-1">
+                            <input
+                                    type="number"
+                                    class="form-control"
+                                    name="quantity"
+                                    id="inputAddModalQuantity"
+                                    min="1"
+                                    placeholder="Enter Quantity"
+                                    required
+                            />
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="inputAddModalSellingPrice" class="col-sm-2 col-form-label">Selling Price</label>
+                        <div class="col-sm-1">
+                            <input
+                                    type="number"
+                                    class="form-control"
+                                    name="sellingPrice"
+                                    id="inputAddModalSellingPrice"
+                                    min="0.00"
+                                    placeholder="Enter Selling Price"
+                                    required
+                            />
+                        </div>
+                    </div>
+
+                    <button class="btn btn-warning px-4" type="submit" style="margin-right: 3rem;"><i class="fa fa-plus" aria-hidden="true"></i></button>
+                </form>
+
+                <div class="row">&nbsp;</div>
+                <div class="row">
+                    <!-- Table -->
+                    <div class="col-12 table-wrapper-scroll-y my-custom-scrollbar">
+                        <table class="table table-bordered table-striped table-scrollable" id="create-order-table">
+                            <thead class="thead-dark">
+                            <tr class="text-center">
+                                <th scope="col-2">Barcode</th>
+                                <th scope="col-2">Name</th>
+                                <th scope="col-2">Price</th>
+                                <th class="col-2">Quantity</th>
+                                <th class="col-2">Actions</th>
+                            </tr>
+                            </thead>
+                            <tbody class="text-center"></tbody>
+                        </table>
+                    </div>
                 </div>
-
-                <div class="modal-body">
-                    <!-- Add Item From -->
-                    <form class="form-inline justify-content-between" id="add-item-form">
-                        <div class="form-group p-1">
-                            <label for="inputAddModalBarcode" class="col-sm-2 col-form-label">Barcode</label>
-                            <div class="col-sm-1">
-                                <input
-                                        type="text"
-                                        class="form-control"
-                                        id="inputAddModalBarcode"
-                                        onchange="console.log('changed')"
-                                        name="barcode"
-                                        placeholder="Enter Barcode"
-                                />
-                            </div>
-                        </div>
-
-                        <div class="form-group">
-                            <label for="inputAddModalQuantity" class="col-sm-2 col-form-label">Quantity</label>
-                            <div class="col-sm-1">
-                                <input
-                                        type="number"
-                                        class="form-control"
-                                        name="quantity"
-                                        id="inputAddModalQuantity"
-                                        min="1"
-                                        placeholder="Enter Quantity"
-                                />
-                            </div>
-                        </div>
-
-                        <div class="form-group">
-                            <label for="inputAddModalSellingPrice" class="col-sm-2 col-form-label">Selling Price</label>
-                            <div class="col-sm-1">
-                                <input
-                                        type="number"
-                                        class="form-control"
-                                        onchange="console.log('changed')"
-                                        name="sellingPrice"
-                                        id="inputAddModalSellingPrice"
-                                        min="0.00"
-                                        placeholder="Enter Selling Price"
-                                />
-                            </div>
-                        </div>
-
-                        <button class="btn btn-warning px-4" type="button" onclick="addOrderItem('add')" style="margin-right: 3rem;"><i class="fa fa-plus" aria-hidden="true"></i></button>
-                    </form>
-
-                    <div class="row">&nbsp;</div>
-                    <div class="row">
-                        <!-- Table -->
-                        <div class="col-12 table-wrapper-scroll-y my-custom-scrollbar">
-                            <table class="table table-bordered table-striped table-scrollable" id="create-order-table">
-                                <thead class="thead-dark">
-                                <tr class="text-center">
-                                    <th scope="col-2">Barcode</th>
-                                    <th scope="col-2">Name</th>
-                                    <th scope="col-2">Price</th>
-                                    <th class="col-2">Quantity</th>
-                                    <th class="col-2">Action</th>
-                                </tr>
-                                </thead>
-                                <tbody class="text-center"></tbody>
-                            </table>
-                        </div>
-                    </div>
-                    <div class="modal-footer">
-                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
-                        <button type="button" class="btn btn-primary" id="place-order-btn">Place Order</button>
-                    </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
+                    <button type="button" class="btn btn-primary" id="place-order-btn">Place Order</button>
                 </div>
             </div>
         </div>
     </div>
+</div>
 </div>
 
 <!--Order editing modal-->
@@ -184,10 +185,10 @@
                             <input
                                     type="text"
                                     class="form-control"
-                                    onchange="console.log('changed')"
                                     name="barcode"
                                     id="inputEditModalBarcode"
                                     placeholder="Enter Barcode"
+                                    required
                             />
                         </div>
                     </div>
@@ -202,6 +203,7 @@
                                     id="inputEditModalQuantity"
                                     min="1"
                                     placeholder="Enter Quantity"
+                                    required
                             />
                         </div>
                     </div>
@@ -212,17 +214,17 @@
                             <input
                                     type="number"
                                     class="form-control"
-                                    onchange="console.log('changed')"
                                     name="sellingPrice"
                                     id="inputEditModalSellingPrice"
                                     min="0.00"
                                     placeholder="Enter Selling Price"
+                                    required
                             />
                         </div>
 
                     </div>
 
-                    <button class="btn btn-warning px-4" type="button" onclick="addOrderItem('edit')" style="margin-right: 3rem;"><i class="fa fa-plus" aria-hidden="true"></i></button>
+                    <button class="btn btn-warning px-4" type="submit" style="margin-right: 3rem;"><i class="fa fa-plus" aria-hidden="true"></i></button>
                     <input type="hidden" name="id" >
                 </form>
 
@@ -237,7 +239,7 @@
                                 <th scope="col-2">Name</th>
                                 <th scope="col-2">Price</th>
                                 <th class="col-2">Quantity</th>
-                                <th class="col-2">Action</th>
+                                <th class="col-2">Actions</th>
                             </tr>
                             </thead>
                             <tbody class="text-center"></tbody>
