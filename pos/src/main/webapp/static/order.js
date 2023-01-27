@@ -215,13 +215,14 @@ function resetCreateModal() {
 //
 //}
 
-function convertDate(datetime){  // converts date from UTC to IST
-    let dateUTC = new Date(datetime);
-    dateUTC = dateUTC.getTime()  // in milliseconds
-    let dateIST = new Date(dateUTC);
-    dateIST.setHours(dateIST.getHours() + 5);
-    dateIST.setMinutes(dateIST.getMinutes() + 30);
-    return dateIST
+function convertDate(datetime){
+    let date = new Date(datetime).toString();
+    return date.split(' G')[0];
+//    dateUTC = dateUTC.getTime()  // in milliseconds
+//    let dateIST = new Date(dateUTC);
+//    dateIST.setHours(dateIST.getHours() + 5);
+//    dateIST.setMinutes(dateIST.getMinutes() + 30);
+//    return dateIST
 }
 
 function displayOrderList(orders) {
@@ -410,8 +411,6 @@ function displayEditOrderItems(data){
           `;
 
           $tbody.append(row);
-
-
         }
 }
 
