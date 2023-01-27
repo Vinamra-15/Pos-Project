@@ -70,6 +70,10 @@ function addOrderItemToAddModal(event) {
   event.preventDefault()
   const item = getCurrentOrderItem('add');
     getProductByBarcode(item.barcode, (product) => {
+        if(product.mrp<item.sellingPrice){
+          $.notify("Selling Price should not be greater than MRP: "+product.mrp,"error");
+          return;
+        }
         addItem({
           barcode: product.barcode,
           name: product.name,
@@ -85,6 +89,10 @@ function addOrderItemToEditModal(event) {
     event.preventDefault()
     const item = getCurrentOrderItem('edit');
     getProductByBarcode(item.barcode, (product) => {
+        if(product.mrp<item.sellingPrice){
+                  $.notify("Selling Price should not be greater than MRP: "+product.mrp,"error");
+                  return;
+                }
         addItem({
           barcode: product.barcode,
           name: product.name,
@@ -466,7 +474,7 @@ function updateOrder(event){
           },
           success: function(){
             hideEditingModal()
-            $.notify("Order Update successful!","success");
+            $.notify("Order-"+id+" updated successfully!","success");
           },
           error: handleAjaxError,
         });
