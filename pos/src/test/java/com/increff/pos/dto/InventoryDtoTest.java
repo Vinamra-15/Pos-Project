@@ -14,7 +14,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 
 import java.util.List;
 
-import static com.increff.pos.util.TestUtils.*;
+import static com.increff.pos.helper.TestUtils.*;
 import static org.junit.Assert.assertEquals;
 
 public class InventoryDtoTest extends AbstractUnitTest {

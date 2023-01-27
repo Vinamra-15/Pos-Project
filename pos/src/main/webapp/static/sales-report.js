@@ -27,6 +27,15 @@ function filterSalesReport() {
 function displaySalesReport(data) {
     var $tbody = $('#sales-table').find('tbody');
     $tbody.empty();
+
+    if(data.length===0)
+    {
+        $('#sales-table').hide()
+    }
+    else
+    {
+        $('#sales-table').show()
+    }
     for(var i in data){
         let srNo = Number.parseInt(i) + 1
         var b = data[i];
@@ -45,6 +54,7 @@ function displaySalesReport(data) {
 function init(){
    $('#filter-sales-report').click(filterSalesReport);
    $('#reports-link').addClass('active')
+   displaySalesReport([])
 }
 
 $(document).ready(init);

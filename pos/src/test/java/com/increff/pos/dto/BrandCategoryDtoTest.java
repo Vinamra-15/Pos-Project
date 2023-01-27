@@ -4,12 +4,12 @@ import com.increff.pos.model.BrandCategoryData;
 import com.increff.pos.model.BrandCategoryForm;
 import com.increff.pos.service.ApiException;
 import com.increff.pos.spring.AbstractUnitTest;
-import com.increff.pos.util.TestUtils;
+import com.increff.pos.helper.TestUtils;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.ExpectedException;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
+
 import java.util.List;
 import static org.junit.Assert.assertEquals;
 

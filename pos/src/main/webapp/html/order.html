@@ -11,7 +11,7 @@
 <div class="container pt-3">
     <!-- Top row with form-->
     <div class="row">
-        <h3 class="column">Orders</h3>
+        <h3 class="column" style="margin-left:1rem;">Orders</h3>
         <div class="col d-flex justify-content-end" float="left">
             <button type="button" class="btn btn-primary" id="create-order"><i class="fa fa-plus" aria-hidden="true"></i></button>
         </div>
@@ -40,7 +40,7 @@
         <div class="modal-dialog modal-lg" role="document">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h5 class="modal-title">Order Details</h5>
+                    <h5 class="modal-title" id="order-details-heading">Order Details</h5>
                     <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                         <span aria-hidden="true">&times;</span>
                     </button>
@@ -48,10 +48,9 @@
 
                 <div class="modal-body">
                     <div class="row align-content-between">
-                        <div class="col-6" id="order-id"></div>
                         <div class="col-6" id="date-time"></div>
-                        <div>&nbsp;</div>
                     </div>
+                    &nbsp;
                     <div class="row">
                         <!-- Table -->
                         <div class="col-12 table-wrapper-scroll-y my-custom-scrollbar">
@@ -69,7 +68,7 @@
                         </div>
                     </div>
                     <div class="modal-footer">
-                        <button type="button" class="btn btn-outline-danger" data-dismiss="modal">Close</button>
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
                     </div>
                 </div>
             </div>
@@ -134,7 +133,7 @@
                             </div>
                         </div>
 
-                        <button class="btn btn-outline-primary px-4" type="button" onclick="addOrderItem('add')" style="margin-right: 3rem;"><i class="fa fa-plus" aria-hidden="true"></i></button>
+                        <button class="btn btn-warning px-4" type="button" onclick="addOrderItem('add')" style="margin-right: 3rem;"><i class="fa fa-plus" aria-hidden="true"></i></button>
                     </form>
 
                     <div class="row">&nbsp;</div>
@@ -156,8 +155,8 @@
                         </div>
                     </div>
                     <div class="modal-footer">
-                        <button type="button" class="btn btn-outline-danger" data-dismiss="modal">Cancel</button>
-                        <button type="button" class="btn btn-outline-success" id="place-order-btn">Place Order</button>
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
+                        <button type="button" class="btn btn-primary" id="place-order-btn">Place Order</button>
                     </div>
                 </div>
             </div>
@@ -223,7 +222,7 @@
 
                     </div>
 
-                    <button class="btn btn-outline-primary px-4" type="button" onclick="addOrderItem('edit')" style="margin-right: 3rem;"><i class="fa fa-plus" aria-hidden="true"></i></button>
+                    <button class="btn btn-warning px-4" type="button" onclick="addOrderItem('edit')" style="margin-right: 3rem;"><i class="fa fa-plus" aria-hidden="true"></i></button>
                     <input type="hidden" name="id" >
                 </form>
 
@@ -246,8 +245,8 @@
                     </div>
                 </div>
                 <div class="modal-footer">
-                    <button type="button" class="btn btn-outline-danger" data-dismiss="modal">Cancel</button>
-                    <button type="button" class="btn btn-outline-success" id="update-order-btn">Update Order</button>
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
+                    <button type="button" class="btn btn-primary" id="update-order-btn">Update Order</button>
                 </div>
             </div>
         </div>

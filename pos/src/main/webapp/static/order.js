@@ -293,10 +293,6 @@ function downloadInvoice(orderId) {
           $.notify("Invoice Generated for order: " + orderId,"success");
             // Request finished. Do processing here.
           }
-          else
-          {
-            $.notify("Invoice Generation in progress!","warning");
-          }
 
         }
         req.send()
@@ -468,8 +464,8 @@ function displayOrderDetails(data) {
   const datetime = (new Date(data.datetime)).toString()
   displayOrderDetailsModal();
   const $time = $('#date-time')
-  $time.text("Order placed on: " + datetime.split('G')[0])
-  const $id = $('#order-id')
+  $time.text(datetime.split('G')[0]).wrapInner("<strong />");
+  const $id = $('#order-details-heading')
   $id.text("Order Id: " + data.id)
   const $tbody = $('#order-details-table').find('tbody');
   $tbody.empty();
@@ -494,7 +490,7 @@ function displayOrderDetails(data) {
                 <td>Bill Amount: </td>
                 <td></td>
                <td></td>
-              <td>${billAmount}</td>
+              <td><strong>${billAmount}</strong></td>
             </tr>
           `;
     $tbody.append(row);

@@ -83,14 +83,22 @@ public class ConvertUtil {
         return orderItemPojo;
     }
 
-
-
     public static OrderData convert(OrderPojo orderPojo){
         OrderData orderData = new OrderData();
         orderData.setId(orderPojo.getId());
         orderData.setDatetime(orderPojo.getDatetime());
         orderData.setInvoicePath(orderPojo.getInvoicePath());
         return orderData;
+    }
+    public static List<OrderItemData> getOrderItemDetailsList(List<OrderItemPojo> orderItems, List<ProductPojo> productPojos) {
+        List<OrderItemData> orderItemDataList = new ArrayList<OrderItemData>();
+        for(int i=0;i<orderItems.size();i++){
+            ProductPojo productPojo = productPojos.get(i);
+            OrderItemPojo orderItemPojo = orderItems.get(i);
+            OrderItemData orderItemData = convert(orderItemPojo,productPojo);
+            orderItemDataList.add(orderItemData);
+        }
+        return orderItemDataList;
     }
 
     public static List<DaySalesData> convert(List<DaySalesPojo> daySalesPojoList){
@@ -107,12 +115,6 @@ public class ConvertUtil {
         return daySalesDataList;
     }
 
-    public static UserPojo convert(SignUpForm signUpForm){
-        UserPojo userPojo = new UserPojo();
-        userPojo.setEmail(signUpForm.getEmail());
-        userPojo.setPassword(signUpForm.getPassword());
-        return userPojo;
-    }
     public static List<SalesReportData> convertMapToSalesReportDataList(Map<Integer,SalesReportData> brandSalesMapping){
         List<SalesReportData> salesReportDataList = new ArrayList<>();
         for (Map.Entry<Integer,SalesReportData> entry : brandSalesMapping.entrySet())
@@ -143,6 +145,13 @@ public class ConvertUtil {
         return token;
     }
 
+    public static UserPojo convert(SignUpForm signUpForm){
+        UserPojo userPojo = new UserPojo();
+        userPojo.setEmail(signUpForm.getEmail());
+        userPojo.setPassword(signUpForm.getPassword());
+        return userPojo;
+    }
+
     public static UserData convert(UserPojo p) {
         UserData d = new UserData();
         d.setEmail(p.getEmail());
@@ -159,16 +168,7 @@ public class ConvertUtil {
         return p;
     }
 
-    public static List<OrderItemData> getOrderItemDetailsList(List<OrderItemPojo> orderItems, List<ProductPojo> productPojos) {
-        List<OrderItemData> orderItemDataList = new ArrayList<OrderItemData>();
-        for(int i=0;i<orderItems.size();i++){
-            ProductPojo productPojo = productPojos.get(i);
-            OrderItemPojo orderItemPojo = orderItems.get(i);
-            OrderItemData orderItemData = convert(orderItemPojo,productPojo);
-            orderItemDataList.add(orderItemData);
-        }
-        return orderItemDataList;
-    }
+
 
 
 }

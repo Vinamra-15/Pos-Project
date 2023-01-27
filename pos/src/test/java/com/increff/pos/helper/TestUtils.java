@@ -1,7 +1,7 @@
-package com.increff.pos.util;
+package com.increff.pos.helper;
 
 import com.increff.pos.model.*;
-import com.increff.pos.pojo.ProductPojo;
+import com.increff.pos.pojo.*;
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -78,5 +78,35 @@ public class TestUtils {
     }
 
 
+    public static BrandCategoryPojo getBrandCategoryPojo(Integer id, String brand, String category) {
+        BrandCategoryPojo brandCategoryPojo = new BrandCategoryPojo();
+        brandCategoryPojo.setId(id);
+        brandCategoryPojo.setBrand(brand);
+        brandCategoryPojo.setCategory(category);
+        return brandCategoryPojo;
+    }
 
+    public static InventoryPojo getInventoryPojo(Integer productId, Integer quantity) {
+        InventoryPojo inventoryPojo = new InventoryPojo();
+        inventoryPojo.setProductId(productId);
+        inventoryPojo.setQuantity(quantity);
+        return inventoryPojo;
+    }
+
+    public static OrderItemPojo getOrderItemPojo(Integer orderId, Integer productId, Integer quantity, Double sellingPrice) {
+        OrderItemPojo orderItemPojo = new OrderItemPojo();
+        orderItemPojo.setOrderId(orderId);
+        orderItemPojo.setProductId(productId);
+        orderItemPojo.setQuantity(quantity);
+        orderItemPojo.setSellingPrice(sellingPrice);
+        return orderItemPojo;
+    }
+
+    public static OrderItemForm getOrderItemForm(Integer quantity, String barcode, Double sellingPrice) {
+        OrderItemForm orderItemForm = new OrderItemForm();
+        orderItemForm.setQuantity(quantity);
+        orderItemForm.setBarcode(barcode);
+        orderItemForm.setSellingPrice(sellingPrice);
+        return orderItemForm;
+    }
 }
