@@ -69,22 +69,6 @@ function addItem(item) {
 function addOrderItemToAddModal(event) {
   event.preventDefault()
   const item = getCurrentOrderItem('add');
-  if(item.barcode==="")
-  {
-    $.notify("Please enter barcode!","error")
-    return
-  }
-  if(!item.quantity)
-    {
-      $.notify("Please enter quantity!","error")
-      return
-    }
-
-    if(!item.sellingPrice)
-    {
-      $.notify("Please enter selling price!","error")
-      return
-    }
     getProductByBarcode(item.barcode, (product) => {
         addItem({
           barcode: product.barcode,
@@ -98,48 +82,29 @@ function addOrderItemToAddModal(event) {
 }
 
 function addOrderItemToEditModal(event) {
-  event.preventDefault()
-  const item = getCurrentOrderItem('edit');
-  if(item.barcode==="")
-  {
-    $.notify("Please enter barcode!","error")
-    return
-  }
-  if(!item.quantity)
-    {
-      $.notify("Please enter quantity!","error")
-      return
-    }
-
-    if(!item.sellingPrice)
-    {
-      $.notify("Please enter selling price!","error")
-      return
-    }
-
-        getProductByBarcode(item.barcode, (product) => {
-            addItem({
-              barcode: product.barcode,
-              name: product.name,
-              sellingPrice: item.sellingPrice,
-              quantity: item.quantity,
-            })
-            displayEditOrderItems(orderItems)
-            resetEditItemForm();
-            });
+    event.preventDefault()
+    const item = getCurrentOrderItem('edit');
+    getProductByBarcode(item.barcode, (product) => {
+        addItem({
+          barcode: product.barcode,
+          name: product.name,
+          sellingPrice: item.sellingPrice,
+          quantity: item.quantity,
+        })
+        displayEditOrderItems(orderItems)
+        resetEditItemForm();
+        });
 }
 
 function displayCreateOrderItems(data) {
   const $tbody = $('#create-order-table').find('tbody');
   $tbody.empty();
-
   if(data.length===0){
     $('#create-order-table').hide()
   }
   else{
     $('#create-order-table').show()
   }
-
   for (let i in data) {
     const item = data[i];
     const row = `
@@ -154,9 +119,10 @@ function displayCreateOrderItems(data) {
                 value="${item.sellingPrice}"
                 onchange="onSellingPriceChanged('${item.barcode}',event)"
                 style="width:90%" min="0"
-                step="0.01">
-        </td>
+                step="0.01"
+                required/>
 
+        </td>
         <td>
           <input
             id="order-item-${item.barcode}"
@@ -164,14 +130,13 @@ function displayCreateOrderItems(data) {
             class="form-control"
             value="${item.quantity}"
             onchange="onQuantityChanged('${item.barcode}',event)"
-            style="width:90%" min="1">
+            style="width:90%" min="1" required/>
         </td>
         <td>
           <button onclick="deleteOrderItem('${item.barcode}','add')" class="btn btn-outline-danger"><i class="fa fa-trash" aria-hidden="true"></i></button>
         </td>
       </tr>
     `;
-
     $tbody.append(row);
   }
 }
@@ -222,7 +187,6 @@ function getBillAmount(id){
         },
         error: handleAjaxError,
       });
-
 }
 
 function convertDate(datetime){
@@ -271,7 +235,6 @@ function downloadInvoice(orderId) {
           link.click();
           $.notify("Invoice Generated for order: " + orderId,"success");
           }
-
         }
         req.send()
 }
@@ -299,6 +262,7 @@ function displayEditOrderModal(){
     $('#edit-order-modal').modal({ backdrop: 'static', keyboard: false }, 'show');
 }
 function displayEditOrderItems(data){
+
       const $tbody = $('#edit-order-table').find('tbody');
       $tbody.empty();
 
@@ -316,7 +280,7 @@ function displayEditOrderItems(data){
                     value="${item.sellingPrice}"
                     onchange="onSellingPriceChanged('${item.barcode}',event)"
                     style="width:90%" min="0"
-                    step="0.01">
+                    step="0.01" required/>
               </td>
               <td>
                 <input
@@ -325,7 +289,7 @@ function displayEditOrderItems(data){
                     class="form-control"
                     value = "${item.quantity}"
                     onchange="onQuantityChanged('${item.barcode}',event)"
-                    style="width:90%" min="1">
+                    style="width:90%" min="1" required/>
               </td>
               <td>
                    <button onclick="deleteOrderItem('${item.barcode}','edit')" class="btn btn-outline-danger"><i class="fa fa-trash" aria-hidden="true"></i></button>
@@ -440,7 +404,8 @@ function editOrderDetails(id){
     fetchOrderDetails(id,'edit');
 }
 // Place Order
-function placeNewOrder() {
+function placeNewOrder(event) {
+    event.preventDefault()
   const data = orderItems.map((it) => {
     return {
       barcode: it.barcode,
@@ -474,7 +439,8 @@ function placeOrder(data, onSuccess) {
   return false;
 }
 
-function updateOrder(){
+function updateOrder(event){
+    event.preventDefault()
     const id = $("#edit-item-form input[name=id]").val();
     const data = orderItems.map((it) => {
         return {
@@ -515,8 +481,8 @@ function init() {
   $('#create-order').click(displayCreationModal);
   $('#refresh-data').click(getOrderList);
   $('#upload-data').click(displayUploadData);
-  $('#place-order-btn').click(placeNewOrder);
-  $('#update-order-btn').click(updateOrder);
+  $('#update-order-form').submit(updateOrder);
+  $('#create-order-form').submit(placeNewOrder)
   $('#orders-link').addClass('active').css("border-bottom","2px solid black")
 }
 
