@@ -10,7 +10,7 @@ function getRole(){
 
 
 function updateInventory(event){
-   $('#edit-inventory-modal').modal('toggle');
+
    //Get the ID
    var barcode = $("#inventory-edit-form input[name=barcode]").val();
    var url = getInventoryUrl() +"/" + barcode;
@@ -26,6 +26,7 @@ function updateInventory(event){
        },
       success: function(response) {
              getInventoryList();
+             $('#edit-inventory-modal').modal('toggle');
              $.notify("Inventory update successful for product: " + JSON.parse(json).barcode,"success");
       },
       error: handleAjaxError
@@ -188,7 +189,7 @@ function displayInventory(data){
 
 //INITIALIZATION CODE
 function init(){
-   $('#update-inventory').click(updateInventory);
+   $('#inventory-edit-form').submit(updateInventory);
    $('#refresh-data').click(getInventoryList);
    $('#upload-data').click(displayUploadData);
    $('#process-data').click(processData);
