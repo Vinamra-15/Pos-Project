@@ -34,7 +34,6 @@ function getProductByBarcode(barcode, onSuccess) {
   });
 }
 
-//UI DISPLAY METHODS
 let orderItems = [];
 
 function getCurrentOrderItem(typeOfOperation) {
@@ -69,8 +68,40 @@ function addItem(item) {
   }
 }
 
-function addOrderItem(typeOfOperation) {
-  const item = getCurrentOrderItem(typeOfOperation);
+function addOrderItemToAddModal(event) {
+  event.preventDefault()
+  const item = getCurrentOrderItem('add');
+  if(item.barcode==="")
+  {
+    $.notify("Please enter barcode!","error")
+    return
+  }
+  if(!item.quantity)
+    {
+      $.notify("Please enter quantity!","error")
+      return
+    }
+
+    if(!item.sellingPrice)
+    {
+      $.notify("Please enter selling price!","error")
+      return
+    }
+    getProductByBarcode(item.barcode, (product) => {
+        addItem({
+          barcode: product.barcode,
+          name: product.name,
+          sellingPrice: item.sellingPrice,
+          quantity: item.quantity,
+        })
+         displayCreateOrderItems(orderItems);
+         resetAddItemForm();
+        })
+}
+
+function addOrderItemToEditModal(event) {
+  event.preventDefault()
+  const item = getCurrentOrderItem('edit');
   if(item.barcode==="")
   {
     $.notify("Please enter barcode!","error")
@@ -88,23 +119,6 @@ function addOrderItem(typeOfOperation) {
       return
     }
 
-  if(typeOfOperation==='add')
-  {
-    getProductByBarcode(item.barcode, (product) => {
-        addItem({
-          barcode: product.barcode,
-          name: product.name,
-          sellingPrice: item.sellingPrice,
-          quantity: item.quantity,
-        })
-         displayCreateOrderItems(orderItems);
-         resetAddItemForm();
-        }
-
-        )
-    }
-    else
-    {
         getProductByBarcode(item.barcode, (product) => {
             addItem({
               barcode: product.barcode,
@@ -115,10 +129,7 @@ function addOrderItem(typeOfOperation) {
             displayEditOrderItems(orderItems)
             resetEditItemForm();
             });
-    }
-
 }
-
 
 function displayCreateOrderItems(data) {
   const $tbody = $('#create-order-table').find('tbody');
@@ -197,45 +208,37 @@ function resetCreateModal() {
   displayCreateOrderItems(orderItems);
 }
 
-//function getBillAmount(id){
-//    const url = getOrderUrl + id;
-//    $.ajax({
-//        url: url,
-//        type: 'GET',
-//        success: function (data) {
-//          // sum data items
-//          let amount = 0;
-//          for(let i in data.items){
-//            amount = amount + i.sellingPrice
-//          }
-//          return amount
-//        },
-//        error: handleAjaxError,
-//      });
-//
-//}
+function getBillAmount(id){
+    const url = getOrderUrl() + id;
+    $.ajax({
+        url: url,
+        type: 'GET',
+        success: function (data) {
+          // sum data items
+          let items = data.items
+          let amount = 0;
+          for(let i in items){
+            amount = amount + items[i].sellingPrice*items[i].quantity
+          }
+          return amount
+        },
+        error: handleAjaxError,
+      });
+
+}
 
 function convertDate(datetime){
     let date = new Date(datetime).toString();
     return date.split(' G')[0];
-//    dateUTC = dateUTC.getTime()  // in milliseconds
-//    let dateIST = new Date(dateUTC);
-//    dateIST.setHours(dateIST.getHours() + 5);
-//    dateIST.setMinutes(dateIST.getMinutes() + 30);
-//    return dateIST
 }
 
-function displayOrderList(orders) {
+ function displayOrderList(orders) {
   var $tbody = $('#order-table').find('tbody');
   $tbody.empty();
 
-  orders.forEach((order) => {
-    //billAmount = getBillAmount(order.id)
-//    let invoicePath = order.invoicePath.toString().split('.')[0].split('/')[1]
+  for(let i in orders){
+    let order = orders[i]
     let time = convertDate(order.datetime)
-
-
-
     var row = `
         <tr class="text-center">
             <td>${order.id}</td>
@@ -243,110 +246,40 @@ function displayOrderList(orders) {
             <td>
                 <button type="button" class="btn btn-outline-secondary" onclick="fetchOrderDetails(${order.id},'add')">
                   <i class="fa fa-info-circle" aria-hidden="true"></i>
-
                 </button>
 
                 <button type="button" class="btn btn-outline-secondary" onclick="editOrderDetails(${order.id})">
                                   <i class="fas fa-edit fa-xs"></i>
                                 </button>
                 <button type="button" class="btn btn-outline-secondary downloadInvoiceBtn" id="invoiceBtn-${order.id}" onclick="downloadInvoice(${order.id})">
-                                                  <i class="fa fa-file-pdf-o" aria-hidden="true"></i>
-
-                                                </button>
+                                                  <i class="fa fa-file-pdf-o" aria-hidden="true"></i></button>
             </td>
         </tr>
     `;
     $tbody.append(row);
-  });
+  };
 
 
 
 
 }
-//function saveByteArray(reportName, byte) {
-//    var blob = new Blob([byte], {type: "application/pdf"});
-//    var link = document.createElement('a');
-//    link.href = window.URL.createObjectURL(blob);
-//    var fileName = reportName;
-//    link.download = fileName;
-//    link.click();
-//};
-//function base64ToArrayBuffer(base64) {
-//    var binaryString = window.atob(base64);
-//    var binaryLen = binaryString.length;
-//    var bytes = new Uint8Array(binaryLen);
-//    for (var i = 0; i < binaryLen; i++) {
-//       var ascii = binaryString.charCodeAt(i);
-//       bytes[i] = ascii;
-//    }
-//    return bytes;
-// }
 
 function downloadInvoice(orderId) {
     let req = new XMLHttpRequest();
     req.open("GET", `/pos/download/invoice/${orderId}`, true);
     req.responseType = "blob";
-//    console.log(invoicePath)
-
-    req.onreadystatechange = () => { // Call a function when the state changes.
-
+    req.onreadystatechange = () => {
           if (req.readyState === XMLHttpRequest.DONE && req.status === 200) {
-
           let blob = req.response;
-//          console.log(blob.size);
           let link=document.createElement('a');
           link.href=window.URL.createObjectURL(blob);
           link.download=`${orderId}.pdf`;
           link.click();
           $.notify("Invoice Generated for order: " + orderId,"success");
-            // Request finished. Do processing here.
           }
 
         }
         req.send()
-
-//    req.onload = function (event) {
-//      let blob = req.response;
-//      console.log(blob.size);
-//      let link=document.createElement('a');
-//      link.href=window.URL.createObjectURL(blob);
-//      link.download=`${invoicePath}.pdf`;
-//      link.click();
-//    };
-//    req.onerror = function(event){
-//        handleAjaxError();
-//    }
-
-
-//    const url = `/pos/download/invoice/${invoicePath}`
-//        $.ajax({
-//            url: url,
-//            type: 'GET',
-//            success: function (data) {
-//                console.log(data)
-//            var bytes = new Uint8Array(data); // pass your byte response to this constructor
-//
-//            var blob=new Blob([bytes], {type: "application/pdf"});// change resultByte to bytes
-//
-//            var link=document.createElement('a');
-//            link.href=window.URL.createObjectURL(blob);
-//            link.download="myFileName.pdf";
-//            link.click();
-////                var sampleArr = base64ToArrayBuffer(data);
-////                saveByteArray("Sample Report", sampleArr);
-//              // sum data items
-////              data.responseType = "blob"
-////              let blob = data.response
-////
-////              let link=document.createElement('a');
-////              link.href=window.URL.createObjectURL(data);
-////              link.download=`${invoicePath}.pdf`;
-////              link.click();
-//            },
-//            error: handleAjaxError,
-//          });
-
-
 }
 
 function fetchOrderDetails(id,typeOfOperation) {
@@ -372,14 +305,11 @@ function displayEditOrderModal(){
     $('#edit-order-modal').modal({ backdrop: 'static', keyboard: false }, 'show');
 }
 function displayEditOrderItems(data){
-
       const $tbody = $('#edit-order-table').find('tbody');
       $tbody.empty();
 
       for (var i in data) {
           var item = data[i];
-
-
           const row = `
             <tr class="text-center">
               <td class="barcodeData">${item.barcode}</td>
@@ -415,11 +345,8 @@ function displayEditOrderItems(data){
 }
 
 function onQuantityChanged(barcode,event) {
-//    console.log(event)
   const index = orderItems.findIndex((it) => it.barcode === barcode);
   if (index == -1) return;
-
-//$(`#order-item-${barcode}`)
   const newQuantity = event.target.value
   orderItems[index].quantity = Number.parseInt(newQuantity);
 }
@@ -427,8 +354,6 @@ function onQuantityChanged(barcode,event) {
 function onSellingPriceChanged(barcode,event){
     const index = orderItems.findIndex((it) => it.barcode === barcode);
       if (index == -1) return;
-
-    //$(`#order-item-${barcode}`)
       const newSellingPrice = event.target.value
       orderItems[index].sellingPrice = Number.parseFloat(newSellingPrice);
 }
@@ -437,15 +362,12 @@ function onSellingPriceChanged(barcode,event){
 
 
 function resetUploadDialog() {
-  //Reset file name
   var $file = $('#orderFile');
   $file.val('');
   $('#orderFileName').html('Choose File');
-  //Reset various counts
   processCount = 0;
   fileData = [];
   errorData = [];
-  //Update counts
   updateUploadDialog();
 }
 
@@ -537,21 +459,6 @@ function editOrderDetails(id){
     fetchOrderDetails(id,'edit');
 
 }
-
-//INITIALIZATION CODE
-function init() {
-  $('#add-order-item').click(addOrderItem);
-  $('#create-order').click(displayCreationModal);
-  $('#refresh-data').click(getOrderList);
-  $('#upload-data').click(displayUploadData);
-  $('#place-order-btn').click(placeNewOrder);
-  $('#update-order-btn').click(updateOrder);
-  $('#orders-link').addClass('active').css("border-bottom","2px solid black")
-}
-
-$(document).ready(init);
-$(document).ready(getOrderList);
-
 // Place Order
 function placeNewOrder() {
   const data = orderItems.map((it) => {
@@ -565,12 +472,8 @@ function placeNewOrder() {
   const json = JSON.stringify(data);
   placeOrder(json, hideCreationModal);
 }
-
-//BUTTON ACTIONS
 function placeOrder(json, onSuccess) {
-  //Set the values to update
   const url = getOrderUrl();
-
   $.ajax({
     url: url,
     type: 'POST',
@@ -614,7 +517,21 @@ function updateOrder(){
           },
           error: handleAjaxError,
         });
-//        $('#update-order-btn').unbind('click')
         return false;
 
 }
+
+//INITIALIZATION CODE
+function init() {
+  $('#add-item-form-add-modal').submit(addOrderItemToAddModal)
+  $('#edit-item-form').submit(addOrderItemToEditModal)
+  $('#create-order').click(displayCreationModal);
+  $('#refresh-data').click(getOrderList);
+  $('#upload-data').click(displayUploadData);
+  $('#place-order-btn').click(placeNewOrder);
+  $('#update-order-btn').click(updateOrder);
+  $('#orders-link').addClass('active').css("border-bottom","2px solid black")
+}
+
+$(document).ready(init);
+$(document).ready(getOrderList);

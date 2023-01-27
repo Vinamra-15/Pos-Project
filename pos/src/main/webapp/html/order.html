@@ -89,7 +89,7 @@
 
             <div class="modal-body">
                 <!-- Add Item From -->
-                <form class="form-inline justify-content-between" id="add-item-form">
+                <form class="form-inline justify-content-between" id="add-item-form-add-modal">
                     <div class="form-group p-1">
                         <label for="inputAddModalBarcode" class="col-sm-2 col-form-label">Barcode</label>
                         <div class="col-sm-1">
@@ -97,9 +97,9 @@
                                     type="text"
                                     class="form-control"
                                     id="inputAddModalBarcode"
-                                    onchange="console.log('changed')"
                                     name="barcode"
                                     placeholder="Enter Barcode"
+                                    required
                             />
                         </div>
                     </div>
@@ -114,6 +114,7 @@
                                     id="inputAddModalQuantity"
                                     min="1"
                                     placeholder="Enter Quantity"
+                                    required
                             />
                         </div>
                     </div>
@@ -124,16 +125,16 @@
                             <input
                                     type="number"
                                     class="form-control"
-                                    onchange="console.log('changed')"
                                     name="sellingPrice"
                                     id="inputAddModalSellingPrice"
                                     min="0.00"
                                     placeholder="Enter Selling Price"
+                                    required
                             />
                         </div>
                     </div>
 
-                    <button class="btn btn-warning px-4" type="button" onclick="addOrderItem('add')" style="margin-right: 3rem;"><i class="fa fa-plus" aria-hidden="true"></i></button>
+                    <button class="btn btn-warning px-4" type="submit" style="margin-right: 3rem;"><i class="fa fa-plus" aria-hidden="true"></i></button>
                 </form>
 
                 <div class="row">&nbsp;</div>
@@ -184,10 +185,10 @@
                             <input
                                     type="text"
                                     class="form-control"
-                                    onchange="console.log('changed')"
                                     name="barcode"
                                     id="inputEditModalBarcode"
                                     placeholder="Enter Barcode"
+                                    required
                             />
                         </div>
                     </div>
@@ -202,6 +203,7 @@
                                     id="inputEditModalQuantity"
                                     min="1"
                                     placeholder="Enter Quantity"
+                                    required
                             />
                         </div>
                     </div>
@@ -212,17 +214,17 @@
                             <input
                                     type="number"
                                     class="form-control"
-                                    onchange="console.log('changed')"
                                     name="sellingPrice"
                                     id="inputEditModalSellingPrice"
                                     min="0.00"
                                     placeholder="Enter Selling Price"
+                                    required
                             />
                         </div>
 
                     </div>
 
-                    <button class="btn btn-warning px-4" type="button" onclick="addOrderItem('edit')" style="margin-right: 3rem;"><i class="fa fa-plus" aria-hidden="true"></i></button>
+                    <button class="btn btn-warning px-4" type="submit" style="margin-right: 3rem;"><i class="fa fa-plus" aria-hidden="true"></i></button>
                     <input type="hidden" name="id" >
                 </form>
 
