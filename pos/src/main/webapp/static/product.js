@@ -9,6 +9,24 @@ function getRole(){
     return role;
 }
 
+function getBrandUrl(){
+	var baseUrl = $("meta[name=baseUrl]").attr("content")
+	return baseUrl + "/api/brands";
+}
+
+function getBrandCategory(){
+    $.ajax({
+    	   url: getBrandUrl(),
+    	   type: 'GET',
+    	   success: function(response) {
+    	        console.log(response)
+    	   },
+    	   error: handleAjaxError
+    	});
+}
+
+
+
 //BUTTON ACTIONS
 function addProduct(event){
 	//Set the values to update
