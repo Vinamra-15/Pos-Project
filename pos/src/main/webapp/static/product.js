@@ -19,13 +19,29 @@ function getBrandCategory(){
     	   url: getBrandUrl(),
     	   type: 'GET',
     	   success: function(response) {
-    	        console.log(response)
+    	        for(let i in response){
+    	            let optionHTML = '<option value="'+ response[i].brand + "~" + response[i].category+'">'+ response[i].brand + " - " + response[i].category+'</option>'
+    	            $('#select-brand-category-add').append(optionHTML)
+    	            $('#select-brand-category-edit').append(optionHTML)
+    	        }
     	   },
     	   error: handleAjaxError
     	});
 }
 
 
+
+function getData(json){
+    let data = JSON.parse(json)
+    let dataToPost = {
+        barcode:data.barcode,
+        name:data.name,
+        brand:data.brandCategory.split('~')[0],
+        category:data.brandCategory.split('~')[1],
+        mrp:data.mrp
+    }
+    return dataToPost
+}
 
 //BUTTON ACTIONS
 function addProduct(event){
@@ -35,11 +51,17 @@ function addProduct(event){
 	var $form = $("#product-add-form");
 	var json = toJson($form);
 	var url = getProductUrl();
+	var data = getData(json)
+	if(!data.category){
+	    $.notify("Please select brand category!","warning")
+	    return;
+	}
+	data = JSON.stringify(data)
 
 	$.ajax({
 	   url: url,
 	   type: 'POST',
-	   data: json,
+	   data: data,
 	   headers: {
        	'Content-Type': 'application/json'
        },	   
@@ -64,11 +86,17 @@ function updateProduct(event){
 	//Set the values to update
 	var $form = $("#product-edit-form");
 	var json = toJson($form);
+	var data = getData(json)
+    	if(!data.category){
+    	    $.notify("Please select brand category!","warning")
+    	    return;
+    	}
+    	data = JSON.stringify(data)
 
 	$.ajax({
 	   url: url,
 	   type: 'PUT',
-	   data: json,
+	   data: data,
 	   headers: {
        	'Content-Type': 'application/json'
        },	   
@@ -248,8 +276,7 @@ function displayProduct(data){
 	$("#product-edit-form input[name=name]").val(data.name);	
 	$("#product-edit-form input[name=barcode]").val(data.barcode);
 	$("#product-edit-form input[name=mrp]").val(data.mrp);
-	$("#product-edit-form input[name=brand]").val(data.brand);
-	$("#product-edit-form input[name=category]").val(data.category);
+	$("#product-edit-form select[name=brandCategory]").val(data.brand + "~" + data.category);
 	$("#product-edit-form input[name=id]").val(data.id);
 	$('#edit-product-modal').modal('toggle');
 }
@@ -275,4 +302,6 @@ function init(){
 
 $(document).ready(init);
 $(document).ready(getProductList);
+$(document).ready(getBrandCategory);
+
 
