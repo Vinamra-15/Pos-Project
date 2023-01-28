@@ -13,36 +13,48 @@
     <h3>Sales Report</h3>
 
     <!-- Top row with form-->
-    <div class="container">
+    <div class="container mt-5">
         <form id="sales-form">
-            <div class="row">
-                <div class="col-10 col-sm-5 form-group">
-                    <label for="inputBrand" class="col-form-label">Brand</label>
-                    <div class="">
-                        <input type="text" class="form-control" name="brand" id="inputBrand" placeholder="Enter Brand" />
+            <div class="row justify-content-between">
+                <div class=" col-5 form-group row">
+                    <label for="inputBrand" class="col-form-label col-3">Brand</label>
+                    <div class="col-sm-9">
+                        <select name="brand" class="form-control form-control-md" aria-label=".form-select-sm example" id="inputBrand" style="width: 100%">
+                            <option selected="" value="">Select Brand</option>
+                        </select>
                     </div>
                 </div>
-                <div class="col-10 col-sm-5 form-group">
-                    <label for="inputCategory" class="col-form-label">Category</label>
-                    <div class="">
-                        <input type="text" class="form-control" name="category" id="inputCategory" placeholder="Enter Category" />
+                <div class="col-5 form-group row">
+                    <label for="inputCategory" class="col-form-label col-3">Category</label>
+                    <div class="col-sm-9">
+                        <select name="category" class="form-control form-control-md" aria-label=".form-select-sm example" id="inputCategory" style="width: 100%">
+                            <option selected="" value="">Select Category</option>
+                        </select>
                     </div>
                 </div>
-                <div class="col-10 col-sm-5 form-group">
-                    <label for="inputStartDate" class="col-form-label">Start date</label>
-                    <div class="">
-                        <input type="date" class="form-control" name="startDate" id="inputStartDate" />
+
+                <div class="col-2 form-group row">
+                    <button type="button" class="btn btn-secondary px-4 ml-3" id="clear-brand-filter">Reset</button>
+                </div>
+
+                <div class="col-5 form-group row">
+                    <label for="inputStartDate" class="col-form-label col-3">Start date</label>
+                    <div class="col-sm-9">
+                        <input type="date" class="form-control" name="startDate" id="inputStartDate">
                     </div>
                 </div>
-                <div class="col-10 col-sm-5 form-group">
-                    <label for="inputEndDate" class="col-form-label">End date</label>
-                    <div class="">
-                        <input type="date" class="form-control" name="endDate" id="inputEndDate" />
+                <div class="col-5 form-group row">
+                    <label for="inputEndDate" class="col-form-label col-3">End date</label>
+                    <div class="col-sm-9">
+                        <input type="date" class="form-control" name="endDate" id="inputEndDate">
                     </div>
-                </div>
+                </div><div class="col-2 form-group row">
+                <button type="button" class="btn btn-secondary px-4 ml-3" id="clear-date-filter">Reset</button>
+            </div>
+
             </div>
             <div class="row">
-                <button type="button" class="btn btn-primary px-4 ml-3" id="filter-sales-report">Filter</button>
+                <button type="button" class="btn btn-primary px-4 ml-3" id="filter-sales-report">Generate Report</button>
             </div>
         </form>
     </div>
@@ -56,7 +68,7 @@
 
         <!-- Table -->
         <div class="col-12">
-            <table class="table table-bordered table-striped css-serial text-center" id="sales-table">
+            <table class="table table-bordered table-striped css-serial text-center" id="sales-table" style="display: none;">
                 <thead class="thead-dark sticky-top" style="top:78px">
                 <tr>
                     <th scope="col">Sr. No</th>
@@ -66,14 +78,12 @@
                     <th scope="col">Revenue(&#8377)</th>
                 </tr>
                 </thead>
-                <tbody>
-
-                </tbody>
+                <tbody></tbody>
             </table>
 
         </div>
     </div>
-</div> <!-- Container end-->
+</div>
 
 <footer th:replace="snippets.html :: name_footer"></footer>
 

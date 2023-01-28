@@ -3,6 +3,48 @@ function getSalesReportUrl(){
    return baseUrl + "/api/reports/sales";
 }
 
+function getBrandCategoryUrl(){
+    var baseUrl = $("meta[name=baseUrl]").attr("content")
+    return baseUrl + "/api/brands";
+}
+brandCategoryData = []
+brandSet = new Set()
+categorySet = new Set()
+function getBrandCategory(){
+     $.ajax({
+           url: getBrandCategoryUrl(),
+           type: 'GET',
+           success: function(response) {
+                brandCategoryData = response
+                for(let i in response){
+                    brandSet.add(response[i].brand)
+                    categorySet.add(response[i].category)
+                }
+
+                populateBrandCategoryDropDown(brandSet,categorySet)
+
+
+           },
+           error: handleAjaxError
+        });
+}
+
+function populateBrandCategoryDropDown(brandSet,categorySet){
+    $('#inputBrand').empty()
+    $('#inputCategory').empty()
+    $('#inputBrand').append('<option selected="" value="">Select Brand</option>')
+    $('#inputCategory').append('<option selected="" value="">Select Category</option>')
+    brandSet.forEach(function(brand){
+        let brandOptionHTML = '<option value="'+ brand +'">'+ brand+'</option>'
+        $('#inputBrand').append(brandOptionHTML)
+    })
+    categorySet.forEach(function(category){
+         let categoryOptionHTML = '<option value="'+ category +'">'+ category+'</option>'
+         $('#inputCategory').append(categoryOptionHTML)
+    })
+
+}
+
 function filterSalesReport() {
     var $form = $("#sales-form");
     var json = toJson($form);
@@ -61,12 +103,69 @@ function startDateGreaterThanEndDate(startDate,endDate){
     let endDateConverted  = new Date(partsEndDate[0], partsEndDate[1] - 1, partsEndDate[2])
     return startDateConverted >endDateConverted
 }
+function resetBrandCategoryDropDown(){
+    populateBrandCategoryDropDown(brandSet,categorySet)
+    $('#inputBrand').prop('selectedIndex',0);
+    $('#inputCategory').prop('selectedIndex',0);
+}
+function resetDateFields(){
+    $("input[type=date]").val("")
+    $("input[type=date]").attr('min','')
+    $("input[type=date]").attr('max','')
+
+}
+
+function brandChanged(event){
+    if($('#inputCategory').prop('selectedIndex')===0){
+    let brand = event.target.value
+    $('#inputCategory').empty()
+    $('#inputCategory').append('<option selected="" value="">Select Category</option>')
+    for(let i in brandCategoryData){
+        if(brandCategoryData[i].brand===brand){
+            let categoryOptionHTML = '<option value="'+ brandCategoryData[i].category +'">'+ brandCategoryData[i].category+'</option>'
+                                 $('#inputCategory').append(categoryOptionHTML)
+        }
+    }
+    }
+}
+
+
+function categoryChanged(event){
+    if($('#inputBrand').prop('selectedIndex')===0){
+    let category = event.target.value
+    $('#inputBrand').empty()
+    $('#inputBrand').append('<option selected="" value="">Select Brand</option>')
+    for(let i in brandCategoryData){
+        if(brandCategoryData[i].category===category){
+            let brandOptionHTML = '<option value="'+ brandCategoryData[i].brand +'">'+ brandCategoryData[i].brand+'</option>'
+                                 $('#inputBrand').append(brandOptionHTML)
+        }
+    }
+  }
+}
+
+function startDateChanged(event){
+    if( $('#inputEndDate').val()==="")
+        $('#inputEndDate').attr('min',event.target.value)
+}
+
+function endDateChanged(event){
+    if( $('#inputStartDate').val()==="")
+        $('#inputStartDate').attr('max',event.target.value)
+}
 
 //INITIALIZATION CODE
 function init(){
    $('#filter-sales-report').click(filterSalesReport);
    $('#reports-link').addClass('active').css("border-bottom","2px solid black")
+   $('#clear-brand-filter').click(resetBrandCategoryDropDown)
+   $('#clear-date-filter').click(resetDateFields)
+   $('#inputBrand').change(brandChanged)
+   $('#inputCategory').change(categoryChanged)
+   $('#inputStartDate').change(startDateChanged)
+   $('#inputEndDate').change(endDateChanged)
    displaySalesReport([])
 }
 
 $(document).ready(init);
+$(document).ready(getBrandCategory);
