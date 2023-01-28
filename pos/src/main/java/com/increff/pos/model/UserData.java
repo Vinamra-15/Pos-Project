@@ -8,5 +8,4 @@ import lombok.Setter;
 public class UserData {
 	private Integer id;
 	private String email;
-	private String role;
 }

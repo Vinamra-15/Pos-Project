@@ -7,6 +7,10 @@ import com.increff.pos.service.ApiException;
 import com.increff.pos.spring.AbstractUnitTest;
 import org.junit.Test;
 
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.List;
+
 import static org.junit.Assert.assertEquals;
 
 public class ConvertUtilTest extends AbstractUnitTest {
@@ -91,10 +95,69 @@ public class ConvertUtilTest extends AbstractUnitTest {
         assertEquals((Double) 1500.00, orderItemPojo.getSellingPrice());
     }
 
+    @Test
+    public void convertToOrderData(){
+        OrderPojo orderPojo = TestUtils.getOrderPojo();
+        OrderData orderData = ConvertUtil.convert(orderPojo);
+        assertEquals(new Date(10000101),orderData.getDatetime());
+        assertEquals("billPath",orderData.getInvoicePath());
+    }
+
+    @Test
+    public void getOrderItemDetailsListTest(){
+        ProductPojo productPojo = TestUtils.getProductPojo("polo tshirt","a1110",2100.00,1);
+        productPojo.setId(1);
+        OrderItemPojo orderItemPojo = TestUtils.getOrderItemPojo(1,1,1,1200.00);
+
+        List<OrderItemPojo> orderItemPojoList = new ArrayList<>();
+        orderItemPojoList.add(orderItemPojo);
+        List<ProductPojo> productPojoList = new ArrayList<>();
+        productPojoList.add(productPojo);
+        List<OrderItemData> orderItemDataList = ConvertUtil.getOrderItemDetailsList(orderItemPojoList,productPojoList);
+        assertEquals(1,orderItemDataList.size());
+        assertEquals("a1110",orderItemDataList.get(0).getBarcode());
+        assertEquals((Integer) 1,orderItemDataList.get(0).getQuantity());
+    }
+//
+//    @Test
+//    public void convertToDaySalesDataListTest(){
+//
+//    }
+//    @Test
+//    public void convertMapToSalesReportDataListTest(){
+//
+//    }
+//
+//    @Test
+//    public void convertMaptoInventoryReportDataListTest(){
+//
+//    }
+    @Test
+    public void convertSignUpFormToUserPojoTest(){
+        SignUpForm signUpForm = TestUtils.getSignUpForm("xyz@increff.com","Pass1234","Pass1234");
+        UserPojo userPojo = ConvertUtil.convert(signUpForm);
+        assertEquals("xyz@increff.com",userPojo.getEmail());
+        assertEquals("Pass1234",userPojo.getPassword());
+    }
+    @Test
+    public void convertUserPojoToUserDataTest(){
+        UserPojo userPojo = new UserPojo();
+        userPojo.setEmail("xyz@increff.com");
+        userPojo.setPassword("Pass1234");
+        UserData userData = ConvertUtil.convert(userPojo);
+        assertEquals("xyz@increff.com",userData.getEmail());
+    }
+    @Test
+    public void convertUserFormToUserPojoTest(){
+        UserForm userForm = new UserForm();
+        userForm.setEmail("xyz@increff.com");
+        userForm.setPassword("Pass1234");
+
+        UserPojo userPojo = ConvertUtil.convert(userForm);
+        assertEquals("xyz@increff.com",userPojo.getEmail());
+        assertEquals("Pass1234",userPojo.getPassword());
 
 
-
-
-
+    }
 
 }

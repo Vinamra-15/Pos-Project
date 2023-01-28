@@ -6,9 +6,12 @@ function getSalesReportUrl(){
 function filterSalesReport() {
     var $form = $("#sales-form");
     var json = toJson($form);
+    let data = JSON.parse(json);
+    if(startDateGreaterThanEndDate(data.startDate,data.endDate)){
+        $.notify('Start Date should not be greater than End Date!',"error");
+        return;
+    }
     var url = getSalesReportUrl();
-//    console.log(url);
-
     $.ajax({
        url: url,
        type: 'POST',
@@ -17,7 +20,6 @@ function filterSalesReport() {
         'Content-Type': 'application/json'
        },
        success: function(response) {
-//            console.log(response);
             displaySalesReport(response);
        },
        error: handleAjaxError
@@ -48,6 +50,16 @@ function displaySalesReport(data) {
         + '</tr>';
         $tbody.append(row);
     }
+}
+
+function startDateGreaterThanEndDate(startDate,endDate){
+    if(!startDate||!endDate)
+        return false
+    let partsStartDate =startDate.split('-');
+    let startDateConverted = new Date(partsStartDate[0], partsStartDate[1] - 1, partsStartDate[2])
+    let partsEndDate =endDate.split('-');
+    let endDateConverted  = new Date(partsEndDate[0], partsEndDate[1] - 1, partsEndDate[2])
+    return startDateConverted >endDateConverted
 }
 
 //INITIALIZATION CODE

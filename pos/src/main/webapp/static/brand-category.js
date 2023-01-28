@@ -111,6 +111,7 @@ function readFileDataCallback(results){
         $.notify("File too big!","error");
         return
     }
+//    console.log(results)
 	fileData = results.data;
 	uploadRows();
 }
@@ -127,7 +128,7 @@ function uploadRows(){
 	//Process next row
 	var row = fileData[processCount];
 	processCount++;
-	
+//	console.log(row)
 	var json = JSON.stringify(row);
 	var url = getBrandCategoryUrl();
 //	console.log(json)

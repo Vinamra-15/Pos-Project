@@ -155,7 +155,6 @@ public class ConvertUtil {
     public static UserData convert(UserPojo p) {
         UserData d = new UserData();
         d.setEmail(p.getEmail());
-        d.setRole(p.getRole());
         d.setId(p.getId());
         return d;
     }
@@ -163,7 +162,6 @@ public class ConvertUtil {
     public static UserPojo convert(UserForm f) {
         UserPojo p = new UserPojo();
         p.setEmail(f.getEmail());
-        p.setRole(f.getRole());
         p.setPassword(f.getPassword());
         return p;
     }

@@ -109,4 +109,11 @@ public class TestUtils {
         orderItemForm.setSellingPrice(sellingPrice);
         return orderItemForm;
     }
+
+    public static OrderPojo getOrderPojo() {
+        OrderPojo orderPojo = new OrderPojo();
+        orderPojo.setDatetime(new Date(10000101));
+        orderPojo.setInvoicePath("billPath");
+        return orderPojo;
+    }
 }
