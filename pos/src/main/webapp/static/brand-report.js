@@ -9,7 +9,6 @@ function getbrandReport() {
     url: url,
     type: "GET",
     success: function (data) {
-//      console.log(data);
       displaybrandReportList(data);
     },
     error: handleAjaxError,

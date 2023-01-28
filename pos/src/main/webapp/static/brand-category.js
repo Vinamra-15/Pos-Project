@@ -1,7 +1,6 @@
 
 function getBrandCategoryUrl(){
 	var baseUrl = $("meta[name=baseUrl]").attr("content")
-	//console.log(baseUrl);
 	return baseUrl + "/api/brands";
 }
 
@@ -17,9 +16,6 @@ function addBrandCategory(event){
 	var $form = $("#brand-category-form");
 	var json = toJson($form);
 	var url = getBrandCategoryUrl();
-
-	//console.log(json);
-
 	$.ajax({
 	   url: url,
 	   type: 'POST',
@@ -105,13 +101,11 @@ function processData(){
 }
 
 function readFileDataCallback(results){
-//    console.log(results.data)
     const MAX_ROWS = 5000
     if(results.data.length>MAX_ROWS){
         $.notify("File too big!","error");
         return
     }
-//    console.log(results)
 	fileData = results.data;
 	uploadRows();
 }
@@ -128,12 +122,8 @@ function uploadRows(){
 	//Process next row
 	var row = fileData[processCount];
 	processCount++;
-//	console.log(row)
 	var json = JSON.stringify(row);
 	var url = getBrandCategoryUrl();
-//	console.log(json)
-
-	//Make ajax call
 	$.ajax({
 	   url: url,
 	   type: 'POST',
@@ -166,8 +156,6 @@ function displayBrandCategoryList(data){
 	$tbody.empty();
 	for(var i in data){
 		var e = data[i];
-		//console.log(e);
-		//var buttonHtml = '<button onclick="deleteBrand(' + e.id + ')">delete</button>'
 		var buttonHtml = ' <button type="button" class="btn btn-outline-secondary" onclick="displayEditBrandCategory(' + e.id + ')"><i class="fas fa-edit fa-xs"></i></button>'
 		if(getRole()==="supervisor")
 		{var row = '<tr class="text-center">'

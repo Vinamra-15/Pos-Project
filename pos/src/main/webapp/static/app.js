@@ -23,7 +23,6 @@ function readFileData(file, callback){
 		delimiter: "\t",
 		skipEmptyLines: "greedy",
 		complete: function(results) {
-		    console.log(results)
 			callback(results);
 	  	}	
 	}

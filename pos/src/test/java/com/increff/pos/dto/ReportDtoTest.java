@@ -50,7 +50,7 @@ public class ReportDtoTest extends AbstractUnitTest {
         ProductPojo productPojo = new ProductPojo();
         productPojo.setName("some product");
         productPojo.setBarcode("!@#$23");
-        productPojo.setMrp(1200.00);
+        productPojo.setMrp(2400.00);
         productPojo.setBrandId(brandCategoryPojo.getId());
 //        productPojo.setBrandId(brandCategoryService.getByBrandCategory("some brand","some category").getId());
         productService.addProduct(productPojo);
@@ -62,7 +62,7 @@ public class ReportDtoTest extends AbstractUnitTest {
         ProductPojo productPojo2 = new ProductPojo();
         productPojo2.setName("some product");
         productPojo2.setBarcode("!@#$234");
-        productPojo2.setMrp(1400.00);
+        productPojo2.setMrp(2600.00);
         productPojo2.setBrandId(brandCategoryPojo.getId());
 //        productPojo.setBrandId(brandCategoryService.getByBrandCategory("some brand","some category").getId());
         productService.addProduct(productPojo2);

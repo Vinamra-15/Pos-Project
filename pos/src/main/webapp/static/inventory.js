@@ -43,7 +43,6 @@ function getInventoryList(){
       type: 'GET',
       success: function(data) {
              displayInventoryList(data);
-             //console.log(data);
       },
       error: handleAjaxError
    });

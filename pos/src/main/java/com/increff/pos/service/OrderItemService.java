@@ -8,6 +8,8 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
+import static com.increff.pos.util.Normalize.normalizePojo;
+
 @Service
 @Transactional
 public class OrderItemService {
@@ -28,9 +30,11 @@ public class OrderItemService {
         return orderItemPojo;
     }
     public void addOrderItem(OrderItemPojo orderItemPojo){
+        normalizePojo(orderItemPojo);
         orderItemDao.insert(orderItemPojo);
     }
     public void updateOrderItem(Integer id, OrderItemPojo orderItemPojo) throws ApiException{
+        normalizePojo(orderItemPojo);
         OrderItemPojo exOrderItemPojo = getCheckOrderItem(id);
         exOrderItemPojo.setQuantity(orderItemPojo.getQuantity());
         exOrderItemPojo.setSellingPrice(orderItemPojo.getSellingPrice());

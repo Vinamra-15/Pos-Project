@@ -7,9 +7,7 @@ import com.increff.pos.service.ApiException;
 import com.increff.pos.spring.AbstractUnitTest;
 import org.junit.Test;
 
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
+import java.util.*;
 
 import static org.junit.Assert.assertEquals;
 
@@ -118,20 +116,43 @@ public class ConvertUtilTest extends AbstractUnitTest {
         assertEquals("a1110",orderItemDataList.get(0).getBarcode());
         assertEquals((Integer) 1,orderItemDataList.get(0).getQuantity());
     }
-//
-//    @Test
-//    public void convertToDaySalesDataListTest(){
-//
-//    }
-//    @Test
-//    public void convertMapToSalesReportDataListTest(){
-//
-//    }
-//
-//    @Test
-//    public void convertMaptoInventoryReportDataListTest(){
-//
-//    }
+
+    @Test
+    public void convertToDaySalesDataListTest(){
+        DaySalesPojo daySalesPojo = TestUtils.getDaySalesPojo(new Date(100000),12000.00,2,5);
+        List<DaySalesPojo> daySalesPojoList = new ArrayList<>();
+        daySalesPojoList.add(daySalesPojo);
+        List<DaySalesData> daySalesDataList = ConvertUtil.convert(daySalesPojoList);
+        assertEquals(1,daySalesDataList.size());
+        assertEquals(new Date(100000),daySalesDataList.get(0).getDate());
+        assertEquals((Double) 12000.00,daySalesDataList.get(0).getTotal_revenue());
+        assertEquals((Integer) 2,daySalesDataList.get(0).getInvoiced_orders_count());
+        assertEquals((Integer) 5,daySalesDataList.get(0).getInvoiced_items_count());
+    }
+    @Test
+    public void convertMapToSalesReportDataListTest(){
+        SalesReportData salesReportData = new SalesReportData("brand","category",1,1500.00);
+        Map<Integer,SalesReportData> brandSalesMapping = new HashMap<>();
+        brandSalesMapping.put(1,salesReportData);
+        List<SalesReportData> salesReportDataList = ConvertUtil.convertMapToSalesReportDataList(brandSalesMapping);
+        assertEquals(1,salesReportDataList.size());
+        assertEquals("brand",salesReportDataList.get(0).getBrand());
+        assertEquals("category",salesReportDataList.get(0).getCategory());
+        assertEquals((Integer) 1,salesReportDataList.get(0).getQuantity());
+        assertEquals((Double) 1500.00,salesReportDataList.get(0).getRevenue());
+    }
+
+    @Test
+    public void convertMaptoInventoryReportDataListTest(){
+        InventoryReportData inventoryReportData = new InventoryReportData("brand","category",2);
+        Map<Integer,InventoryReportData> brandIdToInventoryReportDataMap = new HashMap<>();
+        brandIdToInventoryReportDataMap.put(1,inventoryReportData);
+        List<InventoryReportData> inventoryReportDataList = ConvertUtil.convertMaptoInventoryReportDataList(brandIdToInventoryReportDataMap);
+        assertEquals(1,inventoryReportDataList.size());
+        assertEquals("brand",inventoryReportDataList.get(0).getBrand());
+        assertEquals("category",inventoryReportDataList.get(0).getCategory());
+        assertEquals((Integer) 2,inventoryReportDataList.get(0).getQuantity());
+    }
     @Test
     public void convertSignUpFormToUserPojoTest(){
         SignUpForm signUpForm = TestUtils.getSignUpForm("xyz@increff.com","Pass1234","Pass1234");
@@ -156,8 +177,6 @@ public class ConvertUtilTest extends AbstractUnitTest {
         UserPojo userPojo = ConvertUtil.convert(userForm);
         assertEquals("xyz@increff.com",userPojo.getEmail());
         assertEquals("Pass1234",userPojo.getPassword());
-
-
     }
 
 }

@@ -5,12 +5,10 @@ function getDailySalesReportUrl(){
 
 function filterSalesReport() {
     var url = getDailySalesReportUrl();
-//    console.log(url);
     $.ajax({
        url: url,
        type: 'GET',
        success: function(response) {
-//            console.log(response);
             displaySalesReport(response);
        },
        error: handleAjaxError

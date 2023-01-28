@@ -377,7 +377,7 @@ function displayOrderDetails(data) {
                 <td>Bill Amount: </td>
                 <td></td>
                <td></td>
-              <td><strong>&#8377. ${numberWithCommas(billAmount.toFixed(2))}</strong></td>
+              <td><strong>&#8377 ${numberWithCommas(billAmount.toFixed(2))}</strong></td>
             </tr>
           `;
     $tbody.append(row);

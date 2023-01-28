@@ -19,7 +19,6 @@ public class InfoData implements Serializable {
 	private String loginMessage;
 	private String signUpMessage;
 	private String email;
-
 	private String role;
 
 	public InfoData() {

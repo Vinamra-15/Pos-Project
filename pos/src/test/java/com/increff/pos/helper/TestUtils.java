@@ -116,4 +116,15 @@ public class TestUtils {
         orderPojo.setInvoicePath("billPath");
         return orderPojo;
     }
+
+    public static DaySalesPojo getDaySalesPojo(Date date,Double total_revenue,Integer invoiced_orders_count,Integer invoiced_items_count) {
+        DaySalesPojo daySalesPojo = new DaySalesPojo();
+        daySalesPojo.setDate(date);
+        daySalesPojo.setTotal_revenue(total_revenue);
+        daySalesPojo.setInvoiced_orders_count(invoiced_orders_count);
+        daySalesPojo.setInvoiced_items_count(invoiced_items_count);
+        return daySalesPojo;
+    }
+
+
 }
