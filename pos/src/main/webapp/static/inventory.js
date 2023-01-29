@@ -56,12 +56,38 @@ var processCount = 0;
 
 
 function processData(){
-   var file = $('#employeeFile')[0].files[0];
+   var file = $('#inventoryFile')[0].files[0];
+   if(!file)
+   {
+       $.notify("Please select a file!", "error");
+       return;
+   }
    readFileData(file, readFileDataCallback);
 }
 
 function readFileDataCallback(results){
    fileData = results.data;
+   var meta = results.meta;
+   if(meta.fields.length!=2 ) {
+       var row = {};
+       row.error="Number of headers do not match!";
+       errorData.push(row);
+       updateUploadDialog()
+       return;
+   }
+   if(meta.fields[0]!="barcode" || meta.fields[1]!="quantity")
+   {
+       var row = {};
+       row.error="Incorrect headers name!";
+       errorData.push(row);
+       updateUploadDialog()
+       return;
+   }
+   const MAX_ROWS = 5000
+   if(results.data.length>MAX_ROWS){
+       $.notify("File too big!","error");
+       return
+   }
    uploadRows();
 }
 
@@ -79,12 +105,13 @@ function uploadRows(){
    barcode = row.barcode
    processCount++;
    if(row.__parsed_extra){
-   	    row.error="extra fields!"
+   	    row.error="extra fields present!"
    	    row.error_in_row_no = processCount
            errorData.push(row);
            uploadRows();
    	}
-   	else{
+   	else
+   	{
 
    var json = JSON.stringify(row);
    var url = getInventoryUrl() + '/' + barcode
@@ -101,7 +128,8 @@ function uploadRows(){
              uploadRows();
       },
       error: function(response){
-             row.error=response.responseText
+             var data = JSON.parse(response.responseText);
+             row.error=data["message"];
              row.error_in_row_no = processCount
              errorData.push(row);
              uploadRows();
@@ -160,9 +188,9 @@ function displayEditInventory(barcode){
 
 function resetUploadDialog(){
    //Reset file name
-   var $file = $('#employeeFile');
+   var $file = $('#inventoryFile');
    $file.val('');
-   $('#employeeFileName').html("Choose File");
+   $('#inventoryFileName').html("Choose File");
    //Reset various counts
    processCount = 0;
    fileData = [];
@@ -178,14 +206,18 @@ function updateUploadDialog(){
 }
 
 function updateFileName(){
-   var $file = $('#employeeFile');
+   var $file = $('#inventoryFile');
    var fileName = $file.val();
-   $('#employeeFileName').html(fileName);
+   $('#inventoryFileName').html(fileName);
+   fileData = [];
+   errorData = [];
+   processCount = 0;
+   updateUploadDialog()
 }
 
 function displayUploadData(){
    resetUploadDialog();
-   $('#upload-employee-modal').modal('toggle');
+   $('#upload-inventory-modal').modal('toggle');
 }
 
 function displayInventory(data){
@@ -202,7 +234,7 @@ function init(){
    $('#upload-data').click(displayUploadData);
    $('#process-data').click(processData);
    $('#download-errors').click(downloadErrors);
-    $('#employeeFile').on('change', updateFileName)
+    $('#inventoryFile').on('change', updateFileName)
     $('#inventory-link').addClass('active').css("border-bottom","2px solid black")
 }
 

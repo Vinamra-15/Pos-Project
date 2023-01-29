@@ -145,11 +145,37 @@ var processCount = 0;
 
 function processData(){
 	var file = $('#productFile')[0].files[0];
+	if(!file)
+    {
+        $.notify("Please select a file!", "error");
+        return;
+    }
 	readFileData(file, readFileDataCallback);
 }
 
 function readFileDataCallback(results){
 	fileData = results.data;
+	var meta = results.meta;
+    if(meta.fields.length!=5 ) {
+        var row = {};
+        row.error="Number of headers do not match!";
+        errorData.push(row);
+        updateUploadDialog()
+        return;
+    }
+    if(meta.fields[0]!="name" || meta.fields[1]!="brand" || meta.fields[2]!="category" || meta.fields[3]!="barcode"|| meta.fields[4]!="mrp")
+    {
+        var row = {};
+        row.error="Incorrect headers name!";
+        errorData.push(row);
+        updateUploadDialog()
+        return;
+    }
+    const MAX_ROWS = 5000
+    if(results.data.length>MAX_ROWS){
+        $.notify("File too big!","error");
+        return
+    }
 	uploadRows();
 }
 
@@ -187,7 +213,8 @@ function uploadRows(){
                 uploadRows();
            },
            error: function(response){
-                row.error=response.responseText
+                var data = JSON.parse(response.responseText);
+                row.error=data["message"];
                 row.error_in_row_no = processCount
                 errorData.push(row);
                 uploadRows();
@@ -251,7 +278,6 @@ function displayEditProduct(id){
 //}
 
 function resetUploadDialog(){
-	//Reset file name
 	var $file = $('#productFile');
 	$file.val('');
 	$('#productFileName').html("Choose File");
@@ -259,7 +285,6 @@ function resetUploadDialog(){
 	processCount = 0;
 	fileData = [];
 	errorData = [];
-	//Update counts	
 	updateUploadDialog();
 }
 
@@ -273,6 +298,10 @@ function updateFileName(){
 	var $file = $('#productFile');
 	var fileName = $file.val();
 	$('#productFileName').html(fileName);
+	fileData = [];
+    errorData = [];
+    processCount = 0;
+    updateUploadDialog()
 }
 
 function displayUploadData(){

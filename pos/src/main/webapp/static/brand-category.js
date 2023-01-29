@@ -97,16 +97,37 @@ var processCount = 0;
 
 function processData(){
 	var file = $('#brandCategoryFile')[0].files[0];
+	if(!file)
+    {
+        $.notify("Please select a file!", "error");
+        return;
+    }
 	readFileData(file, readFileDataCallback);
 }
 
 function readFileDataCallback(results){
+    fileData = results.data;
+    var meta = results.meta;
+    if(meta.fields.length!=2 ) {
+        var row = {};
+        row.error="Number of headers do not match!";
+        errorData.push(row);
+        updateUploadDialog()
+        return;
+    }
+    if(meta.fields[0]!="brand" || meta.fields[1]!="category")
+    {
+        var row = {};
+        row.error="Incorrect headers name!";
+        errorData.push(row);
+        updateUploadDialog()
+        return;
+    }
     const MAX_ROWS = 5000
     if(results.data.length>MAX_ROWS){
         $.notify("File too big!","error");
         return
     }
-	fileData = results.data;
 	uploadRows();
 }
 
@@ -123,7 +144,7 @@ function uploadRows(){
 	processCount++;
 //	console.log(row)
 	if(row.__parsed_extra){
-	    row.error="extra fields!"
+	    row.error="extra fields present!"
 	    row.error_in_row_no = processCount
         errorData.push(row);
         uploadRows();
@@ -142,7 +163,8 @@ function uploadRows(){
 	   		uploadRows();  
 	   },
 	   error: function(response){
-	   		row.error=response.responseText
+	        var data = JSON.parse(response.responseText);
+            row.error=data["message"];
 	   		row.error_in_row_no = processCount
 	   		errorData.push(row);
 	   		uploadRows();
@@ -215,6 +237,10 @@ function updateFileName(){
 	var $file = $('#brandCategoryFile');
 	var fileName = $file.val();
 	$('#brandCategoryFileName').html(fileName);
+	fileData = [];
+    errorData = [];
+    processCount = 0;
+    updateUploadDialog()
 }
 
 function displayUploadData(){
@@ -238,11 +264,7 @@ function init(){
 	$('#upload-data').click(displayUploadData);
 	$('#process-data').click(processData);
 	$('#download-errors').click(downloadErrors);
-    $('#brandFile').on('change', updateFileName)
-    $('#brandCategoryFile').on('change',function(){
-        var fileName = $(this).val();
-        $('#brandCategoryFileName').html(fileName);
-    });
+    $('#brandCategoryFile').on('change', updateFileName)
     $('#brands-link').addClass('active').css("border-bottom","2px solid black")
 }
 
