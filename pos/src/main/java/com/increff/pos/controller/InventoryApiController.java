@@ -10,6 +10,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Optional;
 
 @Api
 @RestController
@@ -30,8 +31,11 @@ public class InventoryApiController {
     }
 
     @ApiOperation(value = "Updates a product-quantity detail")
-    @RequestMapping(path = "/api/inventory/{barcode}", method = RequestMethod.PUT)
-    public void updateInventory(@PathVariable String barcode, @RequestBody InventoryForm inventoryForm) throws ApiException {
-        inventoryDto.updateInventory(barcode,inventoryForm);
+    @RequestMapping(path = {"/api/inventory","/api/inventory/{barcode}"}, method = RequestMethod.PUT)
+    public void updateInventory(@PathVariable Optional<String> barcode, @RequestBody InventoryForm inventoryForm) throws ApiException {
+        if(barcode.isPresent())
+            inventoryDto.updateInventory(barcode.get(),inventoryForm);
+        else
+            throw new ApiException("Please enter valid barcode!");
     }
 }

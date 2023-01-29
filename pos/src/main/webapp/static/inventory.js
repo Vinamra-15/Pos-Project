@@ -116,7 +116,6 @@ function uploadRows(){
    var json = JSON.stringify(row);
    var url = getInventoryUrl() + '/' + barcode
 
-   //Make ajax call
    $.ajax({
       url: url,
       type: 'PUT',
