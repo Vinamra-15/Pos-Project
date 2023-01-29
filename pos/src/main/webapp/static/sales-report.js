@@ -107,6 +107,7 @@ function resetBrandCategoryDropDown(){
     populateBrandCategoryDropDown(brandSet,categorySet)
     $('#inputBrand').prop('selectedIndex',0);
     $('#inputCategory').prop('selectedIndex',0);
+    primary = ""
 }
 function resetDateFields(){
     $("input[type=date]").val("")
@@ -115,8 +116,11 @@ function resetDateFields(){
 
 }
 
+let primary = ""; //defines which of the Brand Category option was selected first
+
 function brandChanged(event){
-    if($('#inputCategory').prop('selectedIndex')===0){
+    if(primary===""||primary==="brand"){
+    primary="brand"
     let brand = event.target.value
     $('#inputCategory').empty()
     $('#inputCategory').append('<option selected="" value="">Select Category</option>')
@@ -131,7 +135,8 @@ function brandChanged(event){
 
 
 function categoryChanged(event){
-    if($('#inputBrand').prop('selectedIndex')===0){
+    if(primary===""||primary==="category"){
+    primary = "category"
     let category = event.target.value
     $('#inputBrand').empty()
     $('#inputBrand').append('<option selected="" value="">Select Brand</option>')

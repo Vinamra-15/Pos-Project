@@ -161,31 +161,39 @@ function uploadRows(){
 	    getProductList()
 		return;
 	}
-	
 	//Process next row
 	var row = fileData[processCount];
 	processCount++;
-	
-	var json = JSON.stringify(row);
-	var url = getProductUrl();
+	if(row.__parsed_extra){
+    	    row.error="extra fields!"
+    	    row.error_in_row_no = processCount
+            errorData.push(row);
+            uploadRows();
+    }
+    else
+    {
+        var json = JSON.stringify(row);
+        var url = getProductUrl();
 
-	//Make ajax call
-	$.ajax({
-	   url: url,
-	   type: 'POST',
-	   data: json,
-	   headers: {
-       	'Content-Type': 'application/json'
-       },	   
-	   success: function(response) {
-	   		uploadRows();  
-	   },
-	   error: function(response){
-	   		row.error=response.responseText
-	   		errorData.push(row);
-	   		uploadRows();
-	   }
-	});
+        //Make ajax call
+        $.ajax({
+           url: url,
+           type: 'POST',
+           data: json,
+           headers: {
+            'Content-Type': 'application/json'
+           },
+           success: function(response) {
+                uploadRows();
+           },
+           error: function(response){
+                row.error=response.responseText
+                row.error_in_row_no = processCount
+                errorData.push(row);
+                uploadRows();
+           }
+        });
+	}
 }
 
 function downloadErrors(){

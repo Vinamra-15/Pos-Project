@@ -118,10 +118,17 @@ function uploadRows(){
 	    getBrandCategoryList()
 		return;
 	}
-	
 	//Process next row
 	var row = fileData[processCount];
 	processCount++;
+//	console.log(row)
+	if(row.__parsed_extra){
+	    row.error="extra fields!"
+	    row.error_in_row_no = processCount
+        errorData.push(row);
+        uploadRows();
+	}
+	else{
 	var json = JSON.stringify(row);
 	var url = getBrandCategoryUrl();
 	$.ajax({
@@ -136,13 +143,12 @@ function uploadRows(){
 	   },
 	   error: function(response){
 	   		row.error=response.responseText
+	   		row.error_in_row_no = processCount
 	   		errorData.push(row);
 	   		uploadRows();
 	   }
 	});
-
-
-
+	}
 }
 
 function downloadErrors(){

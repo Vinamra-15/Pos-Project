@@ -78,6 +78,13 @@ function uploadRows(){
    var row = fileData[processCount];
    barcode = row.barcode
    processCount++;
+   if(row.__parsed_extra){
+   	    row.error="extra fields!"
+   	    row.error_in_row_no = processCount
+           errorData.push(row);
+           uploadRows();
+   	}
+   	else{
 
    var json = JSON.stringify(row);
    var url = getInventoryUrl() + '/' + barcode
@@ -95,10 +102,12 @@ function uploadRows(){
       },
       error: function(response){
              row.error=response.responseText
+             row.error_in_row_no = processCount
              errorData.push(row);
              uploadRows();
       }
    });
+   }
 
 }
 
