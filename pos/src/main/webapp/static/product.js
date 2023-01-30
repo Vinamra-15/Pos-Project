@@ -388,8 +388,8 @@ function displayProduct(data){
 	$("#product-edit-form input[name=name]").val(data.name);	
 	$("#product-edit-form input[name=barcode]").val(data.barcode);
 	$("#product-edit-form input[name=mrp]").val(data.mrp);
-	$("#product-edit-form select[name=brand]").val(data.brand);
-	$("#product-edit-form select[name=category]").val(data.category);
+	$("#product-edit-form select[name=brand]").val(data.brand).change();
+	$("#product-edit-form select[name=category]").val(data.category).change();
 	$("#product-edit-form input[name=id]").val(data.id);
 	$('#edit-product-modal').modal('toggle');
 }
@@ -418,6 +418,11 @@ function init(){
     $('#edit-modal-close').click(resetBrandCategoryDropDown)
     $('#cancel-add-btn').click(resetBrandCategoryDropDown)
     $('#products-link').addClass('active').css("border-bottom","2px solid black")
+    $('#edit-product-modal').on('hidden.bs.modal', function () {
+      primary="";
+      resetBrandCategoryDropDown()
+
+    })
 
 }
 function resetBrandCategoryDropDown(){
@@ -425,10 +430,10 @@ function resetBrandCategoryDropDown(){
     $('#select-brand-add').prop('selectedIndex',0);
     $('#select-category-add').prop('selectedIndex',0);
     primary = ""
+
 }
 
 $(document).ready(init);
 $(document).ready(getProductList);
 $(document).ready(getBrandCategory);
-
 
