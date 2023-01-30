@@ -22,12 +22,10 @@ public abstract class AbstractUiController {
 	private String baseUrl;
 
 	protected ModelAndView mav(String page) {
-		// Get current user
-		UserPrincipal principal = SecurityUtil.getPrincipal();
 
+		UserPrincipal principal = SecurityUtil.getPrincipal();
 		info.setEmail(principal == null ? "" : principal.getEmail());
 		info.setRole(getRole());
-		// Set info
 		ModelAndView mav = new ModelAndView(page);
 		mav.addObject("info", info);
 		mav.addObject("baseUrl", baseUrl);

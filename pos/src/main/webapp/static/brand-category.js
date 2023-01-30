@@ -9,10 +9,8 @@ function getRole(){
     return role;
 }
 
-//BUTTON ACTIONS
 function addBrandCategory(event){
     event.preventDefault()
-	//Set the values to update
 	var $form = $("#brand-category-form");
 	var json = toJson($form);
 	var url = getBrandCategoryUrl();
@@ -35,12 +33,8 @@ function addBrandCategory(event){
 
 function updateBrandCategory(event){
     event.preventDefault()
-
-	//Get the ID
 	var id = $("#brand-category-edit-form input[name=id]").val();
 	var url = getBrandCategoryUrl() + "/" + id;
-
-	//Set the values to update
 	var $form = $("#brand-category-edit-form");
 	var json = toJson($form);
 
@@ -89,7 +83,6 @@ function deleteBrandCategory(id){
 	});
 }
 
-// FILE UPLOAD METHODS
 var fileData = [];
 var errorData = [];
 var processCount = 0;
@@ -133,17 +126,13 @@ function readFileDataCallback(results){
 }
 
 function uploadRows(){
-	//Update progress
 	updateUploadDialog();
-	//If everything processed then return
 	if(processCount==fileData.length){
 	    getBrandCategoryList()
 		return;
 	}
-	//Process next row
 	var row = fileData[processCount];
 	processCount++;
-//	console.log(row)
 	if(row.__parsed_extra){
 	    row.error="extra fields present!"
 	    row.error_in_row_no = processCount
@@ -177,8 +166,6 @@ function uploadRows(){
 function downloadErrors(){
 	writeFileData(errorData);
 }
-
-//UI DISPLAY METHODS
 
 function displayBrandCategoryList(data){
 	var $tbody = $('#brand-category-table').find('tbody');
@@ -216,15 +203,12 @@ function displayEditBrandCategory(id){
 }
 
 function resetUploadDialog(){
-	//Reset file name
 	var $file = $('#brandCategoryFile');
 	$file.val('');
 	$('#brandCategoryFileName').html("Choose File");
-	//Reset various counts
 	processCount = 0;
 	fileData = [];
 	errorData = [];
-	//Update counts	
 	updateUploadDialog();
 }
 

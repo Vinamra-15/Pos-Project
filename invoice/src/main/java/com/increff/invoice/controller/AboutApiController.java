@@ -29,7 +29,6 @@ public class AboutApiController {
 	@ApiOperation(value = "Gives application name and version")
 	@RequestMapping(path = "/api/about", method = RequestMethod.POST)
 	public String getDetailsPost(@RequestBody String requestBody) {
-		System.out.println(requestBody);
 		return requestBody;
 	}
 

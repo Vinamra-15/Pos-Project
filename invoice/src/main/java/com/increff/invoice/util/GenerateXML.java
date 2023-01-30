@@ -34,7 +34,6 @@ public class GenerateXML {
         Document document = documentBuilder.newDocument();
 
         int i = 0;
-        // root element
         Element root = document.createElement("bill");
         document.appendChild(root);
         double finalBill = 0;
@@ -50,7 +49,7 @@ public class GenerateXML {
         Element time = document.createElement("time");
         time.appendChild(document.createTextNode(getTime()));
         root.appendChild(time);
-        // Create elements from OrderDetailsData list
+
         List<OrderItemData> orderDetailsDataItems = orderDetailsData.getItems();
         for (i = 0; i < orderDetailsDataItems.size(); i++) {
             Element item = document.createElement("item");
@@ -62,7 +61,6 @@ public class GenerateXML {
             Element name = document.createElement("name");
             name.appendChild(document.createTextNode(orderDetailsDataItems.get(i).getName()));
             item.appendChild(name);
-            // Calculate total bill amount
             finalBill = finalBill + orderDetailsDataItems.get(i).getQuantity()* orderDetailsDataItems.get(i).getSellingPrice();
             double totalCost = 0;
             totalCost = totalCost + orderDetailsDataItems.get(i).getQuantity() * orderDetailsDataItems.get(i).getSellingPrice();
@@ -92,21 +90,16 @@ public class GenerateXML {
 
         transformer.transform(domSource, streamResult);
     }
-
-    // Get date in required format
     private static String getDate() {
         DateFormat df = new SimpleDateFormat("dd-MM-yyyy");
         Date dateobj = new Date();
         String date = df.format(dateobj);
         return date;
     }
-
-    // Get time in required format
     private static String getTime() {
         DateFormat df = new SimpleDateFormat("HH:mm:ss");
         Date dateobj = new Date();
         String time = df.format(dateobj);
         return time;
     }
-
 }

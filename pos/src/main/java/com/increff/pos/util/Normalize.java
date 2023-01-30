@@ -25,16 +25,6 @@ public class Normalize {
         orderItemPojo.setSellingPrice(normalizeDouble(orderItemPojo.getSellingPrice()));
     }
 
-
-//    public static void normalizePojo(List<OrderItemForm> orderItemFormList){
-//        for(int i=0;i<orderItemFormList.size();i++){
-//            OrderItemForm orderItemForm = orderItemFormList.get(i);
-//            orderItemForm.setBarcode(StringUtil.toLowerCase(orderItemForm.getBarcode()).trim());
-//            orderItemForm.setSellingPrice(normalizeDouble(orderItemForm.getSellingPrice()));
-//            orderItemFormList.set(i,orderItemForm);
-//        }
-//    }
-
     private static Double normalizeDouble(Double input) {
         String[] parts = input.toString().split("\\.");
         if (parts.length == 1) return input;

@@ -10,11 +10,8 @@ function getRole(){
 
 
 function updateInventory(event){
-
-   //Get the ID
    var barcode = $("#inventory-edit-form input[name=barcode]").val();
    var url = getInventoryUrl() +"/" + barcode;
-   //Set the values to update
    var $form = $("#inventory-edit-form");
    var json = toJson($form);
    $.ajax({
@@ -48,8 +45,6 @@ function getInventoryList(){
    });
 }
 
-
-// FILE UPLOAD METHODS
 var fileData = [];
 var errorData = [];
 var processCount = 0;
@@ -92,15 +87,12 @@ function readFileDataCallback(results){
 }
 
 function uploadRows(){
-   //Update progress
    updateUploadDialog();
-   //If everything processed then return
    if(processCount==fileData.length){
       getInventoryList()
       return;
    }
 
-   //Process next row
    var row = fileData[processCount];
    barcode = row.barcode
    processCount++;
@@ -142,8 +134,6 @@ function uploadRows(){
 function downloadErrors(){
    writeFileData(errorData);
 }
-
-//UI DISPLAY METHODS
 
 function displayInventoryList(data){
    var $tbody = $('#inventory-table').find('tbody');
@@ -187,15 +177,12 @@ function displayEditInventory(barcode){
 }
 
 function resetUploadDialog(){
-   //Reset file name
    var $file = $('#inventoryFile');
    $file.val('');
    $('#inventoryFileName').html("Choose File");
-   //Reset various counts
    processCount = 0;
    fileData = [];
    errorData = [];
-   //Update counts
    updateUploadDialog();
 }
 

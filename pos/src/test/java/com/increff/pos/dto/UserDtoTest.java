@@ -37,7 +37,6 @@ public class UserDtoTest extends AbstractUnitTest {
         LoginForm loginForm = TestUtils.getLoginForm("xyz@increff.com","Pass1234");
         UserData userData = userDto.login(loginForm);
         assertEquals(loginForm.getEmail(),userData.getEmail());
-//        assertEquals("",infoData.getLoginMessage());
     }
     @Test
     public void incorrectLoginTest() throws ApiException {

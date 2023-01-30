@@ -68,13 +68,9 @@ public class LoginSignUpController {
 	}
 
 	private void authenticate(HttpServletRequest req, UserData userData){
-		// Create authentication object
 		Authentication authentication = convert(userData,adminEmail);
-		// Create new session
 		HttpSession session = req.getSession(true);
-		// Attach Spring SecurityContext to this new session
 		SecurityUtil.createContext(session);
-		// Attach Authentication object to the Security Context
 		SecurityUtil.setAuthentication(authentication);
 	}
 

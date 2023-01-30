@@ -274,21 +274,5 @@
     </build>
 
 
-    <!--	<reporting>-->
-    <!--		<plugins>-->
-    <!--			&lt;!&ndash; SureFire Report plugin as part of site generation &ndash;&gt;-->
-    <!--			<plugin>-->
-    <!--				<groupId>org.apache.maven.plugins</groupId>-->
-    <!--				<artifactId>maven-surefire-report-plugin</artifactId>-->
-    <!--				<version>3.0.0-M4</version>-->
-    <!--				<configuration>-->
-    <!--				</configuration>-->
-    <!--			</plugin>-->
-
-    <!--			&lt;!&ndash; <plugin> <groupId>org.apache.maven.plugins</groupId> <artifactId>maven-jxr-plugin</artifactId> -->
-    <!--				<version>3.0.0</version> </plugin> &ndash;&gt;-->
-    <!--		</plugins>-->
-    <!--	</reporting>-->
-
 
 </project>

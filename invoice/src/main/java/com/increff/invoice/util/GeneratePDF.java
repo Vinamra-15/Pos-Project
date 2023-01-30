@@ -16,31 +16,17 @@ import java.io.OutputStream;
 
 public class GeneratePDF {
     public static void createPDF() throws FOPException, TransformerException, IOException {
-        // the XSL FO file
         File xsltFile = new File("template.xsl");
-        // the XML file which provides the input
         StreamSource xmlSource = new StreamSource(new File("billDataXML.xml"));
-        // create an instance of fop factory
         FopFactory fopFactory = FopFactory.newInstance();
-        // a user agent is needed for transformation
         FOUserAgent foUserAgent = fopFactory.newFOUserAgent();
-        // Setup output
         OutputStream out;
         out = new java.io.FileOutputStream("bill.pdf");
         try {
-            // Construct fop with desired output format
             Fop fop = fopFactory.newFop(MimeConstants.MIME_PDF, foUserAgent, out);
-
-            // Setup XSLT
             TransformerFactory factory = TransformerFactory.newInstance();
             Transformer transformer = factory.newTransformer(new StreamSource(xsltFile));
-
-            // Resulting SAX events (the generated FO) must be piped through to FOP
             Result res = new SAXResult(fop.getDefaultHandler());
-
-            // Start XSLT transformation and FOP processing
-            // That's where the XML is first transformed to XSL-FO and then
-            // PDF is created
             transformer.transform(xmlSource, res);
         } finally {
             out.close();

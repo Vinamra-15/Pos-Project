@@ -190,7 +190,6 @@ function getBillAmount(id){
         url: url,
         type: 'GET',
         success: function (data) {
-          // sum data items
           let items = data.items
           let amount = 0;
           for(let i in items){

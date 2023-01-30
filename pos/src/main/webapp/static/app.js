@@ -1,5 +1,4 @@
 
-//HELPER METHOD
 function toJson($form){
     var serialized = $form.serializeArray();
     var s = '';

@@ -101,19 +101,6 @@ public class Validate {
         }
     }
 
-//    public static void validate(SalesReportForm salesReportForm) {
-//        salesReportForm.setBrand(StringUtil.toLowerCase(salesReportForm.getBrand()));
-//        salesReportForm.setCategory(StringUtil.toLowerCase(salesReportForm.getCategory()));
-//        if(salesReportForm.getEndDate()==null) {
-//            salesReportForm.setEndDate(new Date());
-//        }
-//        if(salesReportForm.getStartDate()==null) {
-//            salesReportForm.setStartDate(new GregorianCalendar(2021, Calendar.JANUARY, 1).getTime());
-//        }
-//        salesReportForm.setStartDate(getStartOfDay(salesReportForm.getStartDate()));
-//        salesReportForm.setEndDate(getEndOfDay(salesReportForm.getEndDate()));
-//    }
-
     public static void validateForm(SignUpForm signUpForm) throws ApiException {
 
         if (StringUtil.isEmpty(signUpForm.getEmail())) {

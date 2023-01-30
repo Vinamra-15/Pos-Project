@@ -29,6 +29,4 @@ public class SecurityUtil {
 		return token == null ? null : (UserPrincipal) getAuthentication().getPrincipal();
 	}
 
-
-	//admin and non admin user: checks and returns whether admin or not
 }

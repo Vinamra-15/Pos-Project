@@ -15,7 +15,6 @@ function getbrandReport() {
   });
 }
 
-//UI DISPLAY METHODS
 function displaybrandReportList(data) {
   var $tbody = $("#brandCategory-table").find("tbody");
   $tbody.empty();

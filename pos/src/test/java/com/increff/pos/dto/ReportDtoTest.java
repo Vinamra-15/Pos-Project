@@ -52,7 +52,6 @@ public class ReportDtoTest extends AbstractUnitTest {
         productPojo.setBarcode("abc123");
         productPojo.setMrp(2400.00);
         productPojo.setBrandId(brandCategoryPojo.getId());
-//        productPojo.setBrandId(brandCategoryService.getByBrandCategory("some brand","some category").getId());
         productService.addProduct(productPojo);
         InventoryPojo inventoryPojo = new InventoryPojo();
         inventoryPojo.setQuantity(20);

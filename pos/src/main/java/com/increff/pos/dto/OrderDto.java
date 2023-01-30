@@ -39,17 +39,6 @@ public class OrderDto {
     private ProductService productService;
     @Autowired
     private InventoryService inventoryService;
-
-    /*
-            Create Order
-            1. productPojo(fetch product pojo from each orderItemForm's barcode)
-            2.For each productPojo since barcode existence is already checked, compare and reduce inventory quantity
-                i. reduceInventoryQuantity(orderItemPojo,productPojo)
-            2. create new orderPojo
-            3. Save orderItemPojo from convertUtil using(orderItemForm,productPojo,orderPojo) for each orderItemForm
-            4. get time and set in orderPojo
-            5. save orderPojo in order table
-     */
     public OrderData createOrder(List<OrderItemForm> orderItemForms) throws ApiException, IOException {
         validateForm(orderItemForms);
         OrderPojo orderPojo = new OrderPojo();
@@ -84,7 +73,7 @@ public class OrderDto {
     }
     public Resource getFileResource(Integer orderId) throws ApiException, IOException {
         OrderPojo orderPojo = orderService.getOrder(orderId);
-        String billDirPath =  orderPojo.getInvoicePath();   //"D:\\IncreffProjectPOS BILLS\\bills\\" + orderId + ".pdf";
+        String billDirPath =  orderPojo.getInvoicePath();
         File file = new File(billDirPath);
         Path path = Paths.get(file.getAbsolutePath());
         return new ByteArrayResource(Files.readAllBytes(path));

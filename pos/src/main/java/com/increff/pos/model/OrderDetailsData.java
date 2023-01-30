@@ -11,7 +11,6 @@ import java.util.List;
 @Setter
 public class OrderDetailsData {
     private Integer id;
-
     private Date datetime;
     private List<OrderItemData> items;
 }

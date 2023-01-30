@@ -15,7 +15,6 @@ function getInventoryReport() {
   });
 }
 
-//UI DISPLAY METHODS
 function displayInventoryReportList(data) {
   var $tbody = $("#inventory-report-table").find("tbody");
   $tbody.empty();

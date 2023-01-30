@@ -113,11 +113,8 @@ function getData(json){
     return dataToPost
 }
 
-//BUTTON ACTIONS
 function addProduct(event){
-	//Set the values to update
 	event.preventDefault()
-
 	var $form = $("#product-add-form");
 	var json = toJson($form);
 	var url = getProductUrl();
@@ -159,11 +156,9 @@ function addProduct(event){
 
 function updateProduct(event){
     event.preventDefault()
-	//Get the ID
 	var id = $("#product-edit-form input[name=id]").val();	
 	var url = getProductUrl() + "/" + id;
 
-	//Set the values to update
 	var $form = $("#product-edit-form");
 	var json = toJson($form);
 	var data = getData(json)
@@ -222,7 +217,6 @@ function deleteProduct(id){
 	});
 }
 
-// FILE UPLOAD METHODS
 var fileData = [];
 var errorData = [];
 var processCount = 0;
@@ -265,14 +259,11 @@ function readFileDataCallback(results){
 }
 
 function uploadRows(){
-	//Update progress
 	updateUploadDialog();
-	//If everything processed then return
 	if(processCount==fileData.length){
 	    getProductList()
 		return;
 	}
-	//Process next row
 	var row = fileData[processCount];
 	processCount++;
 	if(row.__parsed_extra){
@@ -286,7 +277,6 @@ function uploadRows(){
         var json = JSON.stringify(row);
         var url = getProductUrl();
 
-        //Make ajax call
         $.ajax({
            url: url,
            type: 'POST',
@@ -312,7 +302,7 @@ function downloadErrors(){
 	writeFileData(errorData);
 }
 
-//UI DISPLAY METHODS
+
 
 function displayProductList(data){
 	var $tbody = $('#product-table').find('tbody');
@@ -362,7 +352,7 @@ function resetUploadDialog(){
 	var $file = $('#productFile');
 	$file.val('');
 	$('#productFileName').html("Choose File");
-	//Reset various counts
+
 	processCount = 0;
 	fileData = [];
 	errorData = [];

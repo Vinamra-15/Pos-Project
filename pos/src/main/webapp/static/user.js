@@ -3,9 +3,7 @@ function getUserUrl(){
 	return baseUrl + "/api/admin/user";
 }
 
-//BUTTON ACTIONS
 function addUser(event){
-	//Set the values to update
 	var $form = $("#user-form");
 	var json = toJson($form);
 	var url = getUserUrl();
@@ -51,7 +49,6 @@ function deleteUser(id){
 	});
 }
 
-//UI DISPLAY METHODS
 
 function displayUserList(data){
 	var $tbody = $('#user-table').find('tbody');
