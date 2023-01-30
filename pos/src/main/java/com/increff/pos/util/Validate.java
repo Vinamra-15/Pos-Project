@@ -14,7 +14,7 @@ import static com.increff.pos.util.TimeUtil.getStartOfDay;
 public class Validate {
     private static final String EMAIL_PATTERN = "[a-z\\d]+@[a-z]+\\.[a-z]{2,3}";
 
-    public static boolean isValidEmail(String email) {
+    private static boolean isValidEmail(String email) {
         return email.matches(EMAIL_PATTERN);
     }
     public static void validateForm(BrandCategoryForm brandCategoryForm) throws ApiException {
@@ -24,7 +24,6 @@ public class Validate {
         if(StringUtil.isEmpty(brandCategoryForm.getCategory())) {
             throw new ApiException("Category field cannot be empty");
         }
-
     }
     public static void validateForm(InventoryForm inventoryForm) throws ApiException {
 
@@ -93,18 +92,18 @@ public class Validate {
         }
     }
 
-    public static void validate(SalesReportForm salesReportForm) {
-        salesReportForm.setBrand(StringUtil.toLowerCase(salesReportForm.getBrand()));
-        salesReportForm.setCategory(StringUtil.toLowerCase(salesReportForm.getCategory()));
-        if(salesReportForm.getEndDate()==null) {
-            salesReportForm.setEndDate(new Date());
-        }
-        if(salesReportForm.getStartDate()==null) {
-            salesReportForm.setStartDate(new GregorianCalendar(2021, Calendar.JANUARY, 1).getTime());
-        }
-        salesReportForm.setStartDate(getStartOfDay(salesReportForm.getStartDate()));
-        salesReportForm.setEndDate(getEndOfDay(salesReportForm.getEndDate()));
-    }
+//    public static void validate(SalesReportForm salesReportForm) {
+//        salesReportForm.setBrand(StringUtil.toLowerCase(salesReportForm.getBrand()));
+//        salesReportForm.setCategory(StringUtil.toLowerCase(salesReportForm.getCategory()));
+//        if(salesReportForm.getEndDate()==null) {
+//            salesReportForm.setEndDate(new Date());
+//        }
+//        if(salesReportForm.getStartDate()==null) {
+//            salesReportForm.setStartDate(new GregorianCalendar(2021, Calendar.JANUARY, 1).getTime());
+//        }
+//        salesReportForm.setStartDate(getStartOfDay(salesReportForm.getStartDate()));
+//        salesReportForm.setEndDate(getEndOfDay(salesReportForm.getEndDate()));
+//    }
 
     public static void validateForm(SignUpForm signUpForm) throws ApiException {
 
