@@ -51,6 +51,15 @@
                 <fo:table-body>
                     <fo:table-row>
                         <fo:table-cell>
+                            <fo:block font-size="12pt" font-family="sans-serif" font-weight="bold"
+                                      color="black" text-align="left" padding-top="3pt">
+                                Order Id :
+                                <xsl:value-of select="order-id" />
+                            </fo:block>
+                        </fo:table-cell>
+                    </fo:table-row>
+                    <fo:table-row>
+                        <fo:table-cell>
                             <fo:block font-size="12pt" font-family="sans-serif"
                                       color="black" text-align="left" padding-top="3pt">
                                 Date :
@@ -100,14 +109,14 @@
                             <fo:block font-size="15pt" font-family="sans-serif"
                                       background-color="black" color="white" text-align="center"
                                       padding-top="3pt">
-                                Selling Price
+                                Selling Price (INR)
                             </fo:block>
                         </fo:table-cell>
                         <fo:table-cell padding-top="30pt">
                             <fo:block font-size="15pt" font-family="sans-serif"
                                       background-color="black" color="white" text-align="center"
                                       padding-top="3pt">
-                                Total
+                                Total (INR)
                             </fo:block>
                         </fo:table-cell>
                     </fo:table-row>
@@ -150,19 +159,19 @@
                 </fo:table-body>
             </fo:table>
             <fo:table table-layout="fixed" width="100%">
-                <fo:table-column column-width="50%" />
-                <fo:table-column column-width="50%" />
+                <fo:table-column column-width="80%" />
+                <fo:table-column column-width="20%" />
                 <fo:table-body>
                     <fo:table-row>
                         <fo:table-cell padding-top="50pt">
                             <fo:block font-size="20pt" font-family="sans-serif"
-                                      color="black" text-align="center" >
+                                      color="black" text-align="left" margin-left="50pt" >
                                 Total
                             </fo:block>
                         </fo:table-cell>
                         <fo:table-cell padding-top="50pt">
                             <fo:block font-size="20pt" font-family="sans-serif"
-                                      color="blue" text-align="center">
+                                      color="black" text-align="center">
                                 <xsl:value-of select="total" />
                             </fo:block>
                         </fo:table-cell>

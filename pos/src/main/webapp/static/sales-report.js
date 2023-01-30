@@ -163,8 +163,6 @@ function endDateChanged(event){
 function init(){
    $('#filter-sales-report').click(filterSalesReport);
    $('#reports-link').addClass('active').css("border-bottom","2px solid black")
-   $('#clear-brand-filter').click(resetBrandCategoryDropDown)
-   $('#clear-date-filter').click(resetDateFields)
    $('#inputBrand').change(brandChanged)
    $('#inputCategory').change(categoryChanged)
    $('#inputStartDate').change(startDateChanged)

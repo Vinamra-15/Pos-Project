@@ -264,6 +264,8 @@ function fetchOrderDetails(id,typeOfOperation) {
        else
        {
             $("#edit-item-form input[name=id]").val(data.id)
+            const $heading = $('#update-modal-heading')
+            $heading.text("Update Order (Order Id: " + data.id + " )")
             displayEditOrderItems(orderItems);
             displayEditOrderModal()
        }
