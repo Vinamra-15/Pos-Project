@@ -231,6 +231,10 @@ function updateUploadDialog(){
 	$('#rowCount').html("" + fileData.length);
 	$('#processCount').html("" + processCount);
 	$('#errorCount').html("" + errorData.length);
+	if(errorData.length>0)
+         $('#download-errors').show()
+    else
+        $('#download-errors').hide()
 }
 
 function updateFileName(){
@@ -258,7 +262,7 @@ function displayBrandCategory(data){
 
 //INITIALIZATION CODE
 function init(){
-	$('#add-brand-category').submit(addBrandCategory);
+	$('#brand-category-form').submit(addBrandCategory);
 	$('#brand-category-edit-form').submit(updateBrandCategory);
 	$('#refresh-data').click(getBrandCategoryList);
 	$('#upload-data').click(displayUploadData);

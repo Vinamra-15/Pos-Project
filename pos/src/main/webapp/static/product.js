@@ -67,7 +67,12 @@ function addProduct(event){
        },	   
 	   success: function(response) {
 	   		getProductList();
-	   		var $modal = $("#add-product-modal").modal('toggle');
+	        $("#product-add-form input[name=name]").val("");
+            $("#product-add-form input[name=barcode]").val("");
+            $("#product-add-form input[name=mrp]").val("");
+            $("#product-add-form select[name=brandCategory]").prop('selectedIndex',0);;
+            $("#product-add-form input[name=id]").val("");
+	   		$("#add-product-modal").modal('toggle');
 	   		$.notify("Product added successfully!","success");
 	   },
 	   error: handleAjaxError
@@ -292,6 +297,10 @@ function updateUploadDialog(){
 	$('#rowCount').html("" + fileData.length);
 	$('#processCount').html("" + processCount);
 	$('#errorCount').html("" + errorData.length);
+	if(errorData.length>0)
+         $('#download-errors').show()
+    else
+        $('#download-errors').hide()
 }
 
 function updateFileName(){

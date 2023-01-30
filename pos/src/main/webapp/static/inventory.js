@@ -132,6 +132,7 @@ function uploadRows(){
              row.error_in_row_no = processCount
              errorData.push(row);
              uploadRows();
+
       }
    });
    }
@@ -202,6 +203,11 @@ function updateUploadDialog(){
    $('#rowCount').html("" + fileData.length);
    $('#processCount').html("" + processCount);
    $('#errorCount').html("" + errorData.length);
+   if(errorData.length>0)
+     $('#download-errors').show()
+   else
+    $('#download-errors').hide()
+
 }
 
 function updateFileName(){
@@ -217,12 +223,14 @@ function updateFileName(){
 function displayUploadData(){
    resetUploadDialog();
    $('#upload-inventory-modal').modal('toggle');
+
 }
 
 function displayInventory(data){
    $("#inventory-edit-form input[name=barcode]").val(data.barcode);
    $("#inventory-edit-form input[name=quantity]").val(data.quantity);
    $('#edit-inventory-modal').modal('toggle');
+
 }
 
 
