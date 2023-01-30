@@ -103,12 +103,7 @@ function startDateGreaterThanEndDate(startDate,endDate){
     let endDateConverted  = new Date(partsEndDate[0], partsEndDate[1] - 1, partsEndDate[2])
     return startDateConverted >endDateConverted
 }
-function resetBrandCategoryDropDown(){
-    populateBrandCategoryDropDown(brandSet,categorySet)
-    $('#inputBrand').prop('selectedIndex',0);
-    $('#inputCategory').prop('selectedIndex',0);
-    primary = ""
-}
+
 function resetDateFields(){
     $("input[type=date]").val("")
     $("input[type=date]").attr('min','')

@@ -14,19 +14,89 @@ function getBrandUrl(){
 	return baseUrl + "/api/brands";
 }
 
+brandCategoryData = []
+brandSet = new Set()
+categorySet = new Set()
 function getBrandCategory(){
-    $.ajax({
-    	   url: getBrandUrl(),
-    	   type: 'GET',
-    	   success: function(response) {
-    	        for(let i in response){
-    	            let optionHTML = '<option value="'+ response[i].brand + "~" + response[i].category+'">'+ response[i].brand + " - " + response[i].category+'</option>'
-    	            $('#select-brand-category-add').append(optionHTML)
-    	            $('#select-brand-category-edit').append(optionHTML)
-    	        }
-    	   },
-    	   error: handleAjaxError
-    	});
+     $.ajax({
+           url: getBrandUrl(),
+           type: 'GET',
+           success: function(response) {
+                brandCategoryData = response
+                for(let i in response){
+                    brandSet.add(response[i].brand)
+                    categorySet.add(response[i].category)
+                }
+
+                populateBrandCategoryDropDown(brandSet,categorySet,"add")
+                populateBrandCategoryDropDown(brandSet,categorySet,"edit")
+
+
+
+           },
+           error: handleAjaxError
+        });
+}
+function populateBrandCategoryDropDown(brandSet,categorySet,typeOfOperation){
+    $("#select-brand-"+typeOfOperation).empty()
+    $("#select-category-"+typeOfOperation).empty()
+    $("#select-brand-"+typeOfOperation).append('<option selected="" value="">Select Brand</option>')
+    $("#select-category-"+typeOfOperation).append('<option selected="" value="">Select Category</option>')
+    brandSet.forEach(function(brand){
+        let brandOptionHTML = '<option value="'+ brand +'">'+ brand+'</option>'
+        $("#select-brand-"+typeOfOperation).append(brandOptionHTML)
+    })
+    categorySet.forEach(function(category){
+         let categoryOptionHTML = '<option value="'+ category +'">'+ category+'</option>'
+         $("#select-category-"+typeOfOperation).append(categoryOptionHTML)
+    })
+
+}
+
+let primary = ""; //defines which of the Brand Category option was selected first
+
+function brandChanged(event){
+    const typeOfOperation = event.data.typeOfOperation
+    if(primary===""||primary==="brand"){
+    primary="brand"
+    let brand = event.target.value
+    if(brand==="")
+    {
+        populateBrandCategoryDropDown(brandSet,categorySet,typeOfOperation)
+        primary=""
+        return
+    }
+    $("#select-category-"+typeOfOperation).empty()
+    $("#select-category-"+typeOfOperation).append('<option selected="" value="">Select Category</option>')
+    for(let i in brandCategoryData){
+        if(brandCategoryData[i].brand===brand){
+            let categoryOptionHTML = '<option value="'+ brandCategoryData[i].category +'">'+ brandCategoryData[i].category+'</option>'
+                                 $("#select-category-"+typeOfOperation).append(categoryOptionHTML)
+        }
+    }
+    }
+}
+
+
+function categoryChanged(event){
+    const typeOfOperation = event.data.typeOfOperation
+    if(primary===""||primary==="category"){
+    primary = "category"
+    let category = event.target.value
+    if(category===""){
+        populateBrandCategoryDropDown(brandSet,categorySet,typeOfOperation)
+        primary=""
+        return
+    }
+    $("#select-brand-"+typeOfOperation).empty()
+    $("#select-brand-"+typeOfOperation).append('<option selected="" value="">Select Brand</option>')
+    for(let i in brandCategoryData){
+        if(brandCategoryData[i].category===category){
+            let brandOptionHTML = '<option value="'+ brandCategoryData[i].brand +'">'+ brandCategoryData[i].brand+'</option>'
+                                 $("#select-brand-"+typeOfOperation).append(brandOptionHTML)
+        }
+    }
+  }
 }
 
 
@@ -36,8 +106,8 @@ function getData(json){
     let dataToPost = {
         barcode:data.barcode,
         name:data.name,
-        brand:data.brandCategory.split('~')[0],
-        category:data.brandCategory.split('~')[1],
+        brand:data.brand,
+        category:data.category,
         mrp:data.mrp
     }
     return dataToPost
@@ -52,8 +122,12 @@ function addProduct(event){
 	var json = toJson($form);
 	var url = getProductUrl();
 	var data = getData(json)
+	if(!data.brand){
+        handleErrorNotification("Please select brand!")
+        return;
+    }
 	if(!data.category){
-	    handleErrorNotification("Please select brand category!")
+	    handleErrorNotification("Please select category!")
 	    return;
 	}
 	data = JSON.stringify(data)
@@ -70,10 +144,12 @@ function addProduct(event){
 	        $("#product-add-form input[name=name]").val("");
             $("#product-add-form input[name=barcode]").val("");
             $("#product-add-form input[name=mrp]").val("");
-            $("#product-add-form select[name=brandCategory]").prop('selectedIndex',0);;
+            $("#product-add-form select[name=brand]").prop('selectedIndex',0);
+            $("#product-add-form select[name=category]").prop('selectedIndex',0);;
             $("#product-add-form input[name=id]").val("");
 	   		$("#add-product-modal").modal('toggle');
 	   		$.notify("Product added successfully!","success");
+	   		resetBrandCategoryDropDown();
 	   },
 	   error: handleAjaxError
 	});
@@ -83,7 +159,6 @@ function addProduct(event){
 
 function updateProduct(event){
     event.preventDefault()
-
 	//Get the ID
 	var id = $("#product-edit-form input[name=id]").val();	
 	var url = getProductUrl() + "/" + id;
@@ -92,11 +167,15 @@ function updateProduct(event){
 	var $form = $("#product-edit-form");
 	var json = toJson($form);
 	var data = getData(json)
-    	if(!data.category){
-    	    handleErrorNotification("Please select brand category!")
-    	    return;
-    	}
-    	data = JSON.stringify(data)
+	if(!data.brand){
+        handleErrorNotification("Please select brand!")
+        return;
+    }
+    if(!data.category){
+        handleErrorNotification("Please select category!")
+        return;
+    }
+    data = JSON.stringify(data)
 
 	$.ajax({
 	   url: url,
@@ -108,6 +187,7 @@ function updateProduct(event){
 	   success: function(response) {
 	   		getProductList();
 	   		$('#edit-product-modal').modal('toggle');
+	   		resetBrandCategoryDropDown()
 	   		$.notify("Product update successful for product: " + JSON.parse(json).barcode,"success");
 	   },
 	   error: handleAjaxError
@@ -278,10 +358,6 @@ function displayEditProduct(id){
 	});	
 }
 
-//function handleAjaxError(e){
-//    $.notify("Cannot perform operation!","error");
-//}
-
 function resetUploadDialog(){
 	var $file = $('#productFile');
 	$file.val('');
@@ -322,7 +398,8 @@ function displayProduct(data){
 	$("#product-edit-form input[name=name]").val(data.name);	
 	$("#product-edit-form input[name=barcode]").val(data.barcode);
 	$("#product-edit-form input[name=mrp]").val(data.mrp);
-	$("#product-edit-form select[name=brandCategory]").val(data.brand + "~" + data.category);
+	$("#product-edit-form select[name=brand]").val(data.brand);
+	$("#product-edit-form select[name=category]").val(data.category);
 	$("#product-edit-form input[name=id]").val(data.id);
 	$('#edit-product-modal').modal('toggle');
 }
@@ -343,7 +420,21 @@ function init(){
 	$('#process-data').click(processData);
 	$('#download-errors').click(downloadErrors);
     $('#productFile').on('change', updateFileName)
+    $('#select-brand-add').change({typeOfOperation:"add"},brandChanged)
+    $('#select-category-add').change({typeOfOperation:"add"},categoryChanged)
+    $('#select-brand-edit').change({typeOfOperation:"edit"},brandChanged)
+    $('#select-category-edit').change({typeOfOperation:"edit"},categoryChanged)
+    $('#add-modal-close').click(resetBrandCategoryDropDown)
+    $('#edit-modal-close').click(resetBrandCategoryDropDown)
+    $('#cancel-add-btn').click(resetBrandCategoryDropDown)
     $('#products-link').addClass('active').css("border-bottom","2px solid black")
+
+}
+function resetBrandCategoryDropDown(){
+    populateBrandCategoryDropDown(brandSet,categorySet,"add")
+    $('#select-brand-add').prop('selectedIndex',0);
+    $('#select-category-add').prop('selectedIndex',0);
+    primary = ""
 }
 
 $(document).ready(init);
