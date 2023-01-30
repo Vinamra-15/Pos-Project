@@ -122,6 +122,12 @@ function brandChanged(event){
     if(primary===""||primary==="brand"){
     primary="brand"
     let brand = event.target.value
+    if(brand==="")
+    {
+        populateBrandCategoryDropDown(brandSet,categorySet)
+        primary=""
+        return
+    }
     $('#inputCategory').empty()
     $('#inputCategory').append('<option selected="" value="">Select Category</option>')
     for(let i in brandCategoryData){
@@ -138,6 +144,11 @@ function categoryChanged(event){
     if(primary===""||primary==="category"){
     primary = "category"
     let category = event.target.value
+    if(category===""){
+        populateBrandCategoryDropDown(brandSet,categorySet)
+        primary=""
+        return
+    }
     $('#inputBrand').empty()
     $('#inputBrand').append('<option selected="" value="">Select Brand</option>')
     for(let i in brandCategoryData){

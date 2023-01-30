@@ -239,7 +239,7 @@ function displayProductList(data){
 	$tbody.empty();
 	for(var i in data){
 		var e = data[i];
-		var buttonHtml = ' <button type="button" class="btn btn-outline-secondary"  onclick="displayEditProduct(' + e.id + ')"><i class="fas fa-edit fa-xs"></i></button>'
+		var buttonHtml = ' <button title="Edit Product" type="button" class="btn btn-outline-secondary"  onclick="displayEditProduct(' + e.id + ')"><i class="fas fa-edit fa-xs"></i></button>'
 		if(getRole()==="supervisor")
         {
             var row = '<tr class="text-center">'

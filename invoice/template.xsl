@@ -116,7 +116,7 @@
                             <fo:block font-size="15pt" font-family="sans-serif"
                                       background-color="black" color="white" text-align="center"
                                       padding-top="3pt">
-                                Total (INR)
+                                Amount (INR)
                             </fo:block>
                         </fo:table-cell>
                     </fo:table-row>
@@ -164,13 +164,13 @@
                 <fo:table-body>
                     <fo:table-row>
                         <fo:table-cell padding-top="50pt">
-                            <fo:block font-size="20pt" font-family="sans-serif"
-                                      color="black" text-align="left" margin-left="50pt" >
-                                Total
+                            <fo:block font-size="15pt" font-family="sans-serif" font-weight="bold"
+                                      color="black" text-align="right" margin-right="50pt" >
+                                TOTAL
                             </fo:block>
                         </fo:table-cell>
                         <fo:table-cell padding-top="50pt">
-                            <fo:block font-size="20pt" font-family="sans-serif"
+                            <fo:block font-size="15pt" font-family="sans-serif" font-weight="bold"
                                       color="black" text-align="center">
                                 <xsl:value-of select="total" />
                             </fo:block>

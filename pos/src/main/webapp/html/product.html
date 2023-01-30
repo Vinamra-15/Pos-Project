@@ -16,10 +16,10 @@
  <div class="row">
 	 <h3 class="column" style="margin-left:1rem;">Products</h3>
 	 <div class="col d-flex justify-content-end" float="left" th:if="${info.getRole() == 'supervisor'}">
-			  <button type="button" class="btn btn-primary" onclick="displayAddProductModal()"><i class="fa fa-plus" aria-hidden="true"></i></button>
+			  <button type="button" title="Add Product" class="btn btn-primary" onclick="displayAddProductModal()"><i class="fa fa-plus" aria-hidden="true"></i></button>
 
 			  &nbsp;
-			  <button type="button" class="btn btn-primary" id="upload-data"><i class="fa fa-upload" aria-hidden="true"></i></button>
+			  <button type="button"  title="Upload Product TSV" class="btn btn-primary" id="upload-data"><i class="fa fa-upload" aria-hidden="true"></i></button>
 
 	 </div>	
 </div>
