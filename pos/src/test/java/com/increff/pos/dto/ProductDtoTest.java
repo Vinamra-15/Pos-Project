@@ -41,10 +41,10 @@ public class ProductDtoTest extends AbstractUnitTest {
 
     @Test
     public void addProductTest() throws ApiException {
-        ProductForm productForm = getProductForm(" some product name "," !@#$23 ",2000.00,"some brand ","some category  ");
+        ProductForm productForm = getProductForm(" some product name "," abc123 ",2000.00,"some brand ","some category  ");
         productDto.addProduct(productForm);
-        ProductPojo productPojo = productService.getProductByBarcode("!@#$23");
-        assertEquals("!@#$23",productPojo.getBarcode());
+        ProductPojo productPojo = productService.getProductByBarcode("abc123");
+        assertEquals("abc123",productPojo.getBarcode());
         assertEquals("some product name",productPojo.getName());
         assertEquals((Double) 2000.00,productPojo.getMrp());
         BrandCategoryPojo brandCategoryPojo = brandCategoryService.getBrandCategory(productPojo.getBrandId());
@@ -61,12 +61,12 @@ public class ProductDtoTest extends AbstractUnitTest {
 
     @Test
     public void getProductTest() throws ApiException {
-        ProductPojo productPojo = getProductPojo("some product name","!@#$23",2000.00,brandCategoryService.getByBrandCategory("some brand","some category").getId());
+        ProductPojo productPojo = getProductPojo("some product name","abc123",2000.00,brandCategoryService.getByBrandCategory("some brand","some category").getId());
         productService.addProduct(productPojo);
         ProductData productData = productDto.getProduct(productPojo.getId());
         assertEquals("some product name",productData.getName());
         assertEquals((Double) 2000.00,productData.getMrp());
-        assertEquals("!@#$23",productData.getBarcode());
+        assertEquals("abc123",productData.getBarcode());
         assertEquals("some brand",productData.getBrand());
         assertEquals("some category",productData.getCategory());
     }
@@ -79,12 +79,12 @@ public class ProductDtoTest extends AbstractUnitTest {
 
     @Test
     public void getProductByBarcodeTest() throws ApiException {
-        ProductPojo productPojo = getProductPojo("some product name","!@#$23",2000.00,brandCategoryService.getByBrandCategory("some brand","some category").getId());
+        ProductPojo productPojo = getProductPojo("some product name","abc123",2000.00,brandCategoryService.getByBrandCategory("some brand","some category").getId());
         productService.addProduct(productPojo);
-        ProductData productData = productDto.getProductByBarcode("!@#$23");
+        ProductData productData = productDto.getProductByBarcode("abc123");
         assertEquals("some product name",productData.getName());
         assertEquals((Double) 2000.00,productData.getMrp());
-        assertEquals("!@#$23",productData.getBarcode());
+        assertEquals("abc123",productData.getBarcode());
         assertEquals("some brand",productData.getBrand());
         assertEquals("some category",productData.getCategory());
     }
@@ -92,15 +92,15 @@ public class ProductDtoTest extends AbstractUnitTest {
     @Test
     public void getProductByInvalidBarcodeTest() throws ApiException {
         exceptionRule.expect(ApiException.class);
-        ProductData productData = productDto.getProductByBarcode("!@#$23fas21v");
+        ProductData productData = productDto.getProductByBarcode("abc123fas21v");
     }
 
     @Test
     public void getAllProductsTest() throws ApiException {
-        ProductPojo productPojo = getProductPojo("some product name","!@#$23",2000.00,brandCategoryService.getByBrandCategory("some brand","some category").getId());
+        ProductPojo productPojo = getProductPojo("some product name","abc123",2000.00,brandCategoryService.getByBrandCategory("some brand","some category").getId());
         productService.addProduct(productPojo);
 
-        ProductPojo productPojo2 = getProductPojo("some other product name","!@#$234",2000.00,brandCategoryService.getByBrandCategory("some brand","some category").getId());
+        ProductPojo productPojo2 = getProductPojo("some other product name","abc1234",2000.00,brandCategoryService.getByBrandCategory("some brand","some category").getId());
         productService.addProduct(productPojo2);
 
         List<ProductData> productDataList = productDto.getAllProducts();
@@ -109,15 +109,15 @@ public class ProductDtoTest extends AbstractUnitTest {
 
     @Test
     public void updateProductTest() throws ApiException {
-        ProductPojo productPojo = getProductPojo("some product name","!@#$23",2000.00,brandCategoryService.getByBrandCategory("some brand","some category").getId());
+        ProductPojo productPojo = getProductPojo("some product name","abc123",2000.00,brandCategoryService.getByBrandCategory("some brand","some category").getId());
         productService.addProduct(productPojo);
         // product name updated
-        ProductForm productForm = getProductForm("some other product name","!@#$23",2000.00,"some brand","some category");
+        ProductForm productForm = getProductForm("some other product name","abc123",2000.00,"some brand","some category");
         productDto.updateProduct(productPojo.getId(),productForm);
         ProductPojo productPojo1 = productService.getProduct(productPojo.getId());
         assertEquals("some other product name",productPojo1.getName());
         assertEquals((Double) 2000.00,productPojo1.getMrp());
-        assertEquals("!@#$23",productPojo1.getBarcode());
+        assertEquals("abc123",productPojo1.getBarcode());
         assertEquals("some brand",brandCategoryService.getBrandCategory(productPojo1.getBrandId()).getBrand());
         assertEquals("some category",brandCategoryService.getBrandCategory(productPojo1.getBrandId()).getCategory());
     }

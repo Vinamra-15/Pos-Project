@@ -18,14 +18,15 @@ public class UserService {
 	@Autowired
 	private UserDao dao;
 
-	public void add(UserPojo p) throws ApiException {
+	public UserPojo add(UserPojo p) throws ApiException {
 		normalize(p);
 		UserPojo existing = dao.select(p.getEmail());
 		if (existing != null) {
 			throw new ApiException("User with given email already exists");
 		}
 		dao.insert(p);
-	}
+        return p;
+    }
 
 
 	public UserPojo get(String email) throws ApiException {

@@ -49,7 +49,7 @@ public class ReportDtoTest extends AbstractUnitTest {
 
         ProductPojo productPojo = new ProductPojo();
         productPojo.setName("some product");
-        productPojo.setBarcode("!@#$23");
+        productPojo.setBarcode("abc123");
         productPojo.setMrp(2400.00);
         productPojo.setBrandId(brandCategoryPojo.getId());
 //        productPojo.setBrandId(brandCategoryService.getByBrandCategory("some brand","some category").getId());
@@ -61,7 +61,7 @@ public class ReportDtoTest extends AbstractUnitTest {
 
         ProductPojo productPojo2 = new ProductPojo();
         productPojo2.setName("some product");
-        productPojo2.setBarcode("!@#$234");
+        productPojo2.setBarcode("abc1234");
         productPojo2.setMrp(2600.00);
         productPojo2.setBrandId(brandCategoryPojo.getId());
 //        productPojo.setBrandId(brandCategoryService.getByBrandCategory("some brand","some category").getId());
@@ -131,13 +131,13 @@ public class ReportDtoTest extends AbstractUnitTest {
 
     private List<OrderItemForm> addMultipleOrderItemToForm(){
         List<String> barcodes = new ArrayList<String>();
-        barcodes.add("!@#$23");
+        barcodes.add("abc123");
         List<Integer>quantities = new ArrayList<Integer>();
         quantities.add(6);
         List<Double>sellingPrices = new ArrayList<Double>();
         sellingPrices.add(1520.0);
 
-        barcodes.add("!@#$234");
+        barcodes.add("abc1234");
         quantities.add(0);
         sellingPrices.add(1520.0);
         List<OrderItemForm> orderItemFormList = TestUtils.getOrderItemArray(barcodes,quantities,sellingPrices);

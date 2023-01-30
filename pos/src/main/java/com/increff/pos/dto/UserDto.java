@@ -39,8 +39,7 @@ public class UserDto {
             validateForm(signUpForm);
             UserPojo userPojo = convert(signUpForm);
             try{
-                userService.add(userPojo);
-                return convert(userPojo);
+                return convert(userService.add(userPojo));
             }
             catch (ApiException e){
                 info.setSignUpMessage(e.getMessage());
