@@ -12,6 +12,11 @@ import static com.increff.pos.util.TimeUtil.getEndOfDay;
 import static com.increff.pos.util.TimeUtil.getStartOfDay;
 
 public class Validate {
+    private static final String EMAIL_PATTERN = "[a-z\\d]+@[a-z]+\\.[a-z]{2,3}";
+
+    public static boolean isValidEmail(String email) {
+        return email.matches(EMAIL_PATTERN);
+    }
     public static void validateForm(BrandCategoryForm brandCategoryForm) throws ApiException {
         if(StringUtil.isEmpty(brandCategoryForm.getBrand())) {
             throw new ApiException("Brand field cannot be empty");
@@ -53,6 +58,7 @@ public class Validate {
         if(productForm.getMrp()==null) {
             throw new ApiException("MRP field cannot be empty");
         }
+
 
 
         if(productForm.getMrp()<0)
@@ -101,18 +107,21 @@ public class Validate {
     }
 
     public static void validateForm(SignUpForm signUpForm) throws ApiException {
-        if(StringUtil.isEmpty(signUpForm.getEmail())){
+
+        if (StringUtil.isEmpty(signUpForm.getEmail())) {
             throw new ApiException("Please enter email!");
         }
-        if(StringUtil.isEmpty(signUpForm.getPassword())){
+        if (!isValidEmail(signUpForm.getEmail())) {
+            throw new ApiException("Invalid email!");
+        }
+        if (StringUtil.isEmpty(signUpForm.getPassword())) {
             throw new ApiException("Please enter password!");
         }
-        if(StringUtil.isEmpty(signUpForm.getConfirmPassword())){
+        if (StringUtil.isEmpty(signUpForm.getConfirmPassword())) {
             throw new ApiException("Please confirm password!");
         }
-        if(!signUpForm.getPassword().equals(signUpForm.getConfirmPassword())){
+        if (!signUpForm.getPassword().equals(signUpForm.getConfirmPassword())) {
             throw new ApiException("Passwords do not match!");
         }
-
     }
 }
