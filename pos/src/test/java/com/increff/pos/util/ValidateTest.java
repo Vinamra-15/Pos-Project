@@ -38,6 +38,13 @@ public class ValidateTest extends AbstractUnitTest {
         exceptionRule.expectMessage("Barcode field cannot be empty!");
         Validate.validateForm(inventoryForm);
     }
+    @Test
+    public void validateInvalidBarcodeInInventoryFormTest() throws ApiException {
+        InventoryForm inventoryForm = TestUtils.getInventoryForm("a/b", 1);
+        exceptionRule.expect(ApiException.class);
+        exceptionRule.expectMessage("Please enter alphanumeric barcode!");
+        Validate.validateForm(inventoryForm);
+    }
 
     @Test
     public void validateNullQuantityInInventoryFormTest() throws ApiException {
@@ -60,6 +67,14 @@ public class ValidateTest extends AbstractUnitTest {
         ProductForm productForm = TestUtils.getProductForm("name", "",1200.00,"brand","category");
         exceptionRule.expect(ApiException.class);
         exceptionRule.expectMessage("Barcode field cannot be empty!");
+        Validate.validateForm(productForm);
+    }
+
+    @Test
+    public void validateInvalidBarcodeInProductFormTest() throws ApiException {
+        ProductForm productForm = TestUtils.getProductForm("name", "a/b",1200.00,"brand","category");
+        exceptionRule.expect(ApiException.class);
+        exceptionRule.expectMessage("Please enter alphanumeric barcode!");
         Validate.validateForm(productForm);
     }
 
@@ -108,6 +123,14 @@ public class ValidateTest extends AbstractUnitTest {
         OrderItemForm orderItemForm = TestUtils.getOrderItemForm(1,"",1500.0);
         exceptionRule.expect(ApiException.class);
         exceptionRule.expectMessage("Barcode field cannot be empty!");
+        Validate.validateForm(orderItemForm);
+    }
+
+    @Test
+    public void validateInvalidBarcodeInOrderItemFormTest() throws ApiException {
+        OrderItemForm orderItemForm = TestUtils.getOrderItemForm(1,"a/b",1500.0);
+        exceptionRule.expect(ApiException.class);
+        exceptionRule.expectMessage("Please enter alphanumeric barcode!");
         Validate.validateForm(orderItemForm);
     }
 
@@ -188,13 +211,4 @@ public class ValidateTest extends AbstractUnitTest {
         exceptionRule.expectMessage("Passwords do not match!");
         Validate.validateForm(signUpForm);
     }
-
-
-
-
-
-
-
-
-
 }

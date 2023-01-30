@@ -17,6 +17,9 @@ public class Validate {
     private static boolean isValidEmail(String email) {
         return email.matches(EMAIL_PATTERN);
     }
+    private static boolean isValidBarcode(String barcode) {
+        return barcode.trim().matches("\\w+");
+    }
     public static void validateForm(BrandCategoryForm brandCategoryForm) throws ApiException {
         if(StringUtil.isEmpty(brandCategoryForm.getBrand())) {
             throw new ApiException("Brand field cannot be empty");
@@ -29,6 +32,9 @@ public class Validate {
 
         if(StringUtil.isEmpty(inventoryForm.getBarcode())) {
             throw new ApiException("Barcode field cannot be empty!");
+        }
+        if(!isValidBarcode(inventoryForm.getBarcode())){
+            throw new ApiException("Please enter alphanumeric barcode!");
         }
         if(inventoryForm.getQuantity()==null) {
             throw new ApiException("Quantity field cannot be empty!");
@@ -45,6 +51,9 @@ public class Validate {
         if(StringUtil.isEmpty(productForm.getBarcode())) {
             throw new ApiException("Barcode field cannot be empty!");
         }
+        if(!isValidBarcode(productForm.getBarcode())){
+            throw new ApiException("Please enter alphanumeric barcode!");
+        }
         if(StringUtil.isEmpty(productForm.getName())) {
             throw new ApiException("Name field cannot be empty!");
         }
@@ -57,9 +66,6 @@ public class Validate {
         if(productForm.getMrp()==null) {
             throw new ApiException("MRP field cannot be empty");
         }
-
-
-
         if(productForm.getMrp()<0)
         {
             throw new ApiException("MRP must be a non-negative number!");
@@ -77,6 +83,9 @@ public class Validate {
     public static void validateForm(OrderItemForm orderItemForm) throws ApiException {
         if(StringUtil.isEmpty(orderItemForm.getBarcode())) {
             throw new ApiException("Barcode field cannot be empty!");
+        }
+        if(!isValidBarcode(orderItemForm.getBarcode())){
+            throw new ApiException("Please enter alphanumeric barcode!");
         }
         if(orderItemForm.getQuantity()==null) {
             throw new ApiException("Quantity field cannot be empty!");
