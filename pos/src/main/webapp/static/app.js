@@ -11,9 +11,14 @@ function toJson($form){
     return json;
 }
 
+function handleErrorNotification(error){
+    $('.notifyjs-wrapper').trigger('notify-hide');
+    $.notify(error, "error");
+}
 
 function handleAjaxError(response){
 	var response = JSON.parse(response.responseText);
+	$('.notifyjs-wrapper').trigger('notify-hide');
 	$.notify(response.message,"error");
 }
 

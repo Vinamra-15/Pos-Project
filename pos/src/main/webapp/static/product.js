@@ -53,7 +53,7 @@ function addProduct(event){
 	var url = getProductUrl();
 	var data = getData(json)
 	if(!data.category){
-	    $.notify("Please select brand category!","warning")
+	    handleErrorNotification("Please select brand category!")
 	    return;
 	}
 	data = JSON.stringify(data)
@@ -93,7 +93,7 @@ function updateProduct(event){
 	var json = toJson($form);
 	var data = getData(json)
     	if(!data.category){
-    	    $.notify("Please select brand category!","warning")
+    	    handleErrorNotification("Please select brand category!")
     	    return;
     	}
     	data = JSON.stringify(data)
@@ -152,7 +152,7 @@ function processData(){
 	var file = $('#productFile')[0].files[0];
 	if(!file)
     {
-        $.notify("Please select a file!", "error");
+        handleErrorNotification("Please select a file!");
         return;
     }
 	readFileData(file, readFileDataCallback);
@@ -178,7 +178,7 @@ function readFileDataCallback(results){
     }
     const MAX_ROWS = 5000
     if(results.data.length>MAX_ROWS){
-        $.notify("File too big!","error");
+        handleErrorNotification("File too big!");
         return
     }
 	uploadRows();

@@ -59,7 +59,7 @@ function processData(){
    var file = $('#inventoryFile')[0].files[0];
    if(!file)
    {
-       $.notify("Please select a file!", "error");
+       handleErrorNotification("Please select a file!")
        return;
    }
    readFileData(file, readFileDataCallback);
@@ -85,7 +85,7 @@ function readFileDataCallback(results){
    }
    const MAX_ROWS = 5000
    if(results.data.length>MAX_ROWS){
-       $.notify("File too big!","error");
+       handleErrorNotification("File too big!");
        return
    }
    uploadRows();

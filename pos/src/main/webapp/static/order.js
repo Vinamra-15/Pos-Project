@@ -55,7 +55,7 @@ function getCurrentOrderItem(typeOfOperation) {
 
 function addItem(item) {
   if(item.barcode===""){
-    $.notify("Please enter barcode!","error")
+    handleErrorNotification("Please enter barcode!")
     return
   }
   const index = orderItems.findIndex((it) => it.barcode === item.barcode);
@@ -71,7 +71,7 @@ function addOrderItemToAddModal(event) {
   const item = getCurrentOrderItem('add');
     getProductByBarcode(item.barcode, (product) => {
         if(product.mrp<item.sellingPrice){
-          $.notify("Selling Price should not be greater than MRP: "+product.mrp,"error");
+          handleErrorNotification("Selling Price should not be greater than MRP: "+product.mrp);
           return;
         }
         addItem({
@@ -90,7 +90,7 @@ function addOrderItemToEditModal(event) {
     const item = getCurrentOrderItem('edit');
     getProductByBarcode(item.barcode, (product) => {
         if(product.mrp<item.sellingPrice){
-                  $.notify("Selling Price should not be greater than MRP: "+product.mrp,"error");
+                  handleErrorNotification("Selling Price should not be greater than MRP: "+product.mrp);
                   return;
                 }
         addItem({
@@ -109,9 +109,14 @@ function displayCreateOrderItems(data) {
   $tbody.empty();
   if(data.length===0){
     $('#create-order-table').hide()
+    $('#place-order-btn').hide()
+    $('#cancel-place-order-btn').hide()
+
   }
   else{
     $('#create-order-table').show()
+    $('#place-order-btn').show()
+    $('#cancel-place-order-btn').show()
   }
   for (let i in data) {
     const item = data[i];
@@ -273,6 +278,17 @@ function displayEditOrderItems(data){
 
       const $tbody = $('#edit-order-table').find('tbody');
       $tbody.empty();
+      if(data.length===0){
+          $('#edit-order-table').hide()
+          $('#update-order-btn').hide()
+          $('#cancel-update-order-btn').hide()
+        }
+      else
+      {
+        $('#edit-order-table').show()
+        $('#update-order-btn').show()
+        $('#cancel-update-order-btn').show()
+      }
 
       for (var i in data) {
           var item = data[i];
@@ -425,8 +441,8 @@ function placeNewOrder(event) {
 }
 function placeOrder(data, onSuccess) {
   if(data.length===0){
-          $.notify("Please add some orders!","error");
-          return;
+      handleErrorNotification("Please add some orders!");
+      return;
   }
   const json = JSON.stringify(data);
   const url = getOrderUrl();
@@ -458,7 +474,7 @@ function updateOrder(event){
         };
       });
       if(data.length===0){
-        $.notify("Please add some orders!","error");
+        handleErrorNotification("Please add some orders!");
         return;
       }
 
