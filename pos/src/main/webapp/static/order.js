@@ -274,6 +274,9 @@ function fetchOrderDetails(id,typeOfOperation) {
 }
 function displayEditOrderModal(){
     $('#edit-order-modal').modal({ backdrop: 'static', keyboard: false }, 'show');
+    $('#inputEditModalBarcode').val("");
+    $('#inputEditModalQuantity').val("");
+    $('#inputEditModalSellingPrice').val("");
 }
 function displayEditOrderItems(data){
 

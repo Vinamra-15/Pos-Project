@@ -421,7 +421,6 @@ function init(){
     $('#edit-product-modal').on('hidden.bs.modal', function () {
       primary="";
       resetBrandCategoryDropDown()
-
     })
 
 }
