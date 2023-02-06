@@ -1,11 +1,9 @@
 package com.increff.pos.util;
 
-import com.increff.pos.model.*;
+import com.increff.pos.model.Data.*;
+import com.increff.pos.model.Form.*;
 import com.increff.pos.pojo.*;
 import com.increff.pos.service.ApiException;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.annotation.PropertySource;
-import org.springframework.core.env.Environment;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
@@ -64,7 +62,7 @@ public class ConvertUtil {
         return inventoryPojo;
     }
 
-    public static OrderItemData convert(OrderItemPojo orderItemPojo,ProductPojo productPojo){
+    public static OrderItemData convert(OrderItemPojo orderItemPojo, ProductPojo productPojo){
         OrderItemData orderItemData = new OrderItemData();
         orderItemData.setId(orderItemPojo.getId());
         orderItemData.setQuantity(orderItemPojo.getQuantity());
@@ -117,7 +115,7 @@ public class ConvertUtil {
 
     public static List<SalesReportData> convertMapToSalesReportDataList(Map<Integer,SalesReportData> brandSalesMapping){
         List<SalesReportData> salesReportDataList = new ArrayList<>();
-        for (Map.Entry<Integer,SalesReportData> entry : brandSalesMapping.entrySet())
+        for (Map.Entry<Integer, SalesReportData> entry : brandSalesMapping.entrySet())
             salesReportDataList.add(entry.getValue());
         return salesReportDataList;
     }

@@ -1,10 +1,10 @@
 package com.increff.pos.dto;
 
 import com.increff.pos.helper.TestUtils;
-import com.increff.pos.model.InfoData;
-import com.increff.pos.model.LoginForm;
-import com.increff.pos.model.SignUpForm;
-import com.increff.pos.model.UserData;
+import com.increff.pos.model.Data.InfoData;
+import com.increff.pos.model.Form.LoginForm;
+import com.increff.pos.model.Form.SignUpForm;
+import com.increff.pos.model.Data.UserData;
 import com.increff.pos.pojo.UserPojo;
 import com.increff.pos.service.ApiException;
 import com.increff.pos.service.UserService;

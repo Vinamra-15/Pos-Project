@@ -1,6 +1,6 @@
 package com.increff.pos.util;
 
-import com.increff.pos.model.OrderDetailsData;
+import com.increff.pos.model.Data.OrderDetailsData;
 import org.springframework.web.client.RestTemplate;
 import sun.misc.BASE64Decoder;
 

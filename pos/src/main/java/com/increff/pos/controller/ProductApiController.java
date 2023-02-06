@@ -3,8 +3,8 @@ package com.increff.pos.controller;
 import java.util.List;
 
 import com.increff.pos.dto.ProductDto;
-import com.increff.pos.model.ProductData;
-import com.increff.pos.model.ProductForm;
+import com.increff.pos.model.Data.ProductData;
+import com.increff.pos.model.Form.ProductForm;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 import com.increff.pos.service.ApiException;

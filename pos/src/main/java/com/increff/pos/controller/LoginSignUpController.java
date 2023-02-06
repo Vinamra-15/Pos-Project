@@ -5,9 +5,9 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
 import com.increff.pos.dto.UserDto;
-import com.increff.pos.model.InfoData;
-import com.increff.pos.model.SignUpForm;
-import com.increff.pos.model.UserData;
+import com.increff.pos.model.Data.InfoData;
+import com.increff.pos.model.Form.SignUpForm;
+import com.increff.pos.model.Data.UserData;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.MediaType;
@@ -17,7 +17,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.servlet.ModelAndView;
 
-import com.increff.pos.model.LoginForm;
+import com.increff.pos.model.Form.LoginForm;
 import com.increff.pos.service.ApiException;
 import com.increff.pos.util.SecurityUtil;
 

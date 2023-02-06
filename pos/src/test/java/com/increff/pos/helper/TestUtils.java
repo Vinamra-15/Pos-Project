@@ -1,6 +1,6 @@
 package com.increff.pos.helper;
 
-import com.increff.pos.model.*;
+import com.increff.pos.model.Form.*;
 import com.increff.pos.pojo.*;
 
 import java.util.ArrayList;
@@ -15,7 +15,7 @@ public class TestUtils {
         brandCategoryForm.setCategory(category);
         return brandCategoryForm;
     }
-    public static ProductForm getProductForm (String name,String barcode,Double mrp,String brand, String category) {
+    public static ProductForm getProductForm (String name, String barcode, Double mrp, String brand, String category) {
         ProductForm productForm = new ProductForm();
         productForm.setName(name);
         productForm.setBarcode(barcode);

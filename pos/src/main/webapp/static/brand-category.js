@@ -11,7 +11,7 @@ function getRole(){
 
 function addBrandCategory(event){
     event.preventDefault()
-	var $form = $("#brand-category-form");
+	var $form = $("#brand-category-add-form");
 	var json = toJson($form);
 	var url = getBrandCategoryUrl();
 	$.ajax({
@@ -23,6 +23,7 @@ function addBrandCategory(event){
        },	   
 	   success: function(response) {
 	   		getBrandCategoryList();
+	   		resetBrandCategoryModal()
 	   		$.notify(JSON.parse(json).brand + " in category: "+JSON.parse(json).category + " added successfully!","success");
 	   },
 	   error: handleAjaxError
@@ -190,6 +191,17 @@ function displayBrandCategoryList(data){
 	}
 }
 
+function displayAddBrandCategoryModal(){
+    $('#add-brand-category-modal').modal('toggle');
+}
+
+function resetBrandCategoryModal(){
+    $("#brand-category-add-form input[name=brand]").val("");
+    $("#brand-category-add-form input[name=category]").val("");
+    $("#brand-category-add-form input[name=id]").val("");
+    $('#add-brand-category-modal').modal('toggle');
+}
+
 function displayEditBrandCategory(id){
 	let url = getBrandCategoryUrl() + "/" + id;
 	$.ajax({
@@ -247,12 +259,13 @@ function displayBrandCategory(data){
 
 //INITIALIZATION CODE
 function init(){
-	$('#brand-category-form').submit(addBrandCategory);
+	$('#brand-category-add-form').submit(addBrandCategory);
 	$('#brand-category-edit-form').submit(updateBrandCategory);
 	$('#refresh-data').click(getBrandCategoryList);
 	$('#upload-data').click(displayUploadData);
 	$('#process-data').click(processData);
 	$('#download-errors').click(downloadErrors);
+	$('#addBrandCategoryBtn').click(displayAddBrandCategoryModal)
     $('#brandCategoryFile').on('change', updateFileName)
     $('#brands-link').addClass('active').css("border-bottom","2px solid black")
 }

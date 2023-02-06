@@ -1,15 +1,14 @@
 package com.increff.pos.dto;
 
-import com.increff.pos.model.BrandCategoryData;
-import com.increff.pos.model.BrandCategoryForm;
+import com.increff.pos.model.Data.BrandCategoryData;
+import com.increff.pos.model.Form.BrandCategoryForm;
 import com.increff.pos.pojo.BrandCategoryPojo;
 import com.increff.pos.service.ApiException;
 import com.increff.pos.service.BrandCategoryService;
 import com.increff.pos.util.ConvertUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
-import java.util.ArrayList;
-import java.util.Collections;
+
 import java.util.List;
 import java.util.stream.Collectors;
 

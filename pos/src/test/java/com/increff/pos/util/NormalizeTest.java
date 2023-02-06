@@ -1,15 +1,11 @@
 package com.increff.pos.util;
 
 import com.increff.pos.helper.TestUtils;
-import com.increff.pos.model.OrderItemForm;
 import com.increff.pos.pojo.BrandCategoryPojo;
 import com.increff.pos.pojo.OrderItemPojo;
 import com.increff.pos.pojo.ProductPojo;
 import com.increff.pos.spring.AbstractUnitTest;
 import org.junit.Test;
-
-import java.util.ArrayList;
-import java.util.List;
 
 import static com.increff.pos.util.Normalize.normalizePojo;
 import static org.junit.Assert.assertEquals;

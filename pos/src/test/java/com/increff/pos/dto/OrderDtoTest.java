@@ -1,8 +1,8 @@
 package com.increff.pos.dto;
 
-import com.increff.pos.model.OrderData;
-import com.increff.pos.model.OrderDetailsData;
-import com.increff.pos.model.OrderItemForm;
+import com.increff.pos.model.Data.OrderData;
+import com.increff.pos.model.Data.OrderDetailsData;
+import com.increff.pos.model.Form.OrderItemForm;
 import com.increff.pos.pojo.BrandCategoryPojo;
 import com.increff.pos.pojo.InventoryPojo;
 import com.increff.pos.pojo.ProductPojo;

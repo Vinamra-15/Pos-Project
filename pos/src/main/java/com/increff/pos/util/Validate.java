@@ -1,15 +1,9 @@
 package com.increff.pos.util;
 
-import com.increff.pos.model.*;
+import com.increff.pos.model.Form.*;
 import com.increff.pos.service.ApiException;
 
-import java.util.Calendar;
-import java.util.Date;
-import java.util.GregorianCalendar;
 import java.util.List;
-
-import static com.increff.pos.util.TimeUtil.getEndOfDay;
-import static com.increff.pos.util.TimeUtil.getStartOfDay;
 
 public class Validate {
     private static final String EMAIL_PATTERN = "[a-z\\d]+@[a-z]+\\.[a-z]{2,3}";

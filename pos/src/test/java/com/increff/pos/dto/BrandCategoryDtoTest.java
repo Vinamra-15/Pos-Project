@@ -1,7 +1,7 @@
 package com.increff.pos.dto;
 
-import com.increff.pos.model.BrandCategoryData;
-import com.increff.pos.model.BrandCategoryForm;
+import com.increff.pos.model.Data.BrandCategoryData;
+import com.increff.pos.model.Form.BrandCategoryForm;
 import com.increff.pos.service.ApiException;
 import com.increff.pos.spring.AbstractUnitTest;
 import com.increff.pos.helper.TestUtils;

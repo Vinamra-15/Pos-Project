@@ -1,9 +1,9 @@
 package com.increff.pos.dto;
 
-import com.increff.pos.model.BrandCategoryForm;
-import com.increff.pos.model.InventoryData;
-import com.increff.pos.model.InventoryForm;
-import com.increff.pos.model.ProductForm;
+import com.increff.pos.model.Form.BrandCategoryForm;
+import com.increff.pos.model.Data.InventoryData;
+import com.increff.pos.model.Form.InventoryForm;
+import com.increff.pos.model.Form.ProductForm;
 import com.increff.pos.service.ApiException;
 import com.increff.pos.spring.AbstractUnitTest;
 import org.junit.Before;

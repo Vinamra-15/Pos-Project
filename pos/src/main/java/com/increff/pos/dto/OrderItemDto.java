@@ -1,6 +1,6 @@
 package com.increff.pos.dto;
 
-import com.increff.pos.model.OrderItemData;
+import com.increff.pos.model.Data.OrderItemData;
 import com.increff.pos.pojo.OrderItemPojo;
 import com.increff.pos.pojo.ProductPojo;
 import com.increff.pos.service.ApiException;
@@ -11,7 +11,6 @@ import org.springframework.stereotype.Component;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.stream.Collectors;
 
 import static com.increff.pos.util.ConvertUtil.convert;
 

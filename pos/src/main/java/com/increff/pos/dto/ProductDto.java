@@ -1,7 +1,7 @@
 package com.increff.pos.dto;
 
-import com.increff.pos.model.ProductData;
-import com.increff.pos.model.ProductForm;
+import com.increff.pos.model.Data.ProductData;
+import com.increff.pos.model.Form.ProductForm;
 import com.increff.pos.pojo.BrandCategoryPojo;
 import com.increff.pos.pojo.InventoryPojo;
 import com.increff.pos.pojo.ProductPojo;
@@ -16,7 +16,6 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.stream.Collectors;
 
 import static com.increff.pos.util.ConvertUtil.convert;
 import static com.increff.pos.util.Normalize.normalizePojo;

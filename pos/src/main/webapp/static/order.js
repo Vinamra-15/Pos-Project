@@ -218,14 +218,14 @@ function convertDate(datetime){
             <td>${order.id}</td>
             <td>${time}</td>
             <td>
-                <button title="View Order" type="button" class="btn btn-outline-secondary" onclick="fetchOrderDetails(${order.id},'add')">
+                <button title="View Order" type="button" class="btn btn-outline-info" onclick="fetchOrderDetails(${order.id},'add')">
                   <i class="fa fa-info-circle" aria-hidden="true"></i>
                 </button>
 
-                <button title="Edit Order" type="button" class="btn btn-outline-secondary" onclick="editOrderDetails(${order.id})">
+                <button title="Edit Order" type="button" class="btn btn-outline-warning" onclick="editOrderDetails(${order.id})">
                                   <i class="fas fa-edit fa-xs"></i>
                                 </button>
-                <button title="Download Invoice" type="button" class="btn btn-outline-secondary downloadInvoiceBtn" id="invoiceBtn-${order.id}" onclick="downloadInvoice(${order.id})">
+                <button title="Download Invoice" type="button" class="btn btn-outline-danger downloadInvoiceBtn" id="invoiceBtn-${order.id}" onclick="downloadInvoice(${order.id})">
                                                   <i class="fa fa-file-pdf-o" aria-hidden="true"></i></button>
             </td>
         </tr>

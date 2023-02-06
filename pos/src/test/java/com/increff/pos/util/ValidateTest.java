@@ -1,7 +1,7 @@
 package com.increff.pos.util;
 
 import com.increff.pos.helper.TestUtils;
-import com.increff.pos.model.*;
+import com.increff.pos.model.Form.*;
 import com.increff.pos.service.ApiException;
 import com.increff.pos.spring.AbstractUnitTest;
 import org.junit.Rule;

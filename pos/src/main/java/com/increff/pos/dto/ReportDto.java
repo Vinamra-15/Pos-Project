@@ -1,9 +1,9 @@
 package com.increff.pos.dto;
 
-import com.increff.pos.model.DaySalesData;
-import com.increff.pos.model.InventoryReportData;
-import com.increff.pos.model.SalesReportData;
-import com.increff.pos.model.SalesReportForm;
+import com.increff.pos.model.Data.DaySalesData;
+import com.increff.pos.model.Data.InventoryReportData;
+import com.increff.pos.model.Data.SalesReportData;
+import com.increff.pos.model.Form.SalesReportForm;
 import com.increff.pos.pojo.*;
 import com.increff.pos.service.*;
 import com.increff.pos.util.TimeUtil;

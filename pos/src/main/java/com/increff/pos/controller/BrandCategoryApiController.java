@@ -3,8 +3,8 @@ package com.increff.pos.controller;
 import java.util.List;
 
 import com.increff.pos.dto.BrandCategoryDto;
-import com.increff.pos.model.BrandCategoryData;
-import com.increff.pos.model.BrandCategoryForm;
+import com.increff.pos.model.Data.BrandCategoryData;
+import com.increff.pos.model.Form.BrandCategoryForm;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
