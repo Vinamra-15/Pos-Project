@@ -136,7 +136,7 @@ public class ConvertUtil {
         ArrayList<SimpleGrantedAuthority> authorities = new ArrayList<SimpleGrantedAuthority>();
 
         if(adminEmail.equals(userData.getEmail()))
-        authorities.add(new SimpleGrantedAuthority("supervisor"));
+            authorities.add(new SimpleGrantedAuthority("supervisor"));
         else{
             authorities.add(new SimpleGrantedAuthority("operator"));
         }

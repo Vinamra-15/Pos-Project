@@ -218,7 +218,7 @@ function convertDate(datetime){
             <td>${order.id}</td>
             <td>${time}</td>
             <td>
-                <button title="Order Details" type="button" class="btn btn-outline-secondary" onclick="fetchOrderDetails(${order.id},'add')">
+                <button title="View Order" type="button" class="btn btn-outline-secondary" onclick="fetchOrderDetails(${order.id},'add')">
                   <i class="fa fa-info-circle" aria-hidden="true"></i>
                 </button>
 

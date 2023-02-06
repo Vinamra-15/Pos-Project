@@ -33,16 +33,6 @@ public class NormalizeTest extends AbstractUnitTest {
         assertEquals((Double) 1200.00,productPojo.getMrp());
     }
 
-//    @Test
-//    public void normalizeOrderItemFormListTest(){
-//        OrderItemForm orderItemForm = TestUtils.getOrderItemForm(1, " aa5DD ", 1200.00999);
-//        List<OrderItemForm> orderItemFormList = new ArrayList<>();
-//        orderItemFormList.add(orderItemForm);
-//        normalizePojo(orderItemFormList);
-//        assertEquals(1,orderItemFormList.size());
-//        assertEquals("aa5dd",orderItemFormList.get(0).getBarcode());
-//        assertEquals((Double) 1200.00,orderItemFormList.get(0).getSellingPrice());
-//    }
 
     @Test
     public void normalizeOrderItemPojoTest(){

@@ -42,3 +42,7 @@ body {
 .active{
     font-weight: 500
 }
+
+.home-icons:hover{
+    background-color:#d2e1ee
+}

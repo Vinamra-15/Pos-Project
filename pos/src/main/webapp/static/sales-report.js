@@ -50,6 +50,7 @@ function filterSalesReport() {
     var json = toJson($form);
     let data = JSON.parse(json);
     if(startDateGreaterThanEndDate(data.startDate,data.endDate)){
+        $.notify.defaults( {clickToHide:true,autoHide:false} );
         $.notify('Start Date should not be greater than End Date!',"error");
         return;
     }

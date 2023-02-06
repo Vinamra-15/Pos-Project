@@ -12,12 +12,14 @@ function toJson($form){
 
 function handleErrorNotification(error){
     $('.notifyjs-wrapper').trigger('notify-hide');
+    $.notify.defaults( {clickToHide:true,autoHide:false} );
     $.notify(error, "error");
 }
 
 function handleAjaxError(response){
 	var response = JSON.parse(response.responseText);
 	$('.notifyjs-wrapper').trigger('notify-hide');
+    $.notify.defaults( {clickToHide:true,autoHide:false} );
 	$.notify(response.message,"error");
 }
 

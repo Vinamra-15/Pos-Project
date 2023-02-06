@@ -65,7 +65,6 @@ public class BrandCategoryDtoTest extends AbstractUnitTest {
     }
     @Test
     public void updateBrandCategoryTest() throws ApiException {
-//        BrandCategoryData brandCategoryDataClone = brandCategoryDto.get(1);
         BrandCategoryForm brandCategoryForm = TestUtils.getBrandCategoryForm(" tshirt brnd ","  tshirsfats  ");
         BrandCategoryData brandCategoryData = brandCategoryDto.addBrandCategory(brandCategoryForm);
         BrandCategoryForm updatedBrandCategoryForm = TestUtils.getBrandCategoryForm(" tshirt brand ","  tshirts ");

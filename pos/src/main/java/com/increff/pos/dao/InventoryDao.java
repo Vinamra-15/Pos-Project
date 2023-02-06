@@ -14,7 +14,8 @@ import java.util.List;
 
 @Repository
 @Transactional
-public class InventoryDao extends AbstractDao{
+public class
+InventoryDao extends AbstractDao{
     private static String select_id = "select p from InventoryPojo p where id=:id";
     private static String select_all = "select p from InventoryPojo p";
 
