@@ -229,7 +229,7 @@ function init(){
    $('#process-data').click(processData);
    $('#download-errors').click(downloadErrors);
     $('#inventoryFile').on('change', updateFileName)
-    $('#inventory-link').addClass('active').css("border-bottom","2px solid black")
+    $('#inventory-link').addClass('active').css("border-bottom","0.125rem solid black")
 }
 
 $(document).ready(init);

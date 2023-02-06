@@ -417,7 +417,7 @@ function init(){
     $('#add-modal-close').click(resetBrandCategoryDropDown)
     $('#edit-modal-close').click(resetBrandCategoryDropDown)
     $('#cancel-add-btn').click(resetBrandCategoryDropDown)
-    $('#products-link').addClass('active').css("border-bottom","2px solid black")
+    $('#products-link').addClass('active').css("border-bottom","0.125rem solid black")
     $('#edit-product-modal').on('hidden.bs.modal', function () {
       primary="";
       resetBrandCategoryDropDown()

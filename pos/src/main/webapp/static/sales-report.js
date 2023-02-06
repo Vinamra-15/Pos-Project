@@ -169,7 +169,7 @@ function endDateChanged(event){
 //INITIALIZATION CODE
 function init(){
    $('#filter-sales-report').click(filterSalesReport);
-   $('#reports-link').addClass('active').css("border-bottom","2px solid black")
+   $('#reports-link').addClass('active').css("border-bottom","0.125rem solid black")
    $('#inputBrand').change(brandChanged)
    $('#inputCategory').change(categoryChanged)
    $('#inputStartDate').change(startDateChanged)

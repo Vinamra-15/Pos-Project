@@ -511,7 +511,7 @@ function init() {
   $('#upload-data').click(displayUploadData);
   $('#update-order-form').submit(updateOrder);
   $('#create-order-form').submit(placeNewOrder)
-  $('#orders-link').addClass('active').css("border-bottom","2px solid black")
+  $('#orders-link').addClass('active').css("border-bottom","0.125rem solid black")
 }
 
 $(document).ready(init);

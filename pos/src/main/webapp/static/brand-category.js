@@ -268,7 +268,7 @@ function init(){
 	$('#download-errors').click(downloadErrors);
 	$('#addBrandCategoryBtn').click(displayAddBrandCategoryModal)
     $('#brandCategoryFile').on('change', updateFileName)
-    $('#brands-link').addClass('active').css("border-bottom","2px solid black")
+    $('#brands-link').addClass('active').css("border-bottom","0.125rem solid black")
 }
 
 $(document).ready(init);
