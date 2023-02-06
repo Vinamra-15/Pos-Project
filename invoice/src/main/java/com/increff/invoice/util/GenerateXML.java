@@ -55,7 +55,7 @@ public class GenerateXML {
             Element item = document.createElement("item");
             root.appendChild(item);
             Element id = document.createElement("id");
-            id.appendChild(document.createTextNode(String.valueOf(i+1)));
+            id.appendChild(document.createTextNode(orderDetailsDataItems.get(i).getBarcode()));
             item.appendChild(id);
 
             Element name = document.createElement("name");

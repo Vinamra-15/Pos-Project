@@ -169,6 +169,7 @@ function downloadErrors(){
 }
 
 function displayBrandCategoryList(data){
+
 	var $tbody = $('#brand-category-table').find('tbody');
 	$tbody.empty();
 	for(var i in data){

@@ -88,7 +88,7 @@
                             <fo:block font-size="15pt" font-family="sans-serif"
                                       background-color="black" color="white" text-align="center"
                                       padding-top="3pt">
-                                Item-No.
+                                Barcode
                             </fo:block>
                         </fo:table-cell>
                         <fo:table-cell padding-top="30pt">
