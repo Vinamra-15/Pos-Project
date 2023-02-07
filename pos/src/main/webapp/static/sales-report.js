@@ -52,6 +52,7 @@ function filterSalesReport() {
     }
     var url = getSalesReportUrl();
     ajaxCall(url,"POST",json,(response)=>displaySalesReport(response))
+
 }
 
 function displaySalesReport(data) {
@@ -79,6 +80,7 @@ function displaySalesReport(data) {
         + '</tr>';
         $tbody.append(row);
     }
+    $(location).attr('href','#inputEndDate');
 }
 
 function startDateGreaterThanEndDate(startDate,endDate){
