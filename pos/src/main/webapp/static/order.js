@@ -141,6 +141,15 @@ function displayCreateOrderItems(data) {
     `;
     $tbody.append(row);
   }
+
+  const row = `
+          <tr>
+              <td colspan="4" style="text-align: right"><strong>Bill Amount : </strong></td>
+
+            <td id="grandTotal"><strong>&#8377 ${numberWithCommas(calculateBillAmount().toFixed(2))}</strong></td>
+          </tr>
+        `;
+    $tbody.append(row);
 }
 
 function deleteOrderItem(barcode,typeOfOperation) {
@@ -258,6 +267,16 @@ function displayEditOrderModal(){
     $('#inputEditModalQuantity').val("");
     $('#inputEditModalSellingPrice').val("");
 }
+
+function calculateBillAmount(){
+    let grandTotal = 0
+    for(let i in orderItems){
+        let item = orderItems[i]
+        grandTotal+=(Number.parseInt(item.quantity)*Number.parseFloat(item.sellingPrice))
+    }
+   return grandTotal;
+
+}
 function displayEditOrderItems(data){
 
       const $tbody = $('#edit-order-table').find('tbody');
@@ -307,18 +326,31 @@ function displayEditOrderItems(data){
           `;
           $tbody.append(row);
         }
+
+        const row = `
+                    <tr>
+                        <td colspan="4" style="text-align: right"><strong>Bill Amount : </strong></td>
+
+                      <td id="grandTotal"><strong>&#8377 ${numberWithCommas(calculateBillAmount().toFixed(2))}</strong></td>
+                    </tr>
+                  `;
+            $tbody.append(row);
+
+
 }
 function onQuantityChanged(barcode,event) {
   const index = orderItems.findIndex((it) => it.barcode === barcode);
   if (index == -1) return;
   const newQuantity = event.target.value
   orderItems[index].quantity = Number.parseInt(newQuantity);
+  $('#grandTotal').html(`<strong>&#8377 ${numberWithCommas(calculateBillAmount().toFixed(2))}</strong>`)
 }
 function onSellingPriceChanged(barcode,event){
     const index = orderItems.findIndex((it) => it.barcode === barcode);
       if (index == -1) return;
       const newSellingPrice = event.target.value
       orderItems[index].sellingPrice = Number.parseFloat(newSellingPrice);
+      $('#grandTotal').html(`<strong>&#8377 ${numberWithCommas(calculateBillAmount().toFixed(2))}</strong>`)
 }
 function resetUploadDialog() {
   var $file = $('#orderFile');
