@@ -246,7 +246,7 @@ function downloadErrors(){
 
 
 function displayProductList(data){
-    $('#numberOfResults').append("Showing " + data.length + " results :")
+    $('#numberOfResults').text("Showing " + data.length + " results :")
 	var $tbody = $('#product-table').find('tbody');
 	$tbody.empty();
 	for(var i in data){

@@ -9,7 +9,7 @@ function getInventoryReport() {
 }
 
 function displayInventoryReportList(data) {
-  $('#numberOfResults').append("Showing " + data.length + " results :")
+  $('#numberOfResults').text("Showing " + data.length + " results :")
   var $tbody = $("#inventory-report-table").find("tbody");
   $tbody.empty();
   for (var i in data) {

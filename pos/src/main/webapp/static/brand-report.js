@@ -9,7 +9,7 @@ function getbrandReport() {
 }
 
 function displaybrandReportList(data) {
-  $('#numberOfResults').append("Showing " + data.length + " results :")
+  $('#numberOfResults').text("Showing " + data.length + " results :")
   var $tbody = $("#brandCategory-table").find("tbody");
   $tbody.empty();
   for (var i in data) {

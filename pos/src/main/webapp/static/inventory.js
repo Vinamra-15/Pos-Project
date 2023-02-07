@@ -107,7 +107,7 @@ function downloadErrors(){
 }
 
 function displayInventoryList(data){
-   $('#numberOfResults').append("Showing " + data.length + " results :")
+   $('#numberOfResults').text("Showing " + data.length + " results :")
    var $tbody = $('#inventory-table').find('tbody');
    $tbody.empty();
    for(var i in data){

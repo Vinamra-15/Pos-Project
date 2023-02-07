@@ -48,7 +48,10 @@ function addItem(item) {
   if (index == -1) {
     orderItems.push(item);
   } else {
-    orderItems[index].quantity += item.quantity;
+    totalSellingPrice = orderItems[index].quantity*orderItems[index].sellingPrice + Number.parseFloat(item.sellingPrice)*Number.parseInt(item.quantity)
+    orderItems[index].quantity += Number.parseInt(item.quantity);
+    orderItems[index].sellingPrice = (totalSellingPrice/orderItems[index].quantity).toFixed(2)
+
   }
 }
 
@@ -63,7 +66,7 @@ function addOrderItemToAddModal(event) {
         addItem({
           barcode: product.barcode,
           name: product.name,
-          sellingPrice: item.sellingPrice,
+          sellingPrice: item.sellingPrice.toFixed(2),
           quantity: item.quantity,
         })
          displayCreateOrderItems(orderItems);
@@ -82,7 +85,7 @@ function addOrderItemToEditModal(event) {
         addItem({
           barcode: product.barcode,
           name: product.name,
-          sellingPrice: item.sellingPrice,
+          sellingPrice: item.sellingPrice.toFixed(2),
           quantity: item.quantity,
         })
         displayEditOrderItems(orderItems)
@@ -188,7 +191,7 @@ function convertDate(datetime){
 }
 
  function displayOrderList(orders) {
-  $('#numberOfResults').append("Showing " + orders.length + " results :")
+  $('#numberOfResults').text("Showing " + orders.length + " results :")
   var $tbody = $('#order-table').find('tbody');
   $tbody.empty();
 
