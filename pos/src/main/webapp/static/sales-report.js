@@ -81,6 +81,7 @@ function displaySalesReport(data) {
         $tbody.append(row);
     }
     $(location).attr('href','#inputEndDate');
+    $('#inputEndDate').blur()
 }
 
 function startDateGreaterThanEndDate(startDate,endDate){
