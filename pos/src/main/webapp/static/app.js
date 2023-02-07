@@ -61,3 +61,16 @@ function writeFileData(arr){
 function numberWithCommas(x) {
     return x.toString().replace(/\B(?<!\.\d*)(?=(\d{3})+(?!\d))/g, ",");
 }
+
+function ajaxCall(url,requestType,data,success,error=handleAjaxError){
+      $.ajax({
+          url: url,
+          type: requestType,
+          data: data,
+          headers: {
+             'Content-Type': 'application/json'
+          },
+          success: success,
+          error: error
+       });
+}

@@ -5,17 +5,11 @@ function getInventoryReportUrl() {
 
 function getInventoryReport() {
   var url = getInventoryReportUrl();
-  $.ajax({
-    url: url,
-    type: "GET",
-    success: function (data) {
-      displayInventoryReportList(data);
-    },
-    error: handleAjaxError,
-  });
+  ajaxCall(url,"GET",{},(data)=>displayInventoryReportList(data))
 }
 
 function displayInventoryReportList(data) {
+  $('#numberOfResults').append("Showing " + data.length + " results :")
   var $tbody = $("#inventory-report-table").find("tbody");
   $tbody.empty();
   for (var i in data) {

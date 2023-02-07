@@ -32,13 +32,6 @@ body {
     line-height: 4rem
 }
 
-#inventory-edit-form{
-    line-height: 4rem
-}
-
-#brand-category-edit-form{
-    line-height: 4rem
-}
 .active{
     font-weight: 500
 }

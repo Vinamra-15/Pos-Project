@@ -10,26 +10,12 @@ function getProductUrl(){
 }
 function getOrderList() {
   var url = getOrderUrl();
-  $.ajax({
-    url: url,
-    type: 'GET',
-    success: function (data) {
-      displayOrderList(data);
-    },
-    error: handleAjaxError,
-  });
+  ajaxCall(url,"GET",{},(data)=>displayOrderList(data))
 }
 
 function getProductByBarcode(barcode, onSuccess) {
   const url = getProductUrl() + "?barcode=" + barcode;
-  $.ajax({
-    url: url,
-    type: 'GET',
-    success: function (data) {
-      onSuccess(data);
-    },
-    error: handleAjaxError,
-  });
+  ajaxCall(url,"GET",{},(data)=>onSuccess(data))
 }
 
 let orderItems = [];
@@ -186,19 +172,14 @@ function resetCreateModal() {
 
 function getBillAmount(id){
     const url = getOrderUrl() + id;
-    $.ajax({
-        url: url,
-        type: 'GET',
-        success: function (data) {
-          let items = data.items
-          let amount = 0;
-          for(let i in items){
-            amount = amount + items[i].sellingPrice*items[i].quantity
-          }
-          return amount
-        },
-        error: handleAjaxError,
-      });
+    ajaxCall(url,"GET",{},(data)=>{
+      let items = data.items
+      let amount = 0;
+      for(let i in items){
+        amount = amount + items[i].sellingPrice*items[i].quantity
+      }
+      return amount
+    })
 }
 
 function convertDate(datetime){
@@ -207,6 +188,7 @@ function convertDate(datetime){
 }
 
  function displayOrderList(orders) {
+  $('#numberOfResults').append("Showing " + orders.length + " results :")
   var $tbody = $('#order-table').find('tbody');
   $tbody.empty();
 
@@ -253,11 +235,8 @@ function downloadInvoice(orderId) {
 
 function fetchOrderDetails(id,typeOfOperation) {
   var url = getOrderUrl() + id;
-  $.ajax({
-    url: url,
-    type: 'GET',
-    success: function (data) {
-        orderItems = data.items;
+  ajaxCall(url,"GET",{},(data)=>{
+       orderItems = data.items;
        if(typeOfOperation==='add')
        displayOrderDetails(data);
        else
@@ -268,9 +247,7 @@ function fetchOrderDetails(id,typeOfOperation) {
             displayEditOrderItems(orderItems);
             displayEditOrderModal()
        }
-    },
-    error: handleAjaxError,
-  });
+  })
 }
 function displayEditOrderModal(){
     $('#edit-order-modal').modal({ backdrop: 'static', keyboard: false }, 'show');
@@ -450,20 +427,10 @@ function placeOrder(data, onSuccess) {
   }
   const json = JSON.stringify(data);
   const url = getOrderUrl();
-  $.ajax({
-    url: url,
-    type: 'POST',
-    data: json,
-    headers: {
-      'Content-Type': 'application/json',
-    },
-    success: function(){
-        onSuccess()
-        $.notify("Order placed successfully!","success");
-    },
-    error: handleAjaxError,
-  });
-
+  ajaxCall(url,"POST",json,()=>{
+    onSuccess()
+    $.notify("Order placed successfully!","success");
+  })
   return false;
 }
 
@@ -484,22 +451,11 @@ function updateOrder(event){
 
       const json = JSON.stringify(data);
       const url = getOrderUrl() + id;
-
-        $.ajax({
-          url: url,
-          type: 'PUT',
-          data: json,
-          headers: {
-            'Content-Type': 'application/json',
-          },
-          success: function(){
-            hideEditingModal()
-            $.notify("Order-"+id+" updated successfully!","success");
-          },
-          error: handleAjaxError,
-        });
-        return false;
-
+      ajaxCall(url,"PUT",json,()=>{
+        hideEditingModal()
+        $.notify("Order-"+id+" updated successfully!","success");
+      })
+    return false;
 }
 
 //INITIALIZATION CODE

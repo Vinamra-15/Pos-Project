@@ -11,22 +11,18 @@ brandCategoryData = []
 brandSet = new Set()
 categorySet = new Set()
 function getBrandCategory(){
-     $.ajax({
-           url: getBrandCategoryUrl(),
-           type: 'GET',
-           success: function(response) {
-                brandCategoryData = response
-                for(let i in response){
-                    brandSet.add(response[i].brand)
-                    categorySet.add(response[i].category)
-                }
+    let url = getBrandCategoryUrl()
+    ajaxCall(url,"GET",{},
+    (response)=>{
+    brandCategoryData = response
+    for(let i in response){
+        brandSet.add(response[i].brand)
+        categorySet.add(response[i].category)
+    }
 
-                populateBrandCategoryDropDown(brandSet,categorySet)
+    populateBrandCategoryDropDown(brandSet,categorySet)
 
-
-           },
-           error: handleAjaxError
-        });
+    })
 }
 
 function populateBrandCategoryDropDown(brandSet,categorySet){
@@ -55,37 +51,27 @@ function filterSalesReport() {
         return;
     }
     var url = getSalesReportUrl();
-    $.ajax({
-       url: url,
-       type: 'POST',
-       data: json,
-       headers: {
-        'Content-Type': 'application/json'
-       },
-       success: function(response) {
-            displaySalesReport(response);
-       },
-       error: handleAjaxError
-    });
+    ajaxCall(url,"POST",json,(response)=>displaySalesReport(response))
 }
 
 function displaySalesReport(data) {
+    $('#numberOfResults').text( "Showing " + data.length + " result(s) :")
     var $tbody = $('#sales-table').find('tbody');
     $tbody.empty();
 
     if(data.length===0)
     {
+        $('#numberOfResults').hide()
         $('#sales-table').hide()
     }
     else
     {
+        $('#numberOfResults').show()
         $('#sales-table').show()
     }
     for(var i in data){
-        let srNo = Number.parseInt(i) + 1
         var b = data[i];
         var row = '<tr>'
-        + '<td>'+srNo+'</td>'
         + '<td>' + b.brand + '</td>'
         + '<td>' + b.category + '</td>'
         + '<td>' + b.quantity + '</td>'

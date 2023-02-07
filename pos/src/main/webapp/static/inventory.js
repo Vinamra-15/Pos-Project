@@ -14,20 +14,12 @@ function updateInventory(event){
    var url = getInventoryUrl() +"/" + barcode;
    var $form = $("#inventory-edit-form");
    var json = toJson($form);
-   $.ajax({
-      url: url,
-      type: 'PUT',
-      data: json,
-      headers: {
-           'Content-Type': 'application/json'
-       },
-      success: function(response) {
-             getInventoryList();
-             $('#edit-inventory-modal').modal('toggle');
-             $.notify("Inventory update successful for product: " + JSON.parse(json).barcode,"success");
-      },
-      error: handleAjaxError
-   });
+   ajaxCall(url,"PUT",json,(response)=>{
+    getInventoryList();
+    $('#edit-inventory-modal').modal('toggle');
+    $.notify("Inventory update successful for product: " + JSON.parse(json).barcode,"success");
+   })
+
 
    return false;
 }
@@ -35,14 +27,7 @@ function updateInventory(event){
 
 function getInventoryList(){
    var url = getInventoryUrl();
-   $.ajax({
-      url: url,
-      type: 'GET',
-      success: function(data) {
-             displayInventoryList(data);
-      },
-      error: handleAjaxError
-   });
+   ajaxCall(url,"GET",{},(data)=>displayInventoryList(data))
 }
 
 var fileData = [];
@@ -104,29 +89,15 @@ function uploadRows(){
    	}
    	else
    	{
-
-   var json = JSON.stringify(row);
-   var url = getInventoryUrl() + '/' + barcode
-
-   $.ajax({
-      url: url,
-      type: 'PUT',
-      data: json,
-      headers: {
-           'Content-Type': 'application/json'
-       },
-      success: function(response) {
-             uploadRows();
-      },
-      error: function(response){
+       var json = JSON.stringify(row);
+       var url = getInventoryUrl() + '/' + barcode
+       ajaxCall(url,"PUT",json,uploadRows,(response)=>{
              var data = JSON.parse(response.responseText);
              row.error=data["message"];
              row.error_in_row_no = processCount
              errorData.push(row);
              uploadRows();
-
-      }
-   });
+       })
    }
 
 }
@@ -136,6 +107,7 @@ function downloadErrors(){
 }
 
 function displayInventoryList(data){
+   $('#numberOfResults').append("Showing " + data.length + " results :")
    var $tbody = $('#inventory-table').find('tbody');
    $tbody.empty();
    for(var i in data){
@@ -166,14 +138,7 @@ function displayInventoryList(data){
 
 function displayEditInventory(barcode){
    var url = getInventoryUrl() + "/" + barcode;
-   $.ajax({
-      url: url,
-      type: 'GET',
-      success: function(data) {
-             displayInventory(data);
-      },
-      error: handleAjaxError
-   });
+   ajaxCall(url,"GET",{},(data)=>displayInventory(data))
 }
 
 function resetUploadDialog(){

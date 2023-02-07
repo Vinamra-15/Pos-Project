@@ -14,21 +14,11 @@ function addBrandCategory(event){
 	var $form = $("#brand-category-add-form");
 	var json = toJson($form);
 	var url = getBrandCategoryUrl();
-	$.ajax({
-	   url: url,
-	   type: 'POST',
-	   data: json,
-	   headers: {
-       	'Content-Type': 'application/json'
-       },	   
-	   success: function(response) {
-	   		getBrandCategoryList();
-	   		resetBrandCategoryModal()
-	   		$.notify(JSON.parse(json).brand + " in category: "+JSON.parse(json).category + " added successfully!","success");
-	   },
-	   error: handleAjaxError
-	});
-
+	ajaxCall(url,"POST",json,response=>{
+	    getBrandCategoryList();
+        	   		resetBrandCategoryModal()
+        	   		$.notify(JSON.parse(json).brand + " in category: "+JSON.parse(json).category + " added successfully!","success");
+	})
 	return false;
 }
 
@@ -38,51 +28,20 @@ function updateBrandCategory(event){
 	var url = getBrandCategoryUrl() + "/" + id;
 	var $form = $("#brand-category-edit-form");
 	var json = toJson($form);
-
-	$.ajax({
-	   url: url,
-	   type: 'PUT',
-	   data: json,
-	   headers: {
-       	'Content-Type': 'application/json'
-       },	   
-	   success: function(response) {
-	   		getBrandCategoryList();
-	   		$('#edit-brand-category-modal').modal('toggle');
-	   		$.notify("Edit successful!","success");
-
-	   },
-	   error: handleAjaxError
-	});
-
+	ajaxCall(url,"PUT",json,response=>{
+	    getBrandCategoryList();
+        $('#edit-brand-category-modal').modal('toggle');
+        $.notify("Edit successful!","success");
+	})
 	return false;
 }
 
 
 function getBrandCategoryList(){
 	var url = getBrandCategoryUrl();
-	$.ajax({
-	   url: url,
-	   type: 'GET',
-	   success: function(data) {
-	   		displayBrandCategoryList(data);
-	   },
-	   error: handleAjaxError
-	});
+	ajaxCall(url,"GET",{},(data)=>displayBrandCategoryList(data))
 }
 
-function deleteBrandCategory(id){
-	var url = getBrandCategoryUrl() + "/" + id;
-
-	$.ajax({
-	   url: url,
-	   type: 'DELETE',
-	   success: function(data) {
-	   		getBrandCategoryList();
-	   },
-	   error: handleAjaxError
-	});
-}
 
 var fileData = [];
 var errorData = [];
@@ -143,24 +102,13 @@ function uploadRows(){
 	else{
 	var json = JSON.stringify(row);
 	var url = getBrandCategoryUrl();
-	$.ajax({
-	   url: url,
-	   type: 'POST',
-	   data: json,
-	   headers: {
-       	'Content-Type': 'application/json'
-       },	   
-	   success: function(response) {
-	   		uploadRows();  
-	   },
-	   error: function(response){
-	        var data = JSON.parse(response.responseText);
-            row.error=data["message"];
-	   		row.error_in_row_no = processCount
-	   		errorData.push(row);
-	   		uploadRows();
-	   }
-	});
+	ajaxCall(url,"POST",json,uploadRows,(response)=>{
+	    var data = JSON.parse(response.responseText);
+        row.error=data["message"];
+        row.error_in_row_no = processCount
+        errorData.push(row);
+        uploadRows();
+	})
 	}
 }
 
@@ -169,7 +117,7 @@ function downloadErrors(){
 }
 
 function displayBrandCategoryList(data){
-
+    $('#numberOfResults').append("Showing " + data.length + " results :")
 	var $tbody = $('#brand-category-table').find('tbody');
 	$tbody.empty();
 	for(var i in data){
@@ -205,14 +153,7 @@ function resetBrandCategoryModal(){
 
 function displayEditBrandCategory(id){
 	let url = getBrandCategoryUrl() + "/" + id;
-	$.ajax({
-	   url: url,
-	   type: 'GET',
-	   success: function(data) {
-	   		displayBrandCategory(data);
-	   },
-	   error: handleAjaxError
-	});	
+	ajaxCall(url,"GET",{},(data)=>displayBrandCategory(data))
 }
 
 function resetUploadDialog(){

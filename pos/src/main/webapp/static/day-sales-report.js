@@ -6,17 +6,11 @@ function getDailySalesReportUrl(){
 
 function filterSalesReport() {
     var url = getDailySalesReportUrl();
-    $.ajax({
-       url: url,
-       type: 'GET',
-       success: function(response) {
-            displaySalesReport(response);
-       },
-       error: handleAjaxError
-    });
+    ajaxCall(url,"GET",{},(response)=>displaySalesReport(response))
 }
 
 function displaySalesReport(data) {
+    $('#numberOfResults').append("Showing " + data.length + " results :")
     var $tbody = $('#daily-sales-table').find('tbody');
     $tbody.empty();
     for(var i in data){

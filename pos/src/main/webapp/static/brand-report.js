@@ -5,17 +5,11 @@ function getbrandReportUrl() {
 
 function getbrandReport() {
   var url = getbrandReportUrl();
-  $.ajax({
-    url: url,
-    type: "GET",
-    success: function (data) {
-      displaybrandReportList(data);
-    },
-    error: handleAjaxError,
-  });
+  ajaxCall(url,"GET",{},(data)=>displaybrandReportList(data))
 }
 
 function displaybrandReportList(data) {
+  $('#numberOfResults').append("Showing " + data.length + " results :")
   var $tbody = $("#brandCategory-table").find("tbody");
   $tbody.empty();
   for (var i in data) {
